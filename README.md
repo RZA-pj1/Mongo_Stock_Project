@@ -15,3 +15,4 @@
      id OR password incorrect : false
 
 4. DB 비번 걸어두기 - 안걸어두면 털림
+5. git pull test
