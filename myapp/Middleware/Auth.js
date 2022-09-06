@@ -1,4 +1,4 @@
-const { User } = require('../models/User');
+var { User } = require('../Models/addUser');
 
 let auth = (req, res, next) => {
     //인증 처리를 하는곳 
