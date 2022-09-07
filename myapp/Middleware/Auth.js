@@ -43,4 +43,4 @@ let auth = (req, res, next) => {
 //     //유저가 없으면 인증 못한다.
 
 // }
-module.exports = auth;
+module.exports = { auth };

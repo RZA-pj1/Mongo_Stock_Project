@@ -177,10 +177,40 @@
           *              [로그인] 버튼 클릭 시 메인 화면으로 Redirect 하기
           *            
          *******************************************************************************/ 
+
          function indexPage()  {
-             window.location.replace("http://localhost:5000/index");
-             // document.location.href = "/index";
-         }
+         /******************************************************************************
+          * 담당자      : 김건희
+          * Function명  : fetch()
+          * 함수 설명   : 오류시알람, 성공시 알람 후 페이지 이동
+          *           
+          *              - [토큰을 이용한 사용자 검증]
+          *              [로그인] 버튼 클릭 시 메인 화면으로 Redirect 하기
+          *            
+         *******************************************************************************/ 
+            // document.location.href = "/index";
+            fetch('/login',{
+                method: 'post',
+                body: JSON.stringify({
+                    name: res.user._id,
+                    userNumber: res.user.userNumber,
+                    password:res.user.password,
+                })
+            })
+            .then(res => {
+                if (res.status === 200) {
+                    alert("로그인 완료");
+                    window.location.replace("http://localhost:3000/index");
+                } else /*if (res.status === 403)*/ {
+                    alert("사번 또는 비밀번호가 틀렸습니다.");
+                    window.location.replace("http://localhost:3000/");
+                }
+            })
+            .then(res => {
+                console.log("에러 메시지 ->", res.message);
+            })
+        }
+         
      </script>
  </body>
  </html>

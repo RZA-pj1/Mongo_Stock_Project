@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var { User } = require('../Models/addUser');
-var auth = require('../Middleware/Auth');
+var { auth } = require('../Middleware/Auth');
 var token = require('morgan');
 //var employee = require('../controllers/EmployeeController.js');
 
