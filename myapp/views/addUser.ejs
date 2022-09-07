@@ -1,0 +1,156 @@
+<!-- 
+
+    담당자 : 이승현
+    함수 설명 : 
+    기능 설명 :  1. 회원가입 완료 후 로그인 페이지 이동
+                2. 비밀번호 검증기능 - [비밀번호 최소 4자리 이상 특수문자]
+                3. 메일 검증 기능 - [@, . 등은 있어야 함]
+                4. 비밀번호 저장 시 암호화하여 저장
+
+ -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--=============== SCRIPT ===============-->
+    <script src="js/jquery.min.js"></script>
+    
+    <!--=============== FONTAWESOME ===============-->
+    <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
+   
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="/public/css/add_user.css">
+    <title>회원가입 페이지</title>
+</head>
+<link rel="stylesheet" type="text/css" href='css/add_user.css'/>
+<body>
+  <header>
+
+  
+
+  </header>
+  <section id="add_user">
+    <h2>회원 가입</h2>
+    <div id="contentWrap">
+      <h2 class="hidden">회원 가입 내용</h2>
+        <form action="add_user.do" method="post">
+              <table>
+                  <tr>
+                      <td><label for="userName">이름</label></td>
+                      <td><input type="text" id="userName" name="userName" placeholder="이름을 입력하세요."/></td>
+                      <td></td>
+                  </tr>
+                  <tr>
+                      <td><label for="ssn1">주민번호</label></td>
+                      <td><input type="text" id="ssn1" class="ssn" name="ssn1" placeholder="주민번호 앞 6자리" maxlength="6"/></td>
+                      <td>-<input type="text" id="ssn2" class="ssn" name="ssn2" placeholder="주민번호 뒤 7자리" maxlength="7"/></td>
+                  </tr>
+                  <tr>
+                      <td><label for="team">부서</label></td>
+                      <td>
+                        <select id="teamList1" name="teamList1" class="teamList" onchange="selectTeam()">
+                          <option value="default" selected>-- 선택 --</option>
+                          <option value="영업부">영업부</option>
+                          <option value="기술부">기술부</option>
+                          <option value="품질경영부">품질경영부</option>
+                          <option value="기업부설연구소">기업부설연구소</option>
+                        </select>
+                    </td>
+                    <td>
+                      <select name="teamList2" id="teamList2">
+                        <option value="">-- 선택 --</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td id="label"><label for="userId">사원번호</label></td>
+                    <td><input type="text" name="userId" id="userId" maxlength="12" placeholder="사원번호를 입력하세요."/></td>
+                    <!-- <td><input type="button" id="duplicateCheck" name="duplicateCheck" value="중복 확인"/></td> -->
+                  </tr>
+                  <!-- 3. 메일 검증 기능 - [@, . 등은 있어야 함]
+                  // script로 구현하는 것 같은데 아직 진행 못했어요 -->
+                  <tr>
+                      <td><label for="email1">email</label></td>
+                      <td><input type="text" class="email" id="email1" name="email1" placeholder="이메일을 입력하세요."/> </td>
+                      <td>&#64;<select name="email2" class="email" id="email2">
+                          <option value="default" selected>-- 선택 --</option>
+                          <option value="naver.com">naver.com</option>
+                          <option value="google.com">google.com</option>
+                          <option value="daum.net">daum.net</option>
+                        </select>
+                      </td>
+                  </tr>
+                  <!-- <tr>
+                      <td><label for="addr1">주소</label></td>
+                      <td><input type="text" class="addr" id="addr1" name="addr1" placeholder="주소를 입력하세요."/></td>
+                      <td><input type="text" class="addr" id="addr2" name="addr2" placeholder="상세 주소를 입력하세요"/></td>
+                  </tr> -->
+                  <!-- 2. 비밀번호 검증 기능
+                      4. 비밀번호 저장 시 암호화하여 저장
+                  // sccript로 구현하는 것 같은데 아직 진행 못했어요 -->
+                  <tr>
+                    <td><label for="password">비밀번호</b></td>
+                    <td><input type="password" id="passwd" name="password" maxlength="20" placeholder="비밀번호를 입력하세요."/></td>
+                    <td id="warning">* 특수문자 제외 비밀번호는 최소 4자리 이상이어야 합니다.</td>
+                  </tr>
+                  <tr>
+                    <td><label for="password">비밀번호 확인</b></td>
+                    <td><input type="password" id="passwd" name="password" maxlength="20" placeholder="비밀번호를 입력하세요."/></td>
+                    <td id="warning">* 특수문자 제외 비밀번호는 최소 4자리 이상이어야 합니다.</td>
+                  </tr> 
+              </table>
+          <!-- 1. 회원가입 완료 후 로그인 페이지로 이동 
+          // 제 생각인데 회원가입 완료 페이지를 만들어서 [로그인하기] 버튼을 만들어 
+            클릭 시 이동하는 방법이 좋을 것 같아요 -->
+          <input type="submit" id="submitButton" value="확인"/>
+        </form>
+    </div>
+  </section>
+  <footer>
+
+   
+
+  </footer>
+  <script>
+
+    // 이승현 - 부서 선택에 조건으로 selcet option 추가하는 기능 ex) 영업부를 선택하면 영업부에 해당하는 부서만 보이도록
+    function selectTeam() {
+      var salesTeam = ["국내영업","해외영업","대리점관리"];
+      var technologyTeam = ["제품생산","자재관리","외주관리"];
+      var qualityManagementTeam = ["품질경영","품질관리","A/S"];
+      var affiliatedEnterprise = ["제품설계","제품개발","지적재산권"];
+
+      //1번 셀렉트 박스의 값이 바뀔때마다 2번 셀렉트 박스의 옵션들이 바뀌도록 만들어 보자
+      
+      var selectTeamFirst = $("#teamList1").val();
+
+      var changeTeam;
+
+      if(selectTeamFirst == "영업부"){
+        changeTeam = salesTeam;
+      }
+      else if(selectTeamFirst == "기술부"){
+        changeTeam = technologyTeam;
+      }
+      else if(selectTeamFirst == "품질경영부"){
+        changeTeam = qualityManagementTeam;
+      }
+      else if(selectTeamFirst == "기업부설연구소"){
+        changeTeam = affiliatedEnterprise;
+      }
+
+      $('#teamList2 option').remove(); // 기존에 들어가 있는 2번 셀렉트 박스 안의 옵션들을 깨끗하게 지우기 위해서 remove함수를 사용
+
+      for(var count = 0; count < changeTeam.length; count++ ){
+                      var option = $("<option>"+changeTeam[count]+"</option>");
+                      $('#teamList2').append(option);
+                      // append 함수를 이용해 셀렉트 박스 안에 만들어진 option을 삽입
+      }
+
+    } 
+
+  </script>  
+</body>
+</html>
