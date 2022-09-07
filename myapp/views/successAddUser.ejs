@@ -1,0 +1,61 @@
+<!-- 
+
+    담당자 : 이승현
+    기능 설명 :  1. 회원가입 완료 후 로그인 페이지 이동
+
+ -->
+ <!DOCTYPE html>
+ <html lang="ko">
+ <head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!--=============== JQUERY ===============-->
+   <script src="js/jquery.min.js"></script>
+   
+   <!--=============== FONTAWESOME ===============-->
+   <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
+   
+   <!--=============== CSS ===============-->
+   <link rel="stylesheet" href="/public/css/add_user.css">
+   <title>회원가입 페이지</title>
+ </head>
+ <link rel="stylesheet" type="text/css" href='css/successAddUser.css'/>
+ <body>
+   <!--=============== HEADER ===============-->
+   <header>
+ 
+     <%- include('partials/header.ejs'); %>
+ 
+   </header>
+   <section id="successAddUser">
+    <h2>회원가입에 성공했습니다!</h2>
+    <img src="../public/img/음악듣는여자.png" alt="">
+    <input 
+                    id='go_login'    
+                    type='submit'
+                    onclick='loginPage()'
+                    value='로그인하러 가기' />
+   </section>
+   <!--=============== FOOTER ===============-->
+   <footer>
+ 
+     <%- include('partials/footer.ejs'); %>
+ 
+   </footer>
+   <script>
+    /******************************************************************************
+     * 담당자      : 이승현
+     * Function명  : loginPage
+     * 함수 설명   : window.location.replace를 통해 이동할 페이지를 지정해 준다.
+     * 기능 설명   : 1. 회원가입 완료 후 로그인 페이지 이동
+     *              [로그인하러 가기] 버튼 클릭 시 login 화면으로 Redirect 하기
+     *            
+    *******************************************************************************/ 
+    function loginPage()  {
+            window.location.replace("http://localhost:5000");
+            // document.location.href = "/index";
+        }
+   </script>
+  </body>
+</html>   
