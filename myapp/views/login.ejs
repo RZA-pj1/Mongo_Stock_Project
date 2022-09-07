@@ -14,19 +14,19 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <!--=============== JQUERY ===============-->
-     <script src="js/jquery.min.js"></script>
+     <!-- <script src="js/jquery.min.js"></script> -->
  
      <!--=============== FONTAWESOME ===============-->
-     <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
+     <!-- <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css"> -->
      
      <!--=============== CSS ===============-->
-     <link rel="stylesheet" href="/public/css/login.css">
+     <!-- <link rel="stylesheet" href="/public/css/login.css"> -->
      <title><%- content %></title>
  </head>
  <body>
    <section id="loginLeft" class="loginSection">
      <h2 class="hidden"><%- content %></h2>
-         <form name="customer" action="/index" method="post">
+         <form name="customer"  method="post">
              <table>
                  <thead class="hidden">
                      <tr>
@@ -37,7 +37,7 @@
                      <tr>
                          <th><label for="userId">사원번호</label></th>
                          <td>
-                             <input type="text" name="userId" id="userId" maxlength="12" placeholder="아이디를 입력하세요." value="${cookie.userNumber.value}"/>
+                             <input type="text" name="userId" id="userId" maxlength="12" placeholder="아이디를 입력하세요."/>
                          </td>
                          <td>
                              <input id="idSaveCheck" class="checkbox" type="checkbox" name="userNumberCheck" value="true"/>사원번호 저장
@@ -58,13 +58,13 @@
                  <input 
                      id='go_index'    
                      type='submit'
-                     onclick='indexPage()'
+                    
                      value='로그인' />
                  <!-- <input type="submit" id="submitButton" value="로그인"/> -->
              <ul>
-                 <li><a href="addUser.ejs">회원가입</a></li> <!-- 2. 회원가입 페이지 이동 -->
-                 <li><a href="find_userId.ejs">아이디 찾기</a></li>
-                 <li><a href="find_passwd.ejs">비밀번호 찾기</a></li>
+                 <!-- <li><a href="addUser.ejs">회원가입</a></li> 2. 회원가입 페이지 이동 -->
+                 <!-- <li><a href="find_userId.ejs">아이디 찾기</a></li> -->
+                 <!-- <li><a href="find_passwd.ejs">비밀번호 찾기</a></li> -->
              </ul>
              <!-- 로그인 API -->
              <div>Google로 로그인하기</div>
@@ -74,7 +74,7 @@
      </section>
      <!-- 디자인한 그림, 움짤 넣기! -->
      <section id="loginRight" class="loginSection">
-         <img src="img/home.png" alt="">
+         <img src="images/home.png" alt="">
      </section>
      <script>
          /**
@@ -95,6 +95,8 @@
           * Return     : unescape(cookieValue)
           *            
          *******************************************************************************/ 
+         
+
          $(document).ready(function(){
  
          // 저장된 쿠키값을 가져와서 ID 칸에 넣어준다. 없으면 공백으로 들어감.
@@ -110,7 +112,7 @@
                  setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
              }else{ // ID 저장하기 체크 해제 시,
                  deleteCookie("key");
-             }
+             }z
          });
          
          // ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
@@ -178,38 +180,7 @@
           *            
          *******************************************************************************/ 
 
-         function indexPage()  {
-         /******************************************************************************
-          * 담당자      : 김건희
-          * Function명  : fetch()
-          * 함수 설명   : 오류시알람, 성공시 알람 후 페이지 이동
-          *           
-          *              - [토큰을 이용한 사용자 검증]
-          *              [로그인] 버튼 클릭 시 메인 화면으로 Redirect 하기
-          *            
-         *******************************************************************************/ 
-            // document.location.href = "/index";
-            fetch('/login',{
-                method: 'post',
-                body: JSON.stringify({
-                    name: res.user._id,
-                    userNumber: res.user.userNumber,
-                    password:res.user.password,
-                })
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    alert("로그인 완료");
-                    window.location.replace("http://localhost:3000/index");
-                } else /*if (res.status === 403)*/ {
-                    alert("사번 또는 비밀번호가 틀렸습니다.");
-                    window.location.replace("http://localhost:3000/");
-                }
-            })
-            .then(res => {
-                console.log("에러 메시지 ->", res.message);
-            })
-        }
+         
          
      </script>
  </body>

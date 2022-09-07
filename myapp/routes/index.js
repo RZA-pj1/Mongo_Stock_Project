@@ -48,7 +48,7 @@ router.post('/addUser', (req, res) => {
   console.log('req.body', res.body)
 })
 
-router.post('/login', (req, res) => {
+router.post('/', (req, res) => {
   //요청된 사번을 데이터베이스에서 있는지 찾는다.
   User.findOne({ userNumber: req.body.userNumber }, (err, user) => {
     console.log('user', user)
