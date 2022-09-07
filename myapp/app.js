@@ -45,7 +45,7 @@ app.use(function(err, req, res, next) {
 
 
 //mongoose.Promise = global.Promise;
-mongoose.connect('mongodb+srv://test:0000@cluster0.dihw999.mongodb.net/test',{
+mongoose.connect(config.mongoURI,{
   //useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(() => console.log('connected successful'))
   .catch((err) => console.error(err));
