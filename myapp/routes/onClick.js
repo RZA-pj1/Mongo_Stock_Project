@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 
 var myButton = document.getElementById('go_index');
 
-myButton.addEventListener('click', () => {
+myButton.addEventListener('click', function(){
     alert("Hello World");
     /******************************************************************************
      * 담당자      : 김건희
@@ -28,11 +28,17 @@ myButton.addEventListener('click', () => {
        })
        .then(res => {
         if (res.status === 200) {
-             alert("로그인 완료");
+             res.render('alert',(console.error('로그인 성공입니다.')))
              window.location.replace("http://localhost:3000/index.ejs");   
-        } else if (res.status === 403) {
+        } else /*if (res.status === 403)*/ {
              alert("사번 또는 비밀번호가 틀렸습니다.");
              return res.json();
         }
     })
+    if (res.status === 200) {
+        res.render('alert',(console.error('로그인 성공입니다.')))
+        window.location.replace("http://localhost:3000/index.ejs");
+   } else /*if (res.status === 403)*/ {
+        alert("사번 또는 비밀번호가 틀렸습니다.");
+   }
    });

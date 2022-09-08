@@ -39,7 +39,7 @@ router.post('/addUser', (req, res) => {
       })
     }
     else{ 
-      return res.render('addUser', { layout: './addUser'})
+      return res.render('/', { layout: './login'})
         // return res.status(200).json({
         // success: true, userInfo
       //})
@@ -50,22 +50,15 @@ router.post('/addUser', (req, res) => {
 
 router.post('/', (req, res) => {
   //요청된 사번을 데이터베이스에서 있는지 찾는다.
-  User.findOne({ userNumber: req.body.userNumber }, (err, user) => {
+  User.findOne({ userNumber: req.body.userNumber }, (err,user) => {
+    //console.log('userNo',userNumber)
     console.log('user', user)
     if (!user) {
-      return res.send(
-        "<scrit>alert('제공된 사번에 해당하는 유저가 없습니다.');window.location.replace(/login)</script>"
-        // loginSuccess: false,
-        // message: "제공된 사번에 해당하는 유저가 없습니다."
-      )
+      return res.json({ loginSuccess: false, message: "요청하신 사번은 존재하지 않습니다." })
     }
 
-    //요청된 이메일이 데이터 베이스에 있다면 비밀번호가 맞는 비밀번호 인지 확인.
+    //요청된 사번이 데이터 베이스에 있다면 비밀번호가 맞는 비밀번호 인지 확인.
     user.comparePassword(req.body.password, (err, isMatch) => {
-      // console.log('err',err)
-
-      // console.log('isMatch',isMatch)
-
       if (!isMatch)
         return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다." })
 
@@ -103,7 +96,6 @@ router.get('/auth', auth, (req, res) => {
 })
 
 router.get('/logout', auth, (req, res) => {
-  // console.log('req.user', req.user)
   User.findOneAndUpdate({ _id: req.user._id },
     { token: "" }
     , (err, user) => {

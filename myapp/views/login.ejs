@@ -37,7 +37,7 @@
                      <tr>
                          <th><label for="userId">사원번호</label></th>
                          <td>
-                             <input type="text" name="userId" id="userId" maxlength="12" placeholder="아이디를 입력하세요."/>
+                             <input type="number" name="userNumber" id="userNumber" maxlength="12" placeholder="사원번호를 입력하세요."/>
                          </td>
                          <td>
                              <input id="idSaveCheck" class="checkbox" type="checkbox" name="userNumberCheck" value="true"/>사원번호 저장
@@ -58,7 +58,7 @@
                  <input 
                      id='go_index'    
                      type='submit'
-                    
+                     onclick="getUser()"
                      value='로그인' />
                  <!-- <input type="submit" id="submitButton" value="로그인"/> -->
              <ul>
