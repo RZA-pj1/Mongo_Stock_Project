@@ -15,7 +15,7 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <!--=============== JQUERY ===============-->
      <!-- <script src="js/jquery.min.js"></script> -->
- 
+     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
      <!--=============== FONTAWESOME ===============-->
      <!-- <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css"> -->
      
@@ -57,8 +57,8 @@
                  </table>
                  <input 
                      id='go_index'    
-                     type='submit'
-                     onclick="getUser()"
+                     type='button'
+                     
                      value='로그인' />
                  <!-- <input type="submit" id="submitButton" value="로그인"/> -->
              <ul>
@@ -97,31 +97,31 @@
          *******************************************************************************/ 
          
 
-         $(document).ready(function(){
+        //  $(document).ready(function(){
  
-         // 저장된 쿠키값을 가져와서 ID 칸에 넣어준다. 없으면 공백으로 들어감.
-         var key = getCookie("key");
-         $("#userId").val(key); 
+        //  // 저장된 쿠키값을 가져와서 ID 칸에 넣어준다. 없으면 공백으로 들어감.
+        //  var key = getCookie("key");
+        //  $("#userId").val(key); 
          
-         if($("#userId").val() != ""){ // 그 전에 ID를 저장해서 처음 페이지 로딩 시, 입력 칸에 저장된 ID가 표시된 상태라면,
-             $("#idSaveCheck").attr("checked", true); // ID 저장하기를 체크 상태로 두기.
-         }
+        //  if($("#userId").val() != ""){ // 그 전에 ID를 저장해서 처음 페이지 로딩 시, 입력 칸에 저장된 ID가 표시된 상태라면,
+        //      $("#idSaveCheck").attr("checked", true); // ID 저장하기를 체크 상태로 두기.
+        //  }
          
-         $("#idSaveCheck").change(function(){ // 체크박스에 변화가 있다면,
-             if($("#idSaveCheck").is(":checked")){ // ID 저장하기 체크했을 때,
-                 setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
-             }else{ // ID 저장하기 체크 해제 시,
-                 deleteCookie("key");
-             }z
-         });
+        //  $("#idSaveCheck").change(function(){ // 체크박스에 변화가 있다면,
+        //      if($("#idSaveCheck").is(":checked")){ // ID 저장하기 체크했을 때,
+        //          setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
+        //      }else{ // ID 저장하기 체크 해제 시,
+        //          deleteCookie("key");
+        //      }z
+        //  });
          
-         // ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
-         $("#userId").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
-             if($("#idSaveCheck").is(":checked")){ // ID 저장하기를 체크한 상태라면,
-                 setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
-             }
-         });
-         });
+        //  // ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
+        //  $("#userId").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
+        //      if($("#idSaveCheck").is(":checked")){ // ID 저장하기를 체크한 상태라면,
+        //          setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
+        //      }
+        //  });
+        //  });
  
          function setCookie(cookieName, value, exdays){
          var exdate = new Date();
@@ -156,20 +156,20 @@
           * 기능 설명   : 눈 이모티콘 클릭 시 비밀번호 보이기/가리기 기능
           *            
          *******************************************************************************/ 
-         $(function(){
-             // 눈표시 클릭 시 패스워드 보이기
-             $('.eyes').on('click',function(){
-                 $('.input.password').toggleClass('active');
+        //  $(function(){
+        //      // 눈표시 클릭 시 패스워드 보이기
+        //      $('.eyes').on('click',function(){
+        //          $('.input.password').toggleClass('active');
  
-                 if( $('.input.password').hasClass('active') == true ){
-                     $(this).find('.fa-eye').attr('class',"fas fa-eye-slash").parents('.input').find('#password').attr('type',"text");
-                                 // i 클래스                // 텍스트 보이기 i 클래스
-                 }
-                 else{
-                     $(this).find('.fa-eye-slash').attr('class',"fas fa-eye").parents('.input').find('#password').attr('type','password');
-                 }
-             });
-         });
+        //          if( $('.input.password').hasClass('active') == true ){
+        //              $(this).find('.fa-eye').attr('class',"fas fa-eye-slash").parents('.input').find('#password').attr('type',"text");
+        //                          // i 클래스                // 텍스트 보이기 i 클래스
+        //          }
+        //          else{
+        //              $(this).find('.fa-eye-slash').attr('class',"fas fa-eye").parents('.input').find('#password').attr('type','password');
+        //          }
+        //      });
+        //  });
  
          /******************************************************************************
           * 담당자      : 이승현
@@ -179,7 +179,34 @@
           *              [로그인] 버튼 클릭 시 메인 화면으로 Redirect 하기
           *            
          *******************************************************************************/ 
-
+         $("#go_index").click(function(){
+ 
+            // json 형식으로 데이터 set
+            var params = {
+                userNumber  : $("#userNumber").val()
+                , name      : $("#name").val()
+                , password  : $("#password").val()
+            }
+     
+            // ajax 통신
+            $.ajax({
+                type : "POST",            // HTTP method type(GET, POST) 형식이다.
+                url : "/",      // 컨트롤러에서 대기중인 URL 주소이다.
+                data : params,            // Json 형식의 데이터이다.
+                
+                success : function(params){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                    // 응답코드 > 0000
+                   
+                   if(res.userSchema.userNumber!=params.userNumber||res.userSchema.password!=params.password)
+                    {alert(`${params.name}`+"님 환영합니다.");}
+                   else{alert("로그인 실패.")}
+                   
+                },
+                error : function(XMLHttpRequest, Status, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                    alert("사원번호 혹은 비밀번호가 비었습니다.")
+                }
+            });
+        });
          
          
      </script>

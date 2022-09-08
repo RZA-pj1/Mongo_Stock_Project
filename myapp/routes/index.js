@@ -35,7 +35,7 @@ router.post('/addUser', (req, res) => {
   user.save((err, userInfo) => {
     if (err){
         return res.json({
-        success: false, err,
+        success: false, err
       })
     }
     else{ 
@@ -54,13 +54,15 @@ router.post('/', (req, res) => {
     //console.log('userNo',userNumber)
     console.log('user', user)
     if (!user) {
-      return res.json({ loginSuccess: false, message: "요청하신 사번은 존재하지 않습니다." })
+      return res.render('alert', {error: '요청하신 사번은 존재하지 않습니다.'});
+      // return res.json({ loginSuccess: false, message: "요청하신 사번은 존재하지 않습니다." })
     }
 
     //요청된 사번이 데이터 베이스에 있다면 비밀번호가 맞는 비밀번호 인지 확인.
     user.comparePassword(req.body.password, (err, isMatch) => {
       if (!isMatch)
-        return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다." })
+      return res.render('alert', {error: '비밀번호가 틀렸습니다.'});  
+      // return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다." })
 
       //비밀번호 까지 맞다면 토큰을 생성하기.
       user.generateToken((err, user) => {
