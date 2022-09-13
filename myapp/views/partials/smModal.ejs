@@ -1,0 +1,243 @@
+<!-- 
+
+          담당자 : 이승현
+          파일명 해석 : stockManagement(물품 관리) Modal => smModal
+          기능 설명 :  [index page] - 물품 관리(Left) section에서 물품 image를 클릭하면,
+                      물품 관리 요구사항에 들어가야 할 상세 정보와 기능들이 포함되어
+                      modal창으로 띄워지게 됩니다.
+          [물품 관리(Left)] 1. 검색 기능
+                            >> [물품이름, 대여자 이름으로 검색](관리자만)
+                            2. 물품 등록 화면 호출 기능 (편집 권한)
+                            3. 물품 편집 화면 호출 기능 (편집 권한)
+                            4. 물품 삭제 기능 (편집 권한)
+                            5. 물품 대여자 명단 확인 기능(관리자)
+                            6. 목록 분류 별 필터 기능
+                            7. 리스트 정렬 기능 
+                            >> [이름순, 등록일 순]
+                            8. 물품 대여자 목록 확인 기능
+                            9. 물품 대여 화면 호출 기능
+                            >> [대여 불가 물품은 제외]
+                            >. [대여 가능 개수가 0이면 불가능]
+                            10. 엑셀 내보내기 기능
+                            11. 물품 대여 이력 호출 기능
+
+      -->
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <title>물품 관리 상세 페이지</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <style>
+            /* ========= 배경을 위한 CSS Code ========= */
+            .background {
+              position: fixed;  /* 스크롤이 발생하더라도 화면에 고정 */
+              top: 0;
+              left: 0;
+              width: 100%;  /* width, height를 이용하여 화면을 가득 차게 만들기 */
+              height: 100vh;
+              background-color: rgba(0, 0, 0, 0.3);
+              z-index: 1000;  /* 화면의 맨 앞으로 모달을 배치 */
+      
+              /* 숨기기 */
+              z-index: -1;
+              opacity: 0;
+            }
+            /* ========= 창을 위한 CSS Code ========= */
+            .window {
+              position: relative; /* 팝업에 들어갈 공간을 제한해 주어야 함 */
+              width: 100%;
+              height: 100%;
+            }
+            /* ========= 팝업을 위한 CSS Code ========= */
+            .popup {
+              position: absolute;
+              top: 50%;
+              left: 50%;  
+              transform: translate(-50%, -50%); /* 창의 정 가운데에 배치 */
+              background-color: #ffffff;
+              box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+              
+              /* 임시 지정 */
+              width: 500px;
+              height: 500px;
+      
+            /* ========= 모달이 나타날 때 천천히 나타나는 효과 ========= */
+      
+              /* 1. 초기에 약간 아래에 배치 */
+              transform: translate(-50%, -40%);
+            }
+            
+            .show {
+              opacity: 1;
+              z-index: 1000; /* 투명도와 위치가 원래대로 나타나도록 하고 */
+              transition: all .5s;  /* 시간은 0.5초로 지정 */
+            }
+            /* 2. 그 다음에 나타났을 때에 -50% 위치로 되돌아가도록 설정 */
+            .show .popup {
+              transform: translate(-50%, -50%);
+              transition: all .5s;
+            }
+          </style>
+          <body>
+            <button id="show">팝업 열기</button>
+            <!-- 화면 전체를 어둡게 만들어주는 배경(background) -->
+            <div class="background">
+              <!-- 모달팝업을 감싸주는 창(window) -->
+              <div class="window">
+                <!-- 모달팝업의 내용을 나타내는 팝업(popup) -->
+                <div class="popup">
+                  <button id="close">팝업 닫기</button>
+                  <section class="registrationWrap">
+                    <section class="headerWrap">
+                      <h2>물품 관리 상세 페이지</h2>
+                      <!-- 
+                          담당자 : 이승현
+                          class명 : onlyMaster
+                          기능 설명 : 1. 관리자에게만 표시되는 검색란
+                                      5. 물품 대여자 명단 확인 기능(관리자)
+                         -->
+                        <div class="onlyMaster">
+                          <div class="searchBox">
+                            <label><input type="text" id="search" onkeyup="filter()" placeholder="물품이름, 대여자 이름으로 검색하세요." /></label>
+                          </div>
+                          <button id="ConfirmRentalPeopleList">대여자 명단 확인</button> 
+                        </div>
+                       
+                      <div class="listBox">
+                        <div class="listInner">
+                            <span class="country">Australia</span>
+                            <span class="city">Canberra</span>
+                        </div>
+                        <div class="listInner">
+                            <span class="country">Argentina</span>
+                            <span class="city">Buenos Aires</span>
+                        </div>
+                        <div class="listInner">
+                            <span class="country">Austria</span>
+                            <span class="city">Vienna</span>
+                        </div>
+                      </div>  
+                      <button>대여자 목록 호출</button>
+                      <button>물품 대여/반납 이력 호출</button>
+                      <!-- 열람 권한 -->
+                      <button id="exportExcel">엑셀 내보내기</button>
+                    </section>
+                    <section class="contentWrap">
+                      <h3 class="hidden">물품 관리 내용</h3>
+                      <form action="dddd.ejs" method="get">
+                        <table id="stock">
+                        <thead>
+                          <tr>
+                            <th>물품 관리</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                          <td><label for="productName">이름</label></td>
+                          <td><input type="text" name="productName" id="productName" placeholder="물품명이 들어올 겁니다"></td>
+                        </tr>
+                        <tr>
+                          <td><label for="group">분류</label></td>
+                          <td><input type="text" name="group" id="group" placeholder="물품의 분류 종목이 들어올 겁니다"></td>
+                        </tr>  
+                        <tr>
+                          <td><label for="productCode">제품 코드</label></td>
+                          <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
+                            id="productCode" name="productCode" value="제품 코드" placeholder="제품 코드는 문자와 숫자로 받아올 겁니다"></td>
+                        </tr>
+                        <tr>
+                          <td>대여 가능 여부</td>
+                          <td><input type="text" id="rentable" placeholder="대여 가능 여부를 표시해 줄 겁니다."></td>
+                          <!-- <td><label for="rentable"><input type="radio" id="rentable" name="rentable" value="O">O</label></td>
+                          <td><label for="anRentable"><input type="radio" id="anRentable" name="anRentable" value="X">X</label></td> -->
+                        </tr>
+                        <tr>
+                          <td>반납 필요 여부</td>
+                          <td><input type="text" id="mustReturn" placeholder="반납여부를 표시해 줄 겁니다."></td>
+                          <!-- <td><label for="mustReturn"><input type="radio" id="mustReturn" name="mustReturn" value="O">O</label></td>
+                          <td><label for="notMustReturn"><input type="radio" id="notMustReturn" name="notMustReturn" value="X">X</label></td> -->
+                        </tr>
+                        <tr>
+                          <td><label for="rentableNumber">대여 가능 수량</label></td>
+                          <td><input type="text" id="rentableNumber" placeholder="대여 가능 수량을 받아와서 표시됩니다."></td>
+                        </tr>
+                        <tr>
+                          <td><label for="rentingNumber">대여 중 수량</label></td>
+                          <td><input type="text" id="rentingNumber" placeholder="현재 대여 중인 수량을 받아와서 표시됩니다."></td>
+                        </tr>
+                        <tr>
+                          <td><label for="totalNumber">총 수량</label></td>
+                          <td><input type="text" id="totalNumber" placeholder="총 수량을 받아와서 표시됩니다."></td>
+                        </tr>
+                        <tr>
+                          <td><label for="">등록일</label></td>
+                          <td><input type="text" placeholder="등록되거나 마지막으로 수정된 날짜를 받아와서 표시해 줍니다."></td>
+                        </tr>
+                      </tbody>
+                    </table>  
+                        <!-- 편집 권한 -->
+                        <button id="registration">등록</button>
+                        <button id="edit">편집</button>
+      
+                        <!-- 대여 권한 -->
+                        <button id="rental">대여</button>
+                    </form>
+                    </section>
+                  </section>
+                </div>
+              </div>
+            </div>
+          <script type="text/javascript">
+            /******************************************************************************
+             * 담당자      : 이승현
+             * Function명 : show(), close()
+             * 함수 설명   : .background >>>>> .background .show 로 className을 변환해 팝업 열기
+             *              .background .show >>>>> .background 로 다시 되돌려주면 팝업 닫기
+             * 기능 설명   : 팝업을 띄우고, 종료하는 함수
+             * Params     : 
+             * Return     : true or false
+             *            
+            *******************************************************************************/ 
+            // 팝업 열기
+            function show() {
+              document.querySelector(".background").className = "background show";
+            }
+      
+            // 팝업 닫기
+            function close() {
+              document.querySelector(".background").className = "background";
+            }
+      
+            document.querySelector("#show").addEventListener("click", show);
+            document.querySelector("#close").addEventListener("click", close);
+      
+            /******************************************************************************
+           * 담당자      : 이승현
+           * Function명 : filter
+           * 함수 설명   : indexOf() 함수를 사용하여 검색 기능 사용 
+           * 기능 설명   : 1. 검색 기능
+           *                      >> [물품이름, 대여자 이름으로 검색]
+           *                        >>> (관리자만)
+           *            
+          *******************************************************************************/ 
+            function filter() {
+                  let search = document.getElementById("search").value.toLowerCase();
+                  let listInner = document.getElementsByClassName("listInner");
+                 
+                  for (let i = 0; i < listInner.length; i++) {
+                      city = listInner[i].getElementsByClassName("city");
+                      country = listInner[i].getElementsByClassName("country");
+                      if (city[0].innerHTML.toLowerCase().indexOf(search) != -1 ||
+                         country[0].innerHTML.toLowerCase().indexOf(search) != -1
+                         ) {
+                          listInner[i].style.display = "flex"
+                      } else {
+                          listInner[i].style.display = "none"
+                      }
+                  }
+              }
+          </script>  
+        </body>
+      </html>

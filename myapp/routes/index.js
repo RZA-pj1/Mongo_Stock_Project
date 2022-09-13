@@ -3,7 +3,45 @@ var router = express.Router();
 
 var { User } = require('../Models/addUser');
 var { auth } = require('../Middleware/Auth');
-var token = require('morgan');
+var { Stock } = require('../Models/stockName');
+
+
+
+/**********************************************
+ * 물품 편집 등록 기능
+**********************************************/
+router.post('/commodity', (req, res) =>{
+  //회원가입 할때 필요한 정보들을 Clinent 에서 가져오면
+  //그것들을 데이터베이스에 넣어준다 
+
+  const stoke = new Stock(req.body);
+
+  stoke.save((err, stockNumber) => {
+      if (err) return res.json({ success: false, err })
+      return res.status(200).json({
+          success: true
+    })
+  })
+})
+router.get('/commodity',(req,res)=>{
+  Stock.find().where('bigGroup').select('bigGroup').sort({stockName:'asc'});
+  res.render('stockRegistration',{title:'Express',bigGroupdata : Stock});
+})
+router.get('/commodity',function(req,res,next){
+  var type = req.query.type;
+  if(type == 'smallGroup')
+  {
+    Stock.find().where('smallGroup').select('smallGroup').sort({smallGroup:'asc'})
+  }
+  Stock.query(query, function(error,bigGroupdata){
+    var data_arr = [];
+    bigGroupdata.forEach(function(row){
+      data_arr.push(row.Data);
+    });
+    res.json(data_arr);
+  })
+})
+
 //var employee = require('../controllers/EmployeeController.js');
 
 // router.get('/', employee.list);
@@ -24,6 +62,11 @@ var token = require('morgan');
 // router.get('/', function(req, res, next) {
 //   res.send('respond with a resource');
 // });
+/***************************************************
+ * 회원가입 및 로그인 기능
+ * *************************************************/
+
+
 router.get('/', (req, res) => res.render('login', {content: '로그인'}))
 
 //app.get('/api/hello', (req, res) => res.send('Hello World!~~ '))
@@ -40,9 +83,6 @@ router.post('/addUser', (req, res) => {
     }
     else{ 
       return res.render('/', { layout: './login'})
-        // return res.status(200).json({
-        // success: true, userInfo
-      //})
     }
   })
   console.log('req.body', res.body)
@@ -99,9 +139,8 @@ router.get('/logout', auth, (req, res) => {
     { token: "" }
     , (err, user) => {
       if (err) return res.json({ success: false, err });
-      return res.status(200).send({
-        success: true
-      })
+      return res.render('/',{content: '로그인'})
+      
     })
 })
 
