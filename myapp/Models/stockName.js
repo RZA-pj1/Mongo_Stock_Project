@@ -9,25 +9,32 @@ var stockName = new mongoose.Schema({
         type        : String,
         maxlength   : 50,
         unique      : true,
+        // Array       : [],
         require     : [true,"사용하고 있는 품번입니다."]
     },
     bigGroup: {
         type        : String,
         maxlength   : 50,
+        // Array       : [],
     },
     smallGroup:{
         type        : String,
-        maxlength   : 50
+        maxlength   : 50,
+        // Array       : [],
     },
     stockInfo: {
         type        : String,
-        Array       : []
+        // Array       :[]
     },
     role: {
         type        : Number,
-        default     : 0
+        default     : 0,
+        // Array       : []
     },
-    stockimage: String,
+    stockimage: {
+        type        : String,
+        // Array       : [],
+    },
     updated_at : {
         type        : Date,
         defailt     : Date.now

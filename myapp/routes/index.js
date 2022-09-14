@@ -24,8 +24,6 @@ router.post('/stockRegistration', (req, res) =>{
     })
   })
 })
-
-
 router.get('/stockRegistration',(req,res)=>{
   Stock.find().where('bigGroup').select('bigGroup').sort({bigGroup:'asc'});
   res.render('stockRegistration',{title:'Express',bigGroupdata : Stock, layout:'./stockRegistration'});
@@ -113,7 +111,7 @@ router.post('/', (req, res) => {
         // 토큰을 저장한다.  어디에 ?  쿠키 , 로컳스토리지 
         return res.cookie("x_auth", user.token)
           .status(200)
-          .json({ loginSuccess: true, userId: user._id })  
+          .json({ loginSuccess: true, userId: user._id })
       })
     })
   })
@@ -149,7 +147,9 @@ router.get('/logout', auth, (req, res) => {
     })
 })
 
-
+router.get('/successAddUser',(req,res)=>{
+  return res.render('successAddUser', {layout:'./successAddUser',content: '환영합니다.'})
+})
 
 
 

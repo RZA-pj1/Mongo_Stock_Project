@@ -26,7 +26,7 @@
  <body>
    <section id="loginLeft" class="loginSection">
      <h2 class="hidden"><%- content %></h2>
-         <form name="customer"  method="post">
+         <form name="customer" action="login" method="post">
              <table>
                  <thead class="hidden">
                      <tr>
@@ -197,7 +197,7 @@
          // 응답코드 > 0000
          if(res.loginSuccess!=false){
             alert(res.message);
-            window.location.replace("/index.js");}
+            window.location.replace("/successAddUser");}
         else{
             alert("로그인 실패");}
      },

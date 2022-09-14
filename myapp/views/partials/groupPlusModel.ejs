@@ -135,31 +135,31 @@
             **********************************************/
             //추가하기 버튼을 눌렀을때 이벤트
             function addList(){
-              console.log('123123123123123');
+              
               //통신해줄 값 정의
-            var params = {
-              bigGroup     : $("#bigGroup").val()
-              ,smallGroup  : $("#samllGroup").val()
-            }
-            
-            // ajax 통신
-            $.ajax({
-              type : "POST",            // HTTP method type(GET, POST) 형식이다.
-              url : "/stockRegistration",      // 컨트롤러에서 대기중인 URL 주소이다.
-              data : params,            // Json 형식의 데이터이다.
-              success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
-              // 응답코드 > 0000
-                if(res.loginSuccess!=false){
-                  alert(res.message);
-                }
-                else{
-                  alert("로그인 실패");}
-              },
-              error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-                alert("통신 실패.")
+              var params = {
+                bigGroup     : $("#bigGroup").val()
+                ,smallGroup  : $("#samllGroup").val()
               }
-            });
-          }
+              console.log('bigGroup :'+bigGroup)
+              // ajax 통신
+              $.ajax({
+                type : "POST",            // HTTP method type(GET, POST) 형식이다.
+                url : "/stockRegistration",      // 컨트롤러에서 대기중인 URL 주소이다.
+                data : params,            // Json 형식의 데이터이다.
+                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                // 응답코드 > 0000
+                  if(res.loginSuccess!=false){
+                    alert("통신성공"+bigGroup);
+                  }
+                  else{
+                    alert("로그인 실패");}
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                  alert("통신 실패.")
+                }
+              });
+            }
           
           </script>  
         </body>
