@@ -22,34 +22,36 @@
                   > [엑셀 양식은 제공]
 
   -->
-  <!DOCTYPE html>
-  <html lang="ko">
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--=============== JQUERY ===============-->
-    <script src="view_js/jquery.min.js"></script>
-    
-    <title>물품 등록</title>
-  </head>
-  <body>
-    <section class="registrationWrap">
-      <section class="headerWrap">
-        <h2>물품 등록</h2>
-        <button id="reset">초기화</button>
-        <button id="callExcel">엑셀 불러오기</button>
-      </section>
-      <section class="contentWrap">
-        <h3 class="hidden">물품 등록 내용</h3>
-        <form action="/commodity" method="post">
-          <table id="stock">
-          <thead>
-            <tr>
-              <th>물품 정보</th>
-            </tr>
-          </thead>
-          <tbody>
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--=============== JQUERY ===============-->
+  <script src="view_js/jquery.min.js"></script>
+
+  <title>물품 등록</title>
+</head>
+
+<body>
+  <section class="registrationWrap">
+    <section class="headerWrap">
+      <h2>물품 등록</h2>
+      <button id="reset">초기화</button>
+      <button id="callExcel">엑셀 불러오기</button>
+    </section>
+    <section class="contentWrap">
+      <h3 class="hidden">물품 등록 내용</h3>
+      <!-- <form action="/stockRegistration" method="post"> -->
+      <table id="stock">
+        <thead>
+          <tr>
+            <th>물품 정보</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr>
             <td><label for="productName">이름</label></td>
             <td><input type="text" name="productName" id="productName" placeholder="물품명을 입력해 주세요."></td>
@@ -63,19 +65,20 @@
               ---------------------------------------->
               <select id="bigGroup" name="bigGroup" class="bigGroup" onchange="selectGroup()">
                 <option value="default" selected>-- 대분류 --</option>
-                <% for(var count = 0; count < bigGroupdata.length; count++){%>
-                <option value="<%= bigGroupdata[count]%>"><%= bigGroupdata[count]%>
-                </option>
-                <%}%> 
-                <!-- <option value="default" selected>-- 대분류 --</option>
-                <option value="오실로스코프">오실로스코프</option>
+                <!-- <% for(var count=0; count < bigGroupdata.length; count++){%>
+                  <option value="<%= bigGroupdata[count]%>">
+                    <%= bigGroupdata[count]%>
+                  </option>
+                  <%}%> -->
+                    <!-- <option value="default" selected>-- 대분류 --</option> -->
+                    <option value="오실로스코프">오실로스코프</option>
                 <option value="신호, 스펙트럼 및 변조 분석기">신호, 스펙트럼 및 변조 분석기</option>
                 <option value="구성 요소 및 액세서리">구성 요소 및 액세서리</option>
                 <option value="신호 발생기">신호 발생기</option>
                 <option value="Keithley 장비 및 제품">Keithley 장비 및 제품</option>
                 <option value="Keithley 반도체 테스트 시스템">Keithley 반도체 테스트 시스템</option>
                 <option value="Keithley 스위칭 및 데이터 획득 시스템">Keithley 스위칭 및 데이터 획득 시스템</option>
-                <option value="소프트웨어">소프트웨어</option> -->
+                <option value="소프트웨어">소프트웨어</option>
               </select>
             </td>
             <td>
@@ -83,7 +86,11 @@
                 <option value="">-- 소분류 --</option>
               </select>
             </td>
-          </tr>  
+            <td>
+              <%- include('partials/groupPlusModel.ejs'); %>
+                <!-- <button id="groupPlus" value="분류 등록">+</button> -->
+            </td>
+          </tr>
           <tr>
             <td>대여 가능 여부</td>
             <td><label for="rentable"><input type="radio" id="rentable" name="rentable" value="O">O</label></td>
@@ -92,7 +99,8 @@
           <tr>
             <td>반환 필요 여부</td>
             <td><label for="mustReturn"><input type="radio" id="mustReturn" name="rentable" value="O">O</label></td>
-            <td><label for="notMustReturn"><input type="radio" id="notMustReturn" name="rentable" value="X">X</label></td>
+            <td><label for="notMustReturn"><input type="radio" id="notMustReturn" name="rentable" value="X">X</label>
+            </td>
           </tr>
           <!-- 
             담당자 : 이승현
@@ -106,8 +114,8 @@
            -->
           <tr>
             <td><label for="productCode">제품 코드</label></td>
-            <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
-              id="productCode" name="productCode" value="제품 코드" placeholder="제품 코드는 문자와 숫자로 이루어져야 합니다."></td>
+            <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');" id="productCode"
+                name="productCode" value="제품 코드" placeholder="제품 코드는 문자와 숫자로 이루어져야 합니다."></td>
           </tr>
           <!-- 
             담당자 : 이승현
@@ -119,118 +127,159 @@
             <td><input type="text" id="quantity"></td>
           </tr>
         </tbody>
-      </table>  
-          <button id="registration">등록</button>
-          <button id="cancel">취소</button>
+      </table>
+      <button id="registration">등록</button>
+      <button id="cancel">취소</button>
       </form>
-      </section>
     </section>
-    <script type="text/javascript">
-      /******************************************************************************
-       * 담당자      : 이승현
-       * Function명 : selectGroup
-       * 함수 설명   : remove와 append 함수를 사용
-       * 기능 설명   : 1. 대분류 추가 기능
-                        > [기존에 없던 분류를 추가]
-  
-                      2. 소분류 추가 기능
-                        > [기존에 없던 분류를 추가]
-       *            
-      *******************************************************************************/ 
-      function selectGroup() {
-        var oscilloscope = ["Benchtop Oscilloscopes","터치스크린 오실로스코프","고성능 실시간 오실로스코프"];
-        var spectrum = ["RF 스펙트럼 분석기 및 신호 분석기","Keithley 4200A-SCS 반도체 특성 분석기","광학 변조 분석기","주파수 카운터/타이머","8 시리즈 광 클럭 복구"];
-        var accessory = ["Keithley 액세서리","프로브 및 액세서리"];
-        var signalGenerator = ["임의 함수 발생기","텍트로닉스 임의 파형 발생기","RF 신호 발생기 TSG4100A"];
-        var equipment = ["Keithley 소스 측정 장치","텍트로닉스 및 Keithley 디지털 멀티미터","Keithley 낮은 레벨, 고감도 및 특수 장비", "Keithley 액세서리"];
-        var semiconductor = ["Keithley 4200A-SCS 반도체 특성 분석기","Keithley 파라메트릭 곡선 트레이서 구성","Keithley 파라메트릭 테스트 시스템", "Keithley 700 시리즈 반도체 스위칭 시스템"];
-        var switching = ["Keithley DAQ6510 6½ Digits 데이터 획득 및 로깅 멀티미터 시스템","Keithley 2700 멀티미터/데이터 획득/스위치 시스템","Keithley 3700A 시스템 스위치/멀티미터", "시리즈 S46 마이크로파 전환 시스템"];
-        var software = ["TekScope PC 분석 오실로스코프 소프트웨어","Keithley KickStart 소프트웨어","스펙트럼 분석기 소프트웨어", "TekDrive – 협업 데이터 작업 공간"];
-  
-        // 1번 셀렉트 박스의 값이 바뀔때마다 2번 셀렉트 박스의 옵션들이 바뀌도록 만들어 보자
-        var selectGroupFirst = $("#bigGroup").val();
-        var changeGroup;
-  
-        if(selectGroupFirst == "오실로스코프"){
-          changeGroup = oscilloscope;
-        }
-        else if(selectGroupFirst == "신호, 스펙트럼 및 변조 분석기"){
-          changeGroup = spectrum;
-        }
-        else if(selectGroupFirst == "구성 요소 및 액세서리"){
-          changeGroup = accessory;
-        }
-        else if(selectGroupFirst == "신호 발생기"){
-          changeGroup = signalGenerator;
-        }
-        else if(selectGroupFirst == "Keithley 장비 및 제품"){
-          changeGroup = equipment;
-        }
-        else if(selectGroupFirst == "Keithley 반도체 테스트 시스템"){
-          changeGroup = semiconductor;
-        }
-        else if(selectGroupFirst == "Keithley 스위칭 및 데이터 획득 시스템"){
-          changeGroup = switching;
-        }
-        else if(selectGroupFirst == "소프트웨어"){
-          changeGroup = software;
-        }
-  
-        $('#smallGroup option').remove(); // 기존에 들어가 있는 2번 셀렉트 박스 안의 옵션들을 깨끗하게 지우기 위해서 remove함수를 사용
-  
-        for(var count = 0; count < changeGroup.length; count++ ){
-                        var option = $("<option>"+changeGroup[count]+"</option>");
-                        $('#smallGroup').append(option);
-                        // append 함수를 이용해 셀렉트 박스 안에 만들어진 option을 삽입
-        }
-      } 
-  
-      /******************************************************************************
-       * 담당자      : 이승현
-       * 기능 설명   : 3-1. [수량은 숫자만 입력 가능] + 아니면 알림창 띄우기 기능
-       *            
-      *******************************************************************************/ 
-      //input 숫자만 입력
-      $("#quantity").on("keyup", function(event) {
-          if (event.which && (event.which  > 47 && event.which  < 58 || event.which == 8)) {
-              
-          }else{
-              alert('숫자만 입력해주세요.');
-              $(this).val($(this).val().replace(/[^0-9]/g,""));
-          }
-      });
-      /******************************************************************************
-       * 담당자      : 김건희
-       * 기능 설명   : 3-1. [수량은 숫자만 입력 가능] + 아니면 알림창 띄우기 기능
-       *            
-      *******************************************************************************/
-      
-      function _(element)
-      {
-        return document.getElementById(element);
+  </section>
+  <script type="text/javascript">
+    /******************************************************************************
+     * 담당자      : 이승현
+     * Function명 : selectGroup
+     * 함수 설명   : remove와 append 함수를 사용
+     * 기능 설명   : 1. 대분류 추가 기능
+                      > [기존에 없던 분류를 추가]
+ 
+                    2. 소분류 추가 기능
+                      > [기존에 없던 분류를 추가]
+     *            
+    *******************************************************************************/
+    function selectGroup() {
+      var oscilloscope = ["Benchtop Oscilloscopes", "터치스크린 오실로스코프", "고성능 실시간 오실로스코프"];
+      var spectrum = ["RF 스펙트럼 분석기 및 신호 분석기", "Keithley 4200A-SCS 반도체 특성 분석기", "광학 변조 분석기", "주파수 카운터/타이머", "8 시리즈 광 클럭 복구"];
+      var accessory = ["Keithley 액세서리", "프로브 및 액세서리"];
+      var signalGenerator = ["임의 함수 발생기", "텍트로닉스 임의 파형 발생기", "RF 신호 발생기 TSG4100A"];
+      var equipment = ["Keithley 소스 측정 장치", "텍트로닉스 및 Keithley 디지털 멀티미터", "Keithley 낮은 레벨, 고감도 및 특수 장비", "Keithley 액세서리"];
+      var semiconductor = ["Keithley 4200A-SCS 반도체 특성 분석기", "Keithley 파라메트릭 곡선 트레이서 구성", "Keithley 파라메트릭 테스트 시스템", "Keithley 700 시리즈 반도체 스위칭 시스템"];
+      var switching = ["Keithley DAQ6510 6½ Digits 데이터 획득 및 로깅 멀티미터 시스템", "Keithley 2700 멀티미터/데이터 획득/스위치 시스템", "Keithley 3700A 시스템 스위치/멀티미터", "시리즈 S46 마이크로파 전환 시스템"];
+      var software = ["TekScope PC 분석 오실로스코프 소프트웨어", "Keithley KickStart 소프트웨어", "스펙트럼 분석기 소프트웨어", "TekDrive – 협업 데이터 작업 공간"];
+
+      // 1번 셀렉트 박스의 값이 바뀔때마다 2번 셀렉트 박스의 옵션들이 바뀌도록 만들어 보자
+      var selectGroupFirst = $("#bigGroup").val();
+      var changeGroup;
+
+      if (selectGroupFirst == "오실로스코프") {
+        changeGroup = oscilloscope;
       }
-      function fetch_data(parent_element,child_element,type)
-      {
-        fetch('/get_data?type='+type+'&parent_value='+parent_element.value+'').then(
-          function(res){
+      else if (selectGroupFirst == "신호, 스펙트럼 및 변조 분석기") {
+        changeGroup = spectrum;
+      }
+      else if (selectGroupFirst == "구성 요소 및 액세서리") {
+        changeGroup = accessory;
+      }
+      else if (selectGroupFirst == "신호 발생기") {
+        changeGroup = signalGenerator;
+      }
+      else if (selectGroupFirst == "Keithley 장비 및 제품") {
+        changeGroup = equipment;
+      }
+      else if (selectGroupFirst == "Keithley 반도체 테스트 시스템") {
+        changeGroup = semiconductor;
+      }
+      else if (selectGroupFirst == "Keithley 스위칭 및 데이터 획득 시스템") {
+        changeGroup = switching;
+      }
+      else if (selectGroupFirst == "소프트웨어") {
+        changeGroup = software;
+      }
+
+      $('#smallGroup option').remove(); // 기존에 들어가 있는 2번 셀렉트 박스 안의 옵션들을 깨끗하게 지우기 위해서 remove함수를 사용
+
+      for (var count = 0; count < changeGroup.length; count++) {
+        var option = $("<option>" + changeGroup[count] + "</option>");
+        $('#smallGroup').append(option);
+        // append 함수를 이용해 셀렉트 박스 안에 만들어진 option을 삽입
+      }
+    }
+
+    /******************************************************************************
+     * 담당자      : 이승현
+     * 기능 설명   : 3-1. [수량은 숫자만 입력 가능] + 아니면 알림창 띄우기 기능
+     *            
+    *******************************************************************************/
+    //input 숫자만 입력
+    $("#quantity").on("keyup", function (event) {
+      if (event.which && (event.which > 47 && event.which < 58 || event.which == 8)) {
+
+      } else {
+        alert('숫자만 입력해주세요.');
+        $(this).val($(this).val().replace(/[^0-9]/g, ""));
+      }
+    });
+    /******************************************************************************
+     * 담당자      : 김건희
+     * 기능 설명   : 3-1. [수량은 숫자만 입력 가능] + 아니면 알림창 띄우기 기능
+     *            
+    *******************************************************************************/
+
+    function _(element) {
+      return document.getElementById(element);
+    }
+    function fetch_data(parent_element, child_element, type) {
+      fetch('/get_data?type=' + type + '&parent_value=' + parent_element.value + '').then(
+        function (res) {
           return res.json();
-        }).then(function(resData){
-          var html='';
-          if(type == 'load_smallGroup')
-          {
+        }).then(function (resData) {
+          var html = '';
+          if (type == 'load_smallGroup') {
             html = '<option value="">-- 소분류 --</option>';
           }
-          for(var count = 0; count < resData.length; count++)
-          {
-            html += '<option value="'+resData[count]+'">'+resData[count]+'</option>';
+          for (var count = 0; count < resData.length; count++) {
+            html += '<option value="' + resData[count] + '">' + resData[count] + '</option>';
             child_element.innerHTML = html;
           }
         });
-      }
-      _('bigGroup').onchange=function(){
-        fetch_data(_('bigGroup'),_(load_smallGroup));
-      };
+    }
+    _('bigGroup').onchange = function () {
+      fetch_data(_('bigGroup'), _(load_smallGroup));
+    };
 
-    </script>
-  </body>
-  </html>
+
+    //아이디가 bigGroup인 select가 값이 바뀌면 진행
+    $('#bigGroup').on('change', function () {
+
+      $('#smallGroup').html('<option value="">-- 소분류 --</option>');
+
+      bigGroup = $(this).val();
+
+      if (bigGroup != "") {
+
+        $("select[name=smallGroup]").attr("disabled",false);
+
+        jQuery.ajax({
+          type: "GET",
+          url: "/stockRegistration",
+          cache: false,
+          data: {
+            bigGroup : $("#bigGroup").val(),
+            smallGroup: $("#smallGroup").val()
+          },
+          datatype: "JSON",
+          success: function (obj) {
+            var data = JSON.parse(obj);
+
+            $.each(data, function (res, req) {
+                $('<option></option>').val(res).text(req).appendTo($('#smallGroup'));
+            });
+
+        },
+        error: function (xhr, status, error) {
+            console.log("ERROR!!!");
+        }
+    });
+    
+} else {
+
+    $("select[name=exhibition_id]").attr("disabled",true);
+    
+}
+
+$(this).closest('form').submit();
+});
+
+
+  </script>
+</body>
+
+</html>

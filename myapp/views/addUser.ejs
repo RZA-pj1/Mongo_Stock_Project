@@ -29,7 +29,7 @@
    <!--=============== HEADER ===============-->
    <header>
  
-     <%- include('partials/header.ejs'); %>
+     <!-- <%- include('partials/header.ejs'); %> -->
  
    </header>
    <section id="add_user">
@@ -61,6 +61,20 @@
                          <option value="">-- 선택 --</option>
                        </select>
                      </td>
+                   </tr>
+                   <tr>
+                    <td><label for="teamPosition">직책</label></td>
+                    <td>
+                      <select name="teamPosition" id="teamPosition">
+                        <option value="연구원 보조">연구원 보조</option>
+                        <option value="연구원">연구원</option>
+                        <option value="주임연구원">주임연구원</option>
+                        <option value="전임연구원">전임연구원</option>
+                        <option value="선임연구원">선입연구원</option>
+                        <option value="책임연구원">책임연구원</option>
+                        <option value="수석연구원">수석연구원</option>
+                      </select>
+                    </td>
                    </tr>
                    <tr>
                      <td id="label"><label for="userId">사원번호</label></td>
@@ -322,6 +336,9 @@
          });
      });
  
+
+    
+     
      // 담당자 : 김건희 - 4. 비밀번호 암호화해서 저장
      
      const userSchema = mongoose.Schema({
@@ -342,7 +359,7 @@
              type: String,
              minlength: 4
          },
-         lastname: {
+         teamList: {
              type: String,
              maxlength: 50
          },
@@ -360,33 +377,51 @@
      })
  
  
-     userSchema.pre('save', function (next) {
-         var user = this;
-         if (user.isModified('password')) {
-             //비밀번호를 암호화 시킨다.
-             bcrypt.genSalt(saltRounds, function (err, salt) {
-                 if (err) return next(err)
+    //  userSchema.pre('save', function (next) {
+    //      var user = this;
+    //      if (user.isModified('password')) {
+    //          //비밀번호를 암호화 시킨다.
+    //          bcrypt.genSalt(saltRounds, function (err, salt) {
+    //              if (err) return next(err)
  
-                 bcrypt.hash(user.password, salt, function (err, hash) {
-                     if (err) return next(err)
-                     user.password = hash
-                     next()
-                 })
-             })
-         } else {
-             next()
-         }
-     })
+    //              bcrypt.hash(user.password, salt, function (err, hash) {
+    //                  if (err) return next(err)
+    //                  user.password = hash
+    //                  next()
+    //              })
+    //          })
+    //      } else {
+    //          next()
+    //      }
+    //  })
  
  
-     userSchema.methods.comparePassword = function (plainPassword, cb) {
+    //  userSchema.methods.comparePassword = function (plainPassword, cb) {
  
-         //plainPassword 1234567    암호회된 비밀번호 $2b$10$l492vQ0M4s9YUBfwYkkaZOgWHExahjWC
-         bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
-             if (err) return cb(err);
-             cb(null, isMatch);
-         })
+    //      //plainPassword 1234567    암호회된 비밀번호 $2b$10$l492vQ0M4s9YUBfwYkkaZOgWHExahjWC
+    //      bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+    //          if (err) return cb(err);
+    //          cb(null, isMatch);
+    //      })
+    //  }
+     // ajax 통신
+ $.ajax({
+     type : "POST",            // HTTP method type(GET, POST) 형식이다.
+     url : "/addUser",      // 컨트롤러에서 대기중인 URL 주소이다.
+     data : userSchema,            // Json 형식의 데이터이다.
+     success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+         // 응답코드 > 0000
+         if(res.loginSuccess!=false){
+            alert(res.message);
+            window.location.replace("/index.js");}
+        else{
+            alert("로그인 실패");}
+     },
+     error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+         alert("통신 실패.")
      }
+ });
+
    </script>  
  </body>
  </html>

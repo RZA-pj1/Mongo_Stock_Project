@@ -1,0 +1,179 @@
+<!-- 
+
+    담당자 : 이승현
+    함수 설명 : 각 페이지에 공통적으로 들어가는 navigation을 뽑아 ejs의 <%- include %>를 활용하여 넣어준다. 
+    페이지 설명 : 전 페이지 공통 적용 Header
+    기능 설명 :  1. 각 페이지로 이동하는 기능   // 승현
+                2. 로그아웃 기능 - [로그인 페이지로 이동]   // 승현
+                3. 이용자 관리 페이지 이동 버튼 - [관리자만 표시]   // 건희
+                4. favicon 넣기     // 승현 - 아직 못했어요.
+
+ -->
+ <!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!--=============== FAVICON ===============-->
+   <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+
+   <!--=============== REMIX ICONS ===============-->
+   <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!--=============== JQUERY ===============-->
+  <script src="js/jquery.min.js"></script>
+  
+  <!--=============== FONTAWESOME ===============-->
+  <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
+  
+  <!--=============== CSS ===============-->
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/partials/header.css">
+  <title>상단 메뉴</title>
+</head>
+<body>
+  <!--==================== HEADER ====================-->
+  <header class="header" id="header">
+    <nav class="nav container">
+        <a href="#" class="nav__logo">
+            <i class="ri-cpu-line nav__logo-icon"></i>R.Z.A
+        </a>
+
+        <div class="nav__menu-login" id="nav-menu-login">
+            <ul class="nav__list nav__menu-login__ul">
+                <li class="nav__item nav__menu-login__li userInfo">
+                    <a href="#" class="nav__link nav__menu-login__a">ㅇㅇㅇ님, 환영합니다.</a>
+                </li>
+
+                <li class="nav__item nav__menu-login__li logout">
+                    <a href="/logout" onclick='logoutPage()' class="nav__link nav__menu-login__a">로그아웃</a>
+                </li>
+                <!-- 관리자에게만 보이게 권한 부여할 것! -->
+                <li class="nav__item nav__menu-login__li">
+                    <a href="/userManagement" onclick='userManagementPage()' class="nav__link nav__menu-login__a active-link">이용자 관리</a>
+                </li>
+            </ul>
+        </div>
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list">
+                <li class="nav__item">
+                    <a href="/commodityManagement" onclick='commodityManagementPage()' class="nav__link">물품 관리</a>
+                </li>
+                <li class="nav__item">
+                    <a href="/commodityRegistration" onclick='commodityRegistrationPage()' class="nav__link">물품 등록</a>
+                </li>
+                <li class="nav__item">
+                    <a href="/allRentalStatus" onclick='allRentalStatusPage()' class="nav__link">대여 현황</a>
+                </li>
+                <li class="nav__item">
+                    <a href="/myRentalStatus" onclick='myRentalStatusPage()' class="nav__link">마이페이지</a>
+                </li>
+            </ul>
+
+            <!-- 모바일 네비게이션 close 버튼 -->
+            <div class="nav__close" id="nav-close">
+                <i class="ri-close-line"></i>
+            </div>
+        </div>
+
+            <div class="nav__btns">
+                <!-- 다크모드 변경 버튼 -->
+                <i class="ri-moon-line change-theme" id="theme-button"></i>
+                <!-- 모바일 네비게이션 opne 버튼 -->
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="ri-menu-line"></i>
+                </div>
+            </div>
+        </nav>
+</header> 
+<script>
+    /******************************************************************************
+     * 담당자      : 이승현
+     * Function명  : logoutPage(), commodityManagementPage(), 
+     *               commodityRegistrationPage(), allRentalStatusPage()
+     * 함수 설명   : document.location.href를 통해 이동할 페이지를 지정해 준다.
+     * 기능 설명   : 1. 각 페이지로 이동하는 기능  
+     *              [각 메뉴] 버튼 클릭 시 메인 화면으로 Redirect 하기
+     *            
+    *******************************************************************************/ 
+    /*=============== 로그아웃 ===============*/
+    function logoutPage()  {
+        document.location.href = "/logout.ejs";
+    }
+    /*=============== 물품 관리 ===============*/
+    function commodityManagementPage()  {
+        document.location.href = "/index.ejs";
+    }
+    /*=============== 물품 등록 ===============*/
+    function commodityRegistrationPage()  {
+        document.location.href = "/commodityRegistration.ejs";
+    }
+    /*=============== 대여 현황 ===============*/
+    function allRentalStatusPage()  {
+        document.location.href = "/index.ejs";
+    }
+    /*=============== 마이페이지(나의 대여 현황) ===============*/
+    function myRentalStatusPage()  {
+        document.location.href = "/myRentalStatus.ejs";
+    }
+
+    /******************************************************************************
+     * 담당자      : 이승현
+     * Function명  : userManagementPage()
+     * 함수 설명   : document.location.href를 통해 이동할 페이지를 지정해 준다.
+     * 기능 설명   : [이용자 관리] - 관리자만 표시되게 한다.
+     *            
+    *******************************************************************************/
+
+    /*=============== 이용자 관리 페이지 - [관리자만 표시] ===============*/
+    function userManagementPage()  {
+        document.location.href = "/userManagement.ejs";
+    }
+
+
+
+
+
+    /*=============== 반응형. SHOW MENU ===============*/
+    const navMenu = document.getElementById('nav-menu'),
+        navToggle = document.getElementById('nav-toggle'),
+        navClose = document.getElementById('nav-close')
+
+    /*===== MENU SHOW. 메뉴 보이기 =====*/
+    if(navToggle){
+        navToggle.addEventListener('click', () =>{
+            navMenu.classList.add('show-menu')
+        })
+    }
+
+    /*===== MENU HIDDEN. 메뉴 닫기 =====*/
+    if(navClose){
+        navClose.addEventListener('click', () =>{
+            navMenu.classList.remove('show-menu')
+        })
+    }
+
+    /*=============== REMOVE MENU MOBILE. 모바일에서 메뉴 toggle ===============*/
+    const navLink = document.querySelectorAll('.nav__link')
+
+    function linkAction(){
+        const navMenu = document.getElementById('nav-menu')
+        // 각 nav__link를 클릭하면 show-menu 클래스가 제거됨
+        navMenu.classList.remove('show-menu')
+    }
+    navLink.forEach(n => n.addEventListener('click', linkAction))
+
+    /*=============== CHANGE BACKGROUND HEADER. header 배경 변경 ===============*/
+    function scrollHeader(){
+        const header = document.getElementById('header')
+        // 스크롤 높이가 80 veiwport 보다 크면 header 태그에 scroll-header class 를 추가한다.
+        if(this.scrollY >= 80) header.classList.add('scroll-header'); 
+        else header.classList.remove('scroll-header')
+    }
+    window.addEventListener('scroll', scrollHeader)
+
+</script>
+</body>
+</html>

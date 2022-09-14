@@ -13,7 +13,7 @@ var stockName = new mongoose.Schema({
     },
     bigGroup: {
         type        : String,
-        maxlength   : 50
+        maxlength   : 50,
     },
     smallGroup:{
         type        : String,

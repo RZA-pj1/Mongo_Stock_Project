@@ -10,28 +10,32 @@ var { Stock } = require('../Models/stockName');
 /**********************************************
  * 물품 편집 등록 기능
 **********************************************/
-router.post('/commodity', (req, res) =>{
+router.post('/stockRegistration', (req, res) =>{
   //회원가입 할때 필요한 정보들을 Clinent 에서 가져오면
   //그것들을 데이터베이스에 넣어준다 
 
   const stoke = new Stock(req.body);
 
-  stoke.save((err, stockNumber) => {
+  stoke.save((err, bigGroup) => {
+    console.log('req.body', req.body)
       if (err) return res.json({ success: false, err })
       return res.status(200).json({
           success: true
     })
   })
 })
-router.get('/commodity',(req,res)=>{
-  Stock.find().where('bigGroup').select('bigGroup').sort({stockName:'asc'});
-  res.render('stockRegistration',{title:'Express',bigGroupdata : Stock});
+
+
+router.get('/stockRegistration',(req,res)=>{
+  Stock.find().where('bigGroup').select('bigGroup').sort({bigGroup:'asc'});
+  res.render('stockRegistration',{title:'Express',bigGroupdata : Stock, layout:'./stockRegistration'});
 })
-router.get('/commodity',function(req,res,next){
+router.get('/stockRegistration',function(req,res,next){
   var type = req.query.type;
   if(type == 'smallGroup')
   {
     Stock.find().where('smallGroup').select('smallGroup').sort({smallGroup:'asc'})
+    res.render('stockRegistration',{title:'Express',smallGroupdata : Stock, layout:'./stockRegistration'});
   }
   Stock.query(query, function(error,bigGroupdata){
     var data_arr = [];
@@ -41,6 +45,7 @@ router.get('/commodity',function(req,res,next){
     res.json(data_arr);
   })
 })
+
 
 //var employee = require('../controllers/EmployeeController.js');
 

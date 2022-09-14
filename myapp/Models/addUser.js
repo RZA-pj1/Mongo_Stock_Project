@@ -48,7 +48,8 @@ var userSchema = new mongoose.Schema({
         type        : Number
     },
     updated_at : {
-        type: Date, defailt: Date.now
+        type        : Date,
+        defailt     : Date.now
     },
 })
 
