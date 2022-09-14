@@ -51,6 +51,12 @@ var userSchema = new mongoose.Schema({
         type        : Date,
         defailt     : Date.now
     },
+    teamList   : {
+        type        : String,
+    },
+    teamPosition : {
+        type        : String,
+    }
 })
 
 
