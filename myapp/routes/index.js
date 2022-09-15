@@ -18,8 +18,10 @@ router.post('/stockRegistration', (req, res) =>{
 
   stoke.save((err, bigGroup) => {
     console.log('req.body', req.body)
-      if (err) return res.json({ stockSaveSuccess: false, err })
-      else{return res.status(200).json({stockSaveSuccess: true, message:"물품등록 성공"+`${bigGroup}` })}
+      if (err) return res.json({ success: false, err })
+      return res.status(200).json({
+          success: true
+    })
   })
 })
 router.get('/stockRegistration',(req,res)=>{
@@ -78,10 +80,12 @@ router.post('/addUser', (req, res) => {
   var user = new User(req.body)
   user.save((err, userInfo) => {
     if (err){
-        return res.json({addUserSuccess: false, err})
+        return res.json({
+        success: false, err
+      })
     }
-    else{
-      return res.render('successAddUser', { layout: './successAddUser',addUserSuccess:true,message:"회원가입 성공"+`${userInfo}`})
+    else{ 
+      return res.render('/', { layout: './login'})
     }
   })
   console.log('req.body', res.body)

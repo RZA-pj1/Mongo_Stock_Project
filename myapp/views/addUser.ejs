@@ -36,7 +36,7 @@
      <h2>회원 가입</h2>
      <div id="contentWrap">
        <h2 class="hidden">회원 가입 내용</h2>
-         <form method="post">
+         <form action="/" method="post">
                <table>
                    <tr>
                        <td><label for="userName">이름</label></td>
@@ -111,7 +111,7 @@
                          <i class="fa-solid fa-eye"></i>
                        </div>
                      </td>
-                     <td><a onclick="fn_pw_check()">확인</a></td>
+                     <td><a href="#" onclick="fn_pw_check()">확인</a></td>
                    </tr> 
                </table>
            <!-- 1. 회원가입 완료 후 로그인 페이지로 이동 
@@ -275,33 +275,6 @@
                  break;
            }
        }
-
-      var params = {
-         userNumber     : $("#userId").val()
-         , userName     : $("#userNname").val()
-         , password     : $("#txtPassword2").val()
-         , email        : $("#email").val()
-         , teamposition : $("#teamPosition").val()
-         , teamList     : $("#teamList1")
-      }
-      // ajax 통신
-      $.ajax({
-        type : "POST",            // HTTP method type(GET, POST) 형식이다.
-        url : "/addUser",      // 컨트롤러에서 대기중인 URL 주소이다.
-        data : params,            // Json 형식의 데이터이다.
-        success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
-        // 응답코드 > 0000
-          if(res.addUserSuccess != false){
-            alert("회원가입성공")
-            window.location.replace("/successAddUser");}
-          else{
-            alert("회원가입 실패");}
-        },
-        error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-          alert("통신 실패.")
-        }
-      });
-
        return true;
    }
      /******************************************************************************
@@ -341,9 +314,30 @@
              return;
            }
          }
-
-
-
+        var params={
+          userNumber  : ("#userId").val(),
+          userName    : ("#userName").val(),
+          password    : ("#txtPassword2").val(),
+          email       : ("#email").val(),
+          teamList    : ("#teamList").val(),
+          
+        }
+        $.ajax({
+          type : "POST",            // HTTP method type(GET, POST) 형식이다.
+          url : "/addUser",      // 컨트롤러에서 대기중인 URL 주소이다.
+          data : userSchema,            // Json 형식의 데이터이다.
+          success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+            // 응답코드 > 0000
+            if(res.loginSuccess!=false){
+              alert(res.message);
+              window.location.replace("/index.ejs");}
+            else{
+              alert("로그인 실패");}
+        },
+     error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+         alert("통신 실패.")
+     }
+ });
        }
      /******************************************************************************
       * 담당자      : 이승현
@@ -368,8 +362,6 @@
  
 
     
-     
-     // 담당자 : 김건희 - 4. 비밀번호 암호화해서 저장
      
      
 
