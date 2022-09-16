@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+let multer = require ('multer')
 
 var { User } = require('../Models/addUser');
 var { auth } = require('../Middleware/Auth');
@@ -10,39 +11,53 @@ var { Stock } = require('../Models/stockName');
 /**********************************************
  * 물품 편집 등록 기능
 **********************************************/
+
 router.post('/stockRegistration', (req, res) =>{
   //회원가입 할때 필요한 정보들을 Clinent 에서 가져오면
   //그것들을 데이터베이스에 넣어준다 
 
-  const stoke = new Stock(req.body);
+  const stoke = new Stock({
+    stockNumber:req.body.stockNumber,
+    category:{
+      bigGroup:req.body.category.bigGroup,
+      smallGroup:req.body.category.smallGroup
+    },
+    stockInfo:req.body.stockInfo
+  });
+  stoke.save((err, result) => {
+    console.log(result)
+      if (err) {
+        return res.status(401).json({ stockSaveSuccess: false, err })
+      }
+      else{
+        return res.status(200).json({bigGroup:req.body.category.bigGroup,smallGroup:req.body.category.smallGroup,stockSaveSuccess: true, message:"물품등록 성공"})
+      }
+  })
+  // stoke.updateOne(res)
+})
 
-  stoke.save((err, bigGroup) => {
-    console.log('req.body', req.body)
-      if (err) return res.json({ success: false, err })
-      return res.status(200).json({
-          success: true
-    })
-  })
-})
-router.get('/stockRegistration',(req,res)=>{
-  Stock.find().where('bigGroup').select('bigGroup').sort({bigGroup:'asc'});
-  res.render('stockRegistration',{title:'Express',bigGroupdata : Stock, layout:'./stockRegistration'});
-})
-router.get('/stockRegistration',function(req,res,next){
-  var type = req.query.type;
-  if(type == 'smallGroup')
-  {
-    Stock.find().where('smallGroup').select('smallGroup').sort({smallGroup:'asc'})
-    res.render('stockRegistration',{title:'Express',smallGroupdata : Stock, layout:'./stockRegistration'});
-  }
-  Stock.query(query, function(error,bigGroupdata){
-    var data_arr = [];
-    bigGroupdata.forEach(function(row){
-      data_arr.push(row.Data);
-    });
-    res.json(data_arr);
-  })
-})
+// router.get('/stockRegistration',(req,res)=>{
+//   Stock.find(req.body)
+//   console.log(req.body.category.bigGroup)
+//   console.log(req.body.stockNumber)
+//   console.log(req.body.category.smallGroup)
+//   return res.render('stockRegistration',{title:'Express',bigGroup : req.body.category.bigGroup,smallGroup:req.body.category.smallGroup,stockNumber:req.body.stockNumber, layout:'./stockRegistration'});
+// })
+// router.get('/stockRegistration',function(req,res,next){
+//   var type = req.query.type;
+//   if(type == 'smallGroup')
+//   {
+//     Stock.find().where('smallGroup').select('smallGroup').sort({smallGroup:'asc'})
+//     res.render('stockRegistration',{title:'Express',smallGroupdata : Stock, layout:'./stockRegistration'});
+//   }
+//   Stock.query(query, function(error,bigGroupdata){
+//     var data_arr = [];
+//     bigGroupdata.forEach(function(row){
+//       data_arr.push(row.Data);
+//     });
+//     res.json(data_arr);
+//   })
+// })
 
 
 //var employee = require('../controllers/EmployeeController.js');
@@ -65,6 +80,8 @@ router.get('/stockRegistration',function(req,res,next){
 // router.get('/', function(req, res, next) {
 //   res.send('respond with a resource');
 // });
+
+
 /***************************************************
  * 회원가입 및 로그인 기능
  * *************************************************/
@@ -80,12 +97,10 @@ router.post('/addUser', (req, res) => {
   var user = new User(req.body)
   user.save((err, userInfo) => {
     if (err){
-        return res.json({
-        success: false, err
-      })
+      return res.json({addUserSuccess: false, err})
     }
-    else{ 
-      return res.render('/', { layout: './login'})
+    else{
+      return res.render('successAddUser', { layout: './successAddUser',addUserSuccess:true,message:"회원가입 성공"})
     }
   })
   console.log('req.body', res.body)
@@ -134,7 +149,6 @@ router.get('/auth', auth, (req, res) => {
     image: req.user.image,
     token: req.user.token
   })
-  
 })
 
 router.get('/logout', auth, (req, res) => {
@@ -146,11 +160,28 @@ router.get('/logout', auth, (req, res) => {
       
     })
 })
-
+// app.get('/mypage', auth, function (요청, 응답) { 
+//   console.log(요청.user); 
+//   응답.render('mypage.ejs', {}) 
+// }) 
 router.get('/successAddUser',(req,res)=>{
   return res.render('successAddUser', {layout:'./successAddUser',content: '환영합니다.'})
 })
 
+/**********************************
+ * 이미지 업로드 기능 
+ * 
+ **********************************/
+ var storage = multer.diskStorage({
+    destination : function(req,file,cb){
+    cb(null,'./public/image')},
+    filename :function(req,file,cb){
+    cb(null,file.originalname)}
+  });
+  var upload=multer({storage:storage});
+  router.get('/upload',function(요청,응답){
+  응답.render('upload.ejs')});
+  router.post('/upload', upload.single('input의 name속성이름'),function(요청,응답){ 응답.send('업로드완료')});
 
 
 module.exports = router;

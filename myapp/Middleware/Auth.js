@@ -10,15 +10,17 @@ let auth = (req, res, next) => {
         if (err) throw err;
         if (!user) return res.json({ isAuth: false, error: true })
 
-
         // console.log('userh', user)
-
         req.token = token;
-        req.user = user;
-        next();
+        if(req.user = user){
+            next();
+        }
+        else{
+            res.send('로그인이 안되어있습니다. 로그인해주세요')
+        }
+
     })
 }
-
 
 
 // const { JsonWebTokenError } = require("jsonwebtoken");

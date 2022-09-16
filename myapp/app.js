@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-
+process.setMaxListeners(15);
 
 var config = require('./config/key');
 var indexRouter = require('./routes/index');
@@ -51,4 +51,5 @@ mongoose.connect(config.mongoURI,{
 }).then(() => console.log('connected successful'))
   .catch((err) => console.error(err));
 
+ 
 module.exports = app;
