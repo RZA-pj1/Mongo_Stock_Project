@@ -30,19 +30,43 @@ router.post('/stockRegistration', (req, res) =>{
         return res.status(401).json({ stockSaveSuccess: false, err })
       }
       else{
-        return res.status(200).json({bigGroup:req.body.category.bigGroup,smallGroup:req.body.category.smallGroup,stockSaveSuccess: true, message:"물품등록 성공"})
+        return res.status(200).json({
+          bigGroup:req.body.category.bigGroup,
+          smallGroup:req.body.category.smallGroup,
+          stockSaveSuccess: true,
+          rental:req.body.rental
+        })
       }
+  })
+  stoke.findOne({rental: req.body.rental},function(req,res){
+    if(rental=="O")
+    {
+      var stock = new Stock({
+        stockCount:req.body.stockCount
+      })
+      stock.updateOne(stockCount,{$inc:-1},function(err,res){
+        res.json({stockCount:req.body.stockCount,message : "rental합니다."})
+      })
+    }
+    else res.json({message:"렌탈하지 않습니다."})
   })
   // stoke.updateOne(res)
 })
 
-// router.get('/stockRegistration',(req,res)=>{
-//   Stock.find(req.body)
-//   console.log(req.body.category.bigGroup)
-//   console.log(req.body.stockNumber)
-//   console.log(req.body.category.smallGroup)
-//   return res.render('stockRegistration',{title:'Express',bigGroup : req.body.category.bigGroup,smallGroup:req.body.category.smallGroup,stockNumber:req.body.stockNumber, layout:'./stockRegistration'});
-// })
+router.get('/stockRegistration',(req,res)=>{
+  Stock.find(req.body)
+  console.log(req.body.category.bigGroup)
+  console.log(req.body.stockNumber)
+  console.log(req.body.category.smallGroup)
+  
+  return res.render('stockRegistration',
+  {
+    bigGroup : req.body.category.bigGroup,
+    smallGroup:req.body.category.smallGroup,
+    stockNumber:req.body.stockNumber,
+    layout:'./stockRegistration'
+  });
+})
 // router.get('/stockRegistration',function(req,res,next){
 //   var type = req.query.type;
 //   if(type == 'smallGroup')
@@ -95,6 +119,8 @@ router.post('/addUser', (req, res) => {
   //회원 가입 할떄 필요한 정보들을  client에서 가져오면 
   //그것들을  데이터 베이스에 넣어준다. 
   var user = new User(req.body)
+  console.log(req.body)
+  console.log(req.body.password)
   user.save((err, userInfo) => {
     if (err){
       return res.json({addUserSuccess: false, err})
@@ -103,14 +129,13 @@ router.post('/addUser', (req, res) => {
       return res.render('successAddUser', { layout: './successAddUser',addUserSuccess:true,message:"회원가입 성공"})
     }
   })
-  console.log('req.body', res.body)
 })
 
 router.post('/', (req, res) => {
   //요청된 사번을 데이터베이스에서 있는지 찾는다.
-  User.findOne({ userNumber: req.body.userNumber }, (err,user) => {
-    //console.log('userNo',userNumber)
-    console.log('user', user)
+  User.findOne({ userId: req.body.userId }, (err,user) => {
+    
+    console.log('user', req.body.userId)
     if (!user) {
       // return res.render('alert', {error: '요청하신 사번은 존재하지 않습니다.'});
       return res.json({ loginSuccess: false, message: "요청하신 사번은 존재하지 않습니다." })
@@ -118,8 +143,9 @@ router.post('/', (req, res) => {
 
     //요청된 사번이 데이터 베이스에 있다면 비밀번호가 맞는 비밀번호 인지 확인.
     user.comparePassword(req.body.password, (err, isMatch) => {
+      console.log("password",req.body.password)
       if (!isMatch){return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다." })}
-      else if(isMatch) {return res.json({loginSuccess: true, message: `${user.name}`+"님 환영합니다."})}
+      else if(isMatch) {return res.json({userName:user.userName,loginSuccess: true, message: `${user.userName}`+"님 환영합니다."})}
       //비밀번호 까지 맞다면 토큰을 생성하기.
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
@@ -128,6 +154,7 @@ router.post('/', (req, res) => {
           .status(200)
           .json({ loginSuccess: true, userId: user._id })
       })
+    
     })
   })
 })
@@ -138,15 +165,15 @@ router.post('/', (req, res) => {
 router.get('/auth', auth, (req, res) => {
   //여기 까지 미들웨어를 통과해 왔다는 얘기는  Authentication 이 True 라는 말.
   return res.status(200).json({
-    userNumber: req.user.userNumber,
+    userId: req.user.userId,
     _id: req.user._id,
     isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
     email: req.user.email,
-    name: req.user.name,
-    lastname: req.user.lastname,
+    userName: req.user.userName,
+    teamList: req.user.teamList,
     role: req.user.role,
-    image: req.user.image,
+    teamPosition :req.user.teamPosition,
     token: req.user.token
   })
 })
@@ -164,9 +191,14 @@ router.get('/logout', auth, (req, res) => {
 //   console.log(요청.user); 
 //   응답.render('mypage.ejs', {}) 
 // }) 
+
+
+
 router.get('/successAddUser',(req,res)=>{
-  return res.render('successAddUser', {layout:'./successAddUser',content: '환영합니다.'})
+  return res.render('successAddUser', {layout:'./successAddUser'})
 })
+
+
 
 /**********************************
  * 이미지 업로드 기능 

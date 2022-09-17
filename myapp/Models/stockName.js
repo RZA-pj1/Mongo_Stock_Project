@@ -36,11 +36,26 @@ var stockName = new mongoose.Schema({
     },
     updated_at : {
         type        : Date,
-        //defailt     : Date.now()
+        defailt     : Date.now()
     },
-    seq:{
+    
+    rental: {
+        type        : String ,
+    },
+    stockMount:{
         type        : Number,
-        default     : 0
+    },
+    stockCount:{
+        type        : Number,
+    },
+    stockImage:{
+        image       : String,
+    },
+    startDate:{
+        Date        : Date,
+    },
+    endDate:{
+        Date        : Date,
     }
 })
 

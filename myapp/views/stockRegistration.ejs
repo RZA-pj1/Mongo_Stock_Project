@@ -207,34 +207,7 @@
         $(this).val($(this).val().replace(/[^0-9]/g, ""));
       }
     });
-    /******************************************************************************
-     * 담당자      : 김건희
-     * 기능 설명   : 3-1. [수량은 숫자만 입력 가능] + 아니면 알림창 띄우기 기능
-     *            
-    *******************************************************************************/
-
-    // function _(element) {
-    //   return document.getElementById(element);
-    // }
-    // function fetch_data(parent_element, child_element, type) {
-    //   fetch('/get_data?type=' + type + '&parent_value=' + parent_element.value + '').then(
-    //     function (res) {
-    //       return res.json();
-    //     }).then(function (resData) {
-    //       var html = '';
-    //       if (type == 'load_smallGroup') {
-    //         html = '<option value="">-- 소분류 --</option>';
-    //       }
-    //       for (var count = 0; count < resData.length; count++) {
-    //         html += '<option value="' + resData[count] + '">' + resData[count] + '</option>';
-    //         child_element.innerHTML = html;
-    //       }
-    //     });
-    // }
-    // _('bigGroup').onchange = function () {
-    //   fetch_data(_('bigGroup'), _(load_smallGroup));
-    // };
-
+    
 
     //아이디가 bigGroup인 select가 값이 바뀌면 진행
     $('#bigGroup').on('change', function () {

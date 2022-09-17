@@ -42,14 +42,11 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
-
-
+var db;
 //mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoURI,{
   //useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(() => console.log('connected successful'))
   .catch((err) => console.error(err));
 
- 
 module.exports = app;

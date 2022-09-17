@@ -13,13 +13,12 @@ var jwt = require('jsonwebtoken');
 
 
 var userSchema = new mongoose.Schema({
-    userNumber: {
+    userId: {
         type        : Number,
-        require     : [true,"이미 사용하고 있는 사번입니다."],
+        maxlength   : 50,
         unique      : true,
-        maxlength   : 50
     },
-    name: {
+    userName: {
         type        : String,
         maxlength   : 50
     },
@@ -51,6 +50,24 @@ var userSchema = new mongoose.Schema({
         type        : Date,
         defailt     : Date.now
     },
+    teamList:{
+        type : String,
+    },
+    teamPosition:{
+        type : String,
+    },
+    editMan:{
+        type        : String,
+    },
+    rentalMan:{
+        type        : String,
+    },
+    registMan:{
+        type        :String,
+    },
+    Manager:{
+        type        :String,
+    }
 })
 
 

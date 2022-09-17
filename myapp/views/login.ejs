@@ -37,7 +37,7 @@
                      <tr>
                          <th><label for="userId">사원번호</label></th>
                          <td>
-                             <input type="number" name="userNumber" id="userNumber" maxlength="12" placeholder="사원번호를 입력하세요."/>
+                             <input type="number" name="userId" id="userId" maxlength="12" placeholder="사원번호를 입력하세요."/>
                          </td>
                          <td>
                              <input id="idSaveCheck" class="checkbox" type="checkbox" name="userNumberCheck" value="true"/>사원번호 저장
@@ -183,9 +183,9 @@
  
  // json 형식으로 데이터 set
  var params = {
-         userNumber : $("#userNumber").val()
-         , name     : $("#name").val()
-         , password : $("#password").val()
+         userId         : $("#userId").val()
+         , userName     : $("#name").val()
+         , password     : $("#password").val()
  }
      
  // ajax 통신
@@ -197,9 +197,9 @@
          // 응답코드 > 0000
          if(res.loginSuccess!=false){
             alert(res.message);
-            window.location.replace("/successAddUser");}
+            window.location.replace("/index");}
         else{
-            alert("로그인 실패");}
+            alert(res.message);}
      },
      error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
          alert("통신 실패.")
