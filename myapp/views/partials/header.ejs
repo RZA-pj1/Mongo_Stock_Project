@@ -44,7 +44,7 @@
         <div class="nav__menu-login" id="nav-menu-login">
             <ul class="nav__list nav__menu-login__ul">
                 <li class="nav__item nav__menu-login__li userInfo">
-                    <a href="#" class="nav__link nav__menu-login__a">님, 환영합니다.</a>
+                    <a href="#"  class="nav__link nav__menu-login__a"><p id="name" class="name" name="name" value=""></p>님 환영합니다.</a>
                 </li>
 
                 <li class="nav__item nav__menu-login__li logout">
@@ -98,8 +98,49 @@
      *              [각 메뉴] 버튼 클릭 시 메인 화면으로 Redirect 하기
      *            
     *******************************************************************************/ 
+    /*=========== user name 가져오기 ==========*/
+        var params = {
+         userId         : $("#userId").val()
+         , userName     : $("#name").val()
+         , password     : $("#password").val()
+        }
+        $.ajax({
+        type : "GET",            // HTTP method type(GET, POST) 형식이다.
+         url : "/login",      // 컨트롤러에서 대기중인 URL 주소이다.
+         data : params,            // Json 형식의 데이터이다.
+         success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+             // 응답코드 > 0000
+             if(res.loginsuccess!=false){
+                var name = res.message
+                console.log(userName)
+            }
+            else{
+                alert("logout실패");}
+        },
+         error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+             alert("통신 실패.")
+        }
+        });
+    
+    
     /*=============== 로그아웃 ===============*/
     function logoutPage()  {
+        $.ajax({
+        type : "GET",            // HTTP method type(GET, POST) 형식이다.
+         url : "/logout",      // 컨트롤러에서 대기중인 URL 주소이다.
+         data : params,            // Json 형식의 데이터이다.
+         success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+             // 응답코드 > 0000
+             if(res.logoutsuccess!=false){
+                alert("logout 성공");
+                window.location.replace("/");}
+            else{
+                alert("logout실패");}
+        },
+         error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+             alert("통신 실패.")
+        }
+        });
         document.location.href = "/logout.ejs";
     }
     /*=============== 물품 관리 ===============*/

@@ -1,0 +1,152 @@
+<!-- 
+
+      담당자 : 이승현
+      콘셉트 : 키오스크 설정 기반 재고 관리 시스템
+      페이지 설명 : 대여 화면 
+      기능 설명 : 1. 반납 시간 설정 기능
+                  > [시작일, 종료일 설정 가능]
+                  > [시간 단위로 설정 기능]
+                  2. 확인 클릭 시 대여 기능
+                  > [대여 확인 알림]
+                  3. 취소 클릭 시 진행 취소 기능
+
+  -->
+  <!DOCTYPE html>
+  <html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--=============== JQUERY ===============-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--=============== JQUERY DATETIMEPICKER ===============-->
+    <link rel="stylesheet" href="css/jquery.datetimepicker.min.css">
+    <script src="js/jquery.datetimepicker.full.min.js"></script>
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="css/common.css">
+
+    <title>대여 화면</title>
+  </head>
+  <body>
+    <section class="registrationWrap">
+      <section class="headerWraper">
+        <h2>물품을 대여하시겠습니까?</h2>
+      </section>
+      <section class="contentWrap">
+        <h3 class="hidden">대여 화면 내용</h3>
+        <form id="set-registration-date" action="RegistrationController" method="post">
+        <table id="stock">
+          <thead class="hidden">
+            <tr>
+              <th>대여 내용</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th><label for="productName">이름</label></th>
+            <td><input type="text" name="productName" id="productName" placeholder="제품 정보 받아오기"></td>
+          </tr>
+          <tr>
+            <th><label for="group">대분류</label></th>
+            <td>
+              <input type="text" id="bigGroup" name="bigGroup" class="bigGroup" placeholder="대분류 정보 받아오기">
+            </td>
+          </tr>
+          <tr>
+            <th><label for="group">소분류</label></th>
+            <td>
+              <input name="smallGroup" id="smallGroup" placeholder="소분류 정보 받아오기">
+            </td>
+          </tr>  
+          <tr>
+            <th><label for="productCode">제품 코드</label></th>
+            <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
+              id="productCode" name="productCode" value="제품 코드" placeholder="문자와 숫자로 이루어진 제품코드 정보 받아오기"></td>
+          </tr>
+          <tr>
+            <th><label for="quantity">대여할 수량</label></th>
+            <td><input type="text" id="quantity" placeholder="대여할 수량 정보 받아오기"></td>
+          </tr>
+          <tr>
+            <th><label for="rentalPurpose">대여 목적</label></th>
+            <td><input type="text" id="rentalPurpose" name="rentalPurpose" placeholder="대여 목적을 작성해 주십시오."></td>
+          </tr>
+          <tr>
+            <!-- 반납이 필요하지 않는 물품은 제외한다. -->
+            <th><label for="returnPeriod" id="returnPeriod" class="returnPeriod">시작 일자</label></th>
+            <td>
+              <div>
+                <input type="text" id="startDate" autocomplete="off" placeholder="시작일자를 선택하세요.">
+              </div>
+            </td>
+          </tr>  
+          <tr>
+            <th><label for="returnPeriod" id="returnPeriod" class="returnPeriod">종료 일자</label></th>
+            <td> 
+              <div>
+                <input type="text" id="endDate" autocomplete="off" placeholder="종료일자를 선택하세요.">
+              </div>
+            </td> 
+          </tr>
+        </tbody>
+      </table>  
+      <div class="btn_group">
+        <input type="submit" id="okay" value="확인" class="button">
+        <button id="cancel" class="button">취소</button>
+      </div>
+      </form> 
+      </section>
+    </section>
+    <script type="text/javascript">
+      /******************************************************************************
+       * 담당자      : 이승현
+       * Function명 : fn_egov_init_date()
+       * 함수 설명   : jquery datetimepicker plugin을 사용하여 시작일, 종료일 설정한다.
+       *              부가적인 옵션 설정을 통해 간결하게 1시간 단위으 시간 설정과, 한국어 설정,
+       *              스크롤(휠) 이벤트 차단, 최소 날짜와 최대 날짜 설정을 도와주었다.
+       * 기능 설명   : 1. 반납 시간 설정 기능
+                      > [시작일, 종료일 설정 가능]
+                      > [시간 단위로 설정 기능]
+       *            
+      *******************************************************************************/ 
+      jQuery.datetimepicker.setLocale('kr');  // 한국어 설정
+        $(document).ready(function() {
+            fn_egov_init_date()
+        })
+
+        function fn_egov_init_date(){
+            var $startDate = $('#startDate'); // 시작일
+            var $endDate = $('#endDate'); // 종료일
+            // 시작일 설정
+            $startDate.datetimepicker({
+                lang: 'ko',
+                format: 'Y-m-d H:i',  // 시간 단위로 설정 ex) 2022-09-13 21:25
+                scrollMonth: false, // 달력에서 스크롤 이벤트가 발생하여도 날짜 변동이 없게 만들기
+                scrollInput: false,
+                onShow: function (ct) {
+                    this.setOptions({
+                        maxDate: $endDate.val() ? $endDate.val() : false  
+                        // $endDate.val()가 참값일 때 maxDate에 $endDate.val()값이 할당되고, 거짓일 때 false가 할당됨
+                    })
+                },
+            });
+            // 종료일 설정
+            $endDate.datetimepicker({
+                lang: 'ko',
+                format: 'Y-m-d H:i',
+                scrollMonth: false,
+                scrollInput: false,
+                onShow: function (ct) {
+                    this.setOptions({
+                        minDate: $startDate.val() ? $startDate.val() : false
+                    })
+                }
+            });
+
+        }
+
+    </script>
+  </body>
+  </html>

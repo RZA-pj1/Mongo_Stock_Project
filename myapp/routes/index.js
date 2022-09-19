@@ -13,7 +13,7 @@ var { Stock } = require('../Models/stockName');
 **********************************************/
 
 router.post('/stockRegistration', (req, res) =>{
-  //회원가입 할때 필요한 정보들을 Clinent 에서 가져오면
+  //물품등록할때 필요한 정보들을 Clinent 에서 가져오면
   //그것들을 데이터베이스에 넣어준다 
   const stoke = new Stock({
     stockNumber:req.body.stockNumber,
@@ -39,46 +39,31 @@ router.post('/stockRegistration', (req, res) =>{
   })
   
 })
-//모르겠음??
+//
 router.get('/stockRegistration',(req,res)=>{
-  const bigGroup = req.params.category.bigGroup
-  console.log(req.params.category)
-  Stock.find({"category.bigGroup":bigGroup}).then(stock=>{
-  console.log(stock)
-  
-  console.log(req.body.stockNumber)
-    console.log("read all finish")
-    res.status(200).json({
-      message:"Read all Success",
-      data:{stock:stock}
-    })
+  const category = req.query.category
+  console.log(req.query.category)
+  Stock.find({"category":category},(err,stock)=>{
+    if(!stock){
+     return res.json(err,{message:"찾으시는 데이터가 없습니다."})
+    }
+    else{
+      console.log(stock)
+      console.log("read all finish")
+      return res.status(200).json({
+        message:"Read all Success",
+        data:{stock:stock}
+      })
+    }
   })
   .catch(err=>{
-    res.status(500).json({message:err})
+    return res.status(500).json({message:err})
   })
-  
-  // return res.render('stockRegistration',
-  //   {
-  //     bigGroup : req.body.category.bigGroup,
-  //     smallGroup:req.body.category.smallGroup,
-  //     stockNumber:req.body.stockNumber,
-  //     layout:'./stockRegistration'
-  // });
-  // Stock.find({rental: req.body.rental},function(req,res){
-  //   if(rental=="O")
-  //   {
-  //     var stock = new Stock({
-  //       stockCount:req.body.stockCount
-  //     })
-  //     stock.updateOne(stockCount,{$inc:-1},function(err,res){
-  //       res.json({stockCount:req.body.stockCount,message : "rental합니다."})
-  //     })
-  //   }
-  //   else res.json({message:"렌탈하지 않습니다."})
-  // })
-  // // stoke.updateOne(res)
-  // })
 })
+/****************************************
+ * 물품관리 페이지
+ * 
+ ****************************************/
 router.get('/index',(req,res)=>{
   // var stock = new Stock({
   //   stockNumber   : req.body.stockNumber,
@@ -96,66 +81,63 @@ router.get('/index',(req,res)=>{
   // })
   Stock.find().then(stock=>{
     console.log("read all finish")
-    res.status(200).json({
+    return res.status(200).render('index',{
       message:"Read all Success",
       data:{stock:stock}
     })
   })
   .catch(err=>{
-    res.status(500).json({message:err})
+    return res.status(500).json({message:err})
   })
 })
 /****************************
- *물품 대여시 저장할 값 
- * 
+ * 물품 대여시 저장할 값 
+ * 물품찾을때 물품 수량이 없으면 제외
  ****************************/
 
-router.post('/index',(req,res,next)=>{
+router.post('/index',(req,res)=>{
   const stock = new Stock ({
     stockNumber : req.body.stockNumber,
     stockCount : req.body.stockCount,
     stockMount : req.body.stockMount,
     startDate : req.body.startDate,
-    endDate : req.body.ndDate,
+    endDate : req.body.endDate,
     returnDate : req.body.returnDate
   })
-  stock.update({stockNumber:req.body.stockNumber},{stockCount:stockCount},{stockMount:stockMount},{startDate:startDate},{endDate:endDate},{returnDate:returnDate})
-
-  // const stockNumber=req.body.stockNumber;
-  // const {stockCount , stockMount , startDate , endDate, returnDate}=req.body
-  // Stock.find({stockNumber:stockNumber}).then(async stock=>{
-  //   if(!stock)return res.status(404).json({message:"stock not found"})
-  //     console.log("read Detail 완료");
-  //     stock.stockCount=stockCount;
-  //     stock.stockMount=stockMount;
-  //     stock.startDate=startDate;
-  //     stock.endDate=endDate;
-  //     stock.returnDate=returnDate;
-  //     var output= await stock.save();
-  //     console.log(stockCount,stockMount,startDate,endDate,returnDate)
-  //       res.status(200).json({
-  //         message:"update success",
-  //         data:{stock:output}
-  //       })
-  //       .catch(err=>{
-  //         res.status(500).json({
-  //           message:err
-  //         })
-  //       })
-      // })
+  var mount=req.body.stockMount
+  var count=req.body.stockCount
+  var stockmount=mount-count
+  console.log(stockmount)
+  stock.update({stockNumber:req.body.stockNumber},
+    {stockCount : req.body.stockCount,
+    stockMount : parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
+    startDate : req.body.startDate,
+    endDate : req.body.endDate,
+    returnDate : req.body.returnDate},(err)=>{
+      if(stockmount<=0){
+        console.log(req.body.stockMount)
+        stockmount=0;
+        console.log(stockmount)
+        return res.render('index',{message:"대여불가 물품입니다."})
+      }
+      else{
+        console.log(stockmount)
+        return res.render(err,{message:"대여가능 물품입니다."})
+      }
+    })
 })
 /**************************************************
  * 물품번호로 페이지 생성하여 물품마다 상세페이지 지정
  * 
 ***************************************************/
-router.get("/:stockNumber", function(req, res, next) {
+router.get("/index/:stockNumber", function(req, res, next) {
   const stockNumber = req.body.stockNumber;
-  posts
+  Stock
     .findOne({ stockNumber: stockNumber })
     .then(stock => {
       if (!stock) return res.status(404).json({ message: "post not found" });
       console.log("Read Detail 완료");
-      res.status(200).json({
+      return res.status(200).json({
         message: "Read Detail success",
         data: {
           stock: stock
@@ -163,28 +145,16 @@ router.get("/:stockNumber", function(req, res, next) {
       });
     })
     .catch(err => {
-      res.status(500).json({
+      return res.status(500).json({
         message: err
       });
     });
 });
 /***************************************
- * 물품찾을때 물품 수량이 없으면 제외
+ * 
  * 
  ****************************************/
-router.get('/index',function(req,res,next){
-  //만약 stockMount가 0이면 제외
-  {
-    if(stockMount!=0){
-      //stockName이 입력한 값과 같은 Document 조회
-      var stock=Stock.find({"stockName":{$eq:req.body.bigGroup}}).sort({smallGroup:'asc'})
-      res.json({stock})
-    }
-    else{
-      res.send({message:"품절"})
-    }
-  }
-})
+
 
 
 
@@ -247,7 +217,7 @@ router.post('/', (req, res) => {
     user.comparePassword(req.body.password, (err, isMatch) => {
       console.log("password",req.body.password)
       if (!isMatch){return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다." })}
-      else if(isMatch) {return res.json({userName:user.userName,loginSuccess: true, message: `${user.userName}`+"님 환영합니다."})}
+      else if(isMatch) {return res.json('header',{userName:user.userName,loginSuccess: true, successmessage: `${user.userName}`+"님 환영합니다."})}
       //비밀번호 까지 맞다면 토큰을 생성하기.
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
@@ -283,7 +253,7 @@ router.get('/logout', auth, (req, res) => {
   User.findOneAndUpdate({ _id: req.user._id },
     { token: "" }
     , (err, user) => {
-      if (err) return res.json({ success: false, err });
+      if (err) return res.json({ logoutsuccess: false, err });
       return res.render('/',{content: '로그인'})
       
     })
