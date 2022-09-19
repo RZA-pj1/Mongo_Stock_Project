@@ -64,12 +64,12 @@
                  기능   : 셀럭트 박스 동적 리스트
               ---------------------------------------->
               <select id="bigGroup" name="bigGroup" class="bigGroup" onchange="selectGroup()">
-                <option value="default" selected>-- 대분류 --</option>
-                <!-- <% for(var count=0; count < bigGroupdata.length; count++){%>
-                  <option value="<%= bigGroupdata[count]%>">
-                    <%= bigGroupdata[count]%>
+                <option herf="/stockRegistration?bigGroup=" value="default" selected>-- 대분류 --</option>
+                <% for(var count=0; count < bigGroup.length; count++){%>
+                  <option value="<%= bigGroup[count]%>">
+                    <%= bigGroup[count]%>
                   </option>
-                  <%}%> -->
+                  <%}%>
                     <!-- <option value="default" selected>-- 대분류 --</option> -->
                     <!-- <option value="오실로스코프">오실로스코프</option>
                 <option value="신호, 스펙트럼 및 변조 분석기">신호, 스펙트럼 및 변조 분석기</option>
@@ -222,12 +222,12 @@
 
         jQuery.ajax({
           type: "GET",
-          url: "/stockRegistration",
+          url: "/stockRegistration?bigGroup="+bigGroup,
           cache: false,
-          data: {
+          data:{ category:{
             bigGroup : $("#bigGroup").val(),
             smallGroup: $("#smallGroup").val()
-          },
+          }},
           datatype: "JSON",
           success: function (obj) {
             var data = JSON.parse(obj);

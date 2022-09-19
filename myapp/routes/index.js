@@ -15,7 +15,6 @@ var { Stock } = require('../Models/stockName');
 router.post('/stockRegistration', (req, res) =>{
   //회원가입 할때 필요한 정보들을 Clinent 에서 가져오면
   //그것들을 데이터베이스에 넣어준다 
-
   const stoke = new Stock({
     stockNumber:req.body.stockNumber,
     category:{
@@ -38,50 +37,155 @@ router.post('/stockRegistration', (req, res) =>{
         })
       }
   })
-  stoke.findOne({rental: req.body.rental},function(req,res){
-    if(rental=="O")
-    {
-      var stock = new Stock({
-        stockCount:req.body.stockCount
-      })
-      stock.updateOne(stockCount,{$inc:-1},function(err,res){
-        res.json({stockCount:req.body.stockCount,message : "rental합니다."})
-      })
-    }
-    else res.json({message:"렌탈하지 않습니다."})
+  
+})
+//모르겠음??
+router.get('/stockRegistration',(req,res)=>{
+  const bigGroup = req.params.category.bigGroup
+  console.log(req.params.category)
+  Stock.find({"category.bigGroup":bigGroup}).then(stock=>{
+  console.log(stock)
+  
+  console.log(req.body.stockNumber)
+    console.log("read all finish")
+    res.status(200).json({
+      message:"Read all Success",
+      data:{stock:stock}
+    })
   })
-  // stoke.updateOne(res)
+  .catch(err=>{
+    res.status(500).json({message:err})
+  })
+  
+  // return res.render('stockRegistration',
+  //   {
+  //     bigGroup : req.body.category.bigGroup,
+  //     smallGroup:req.body.category.smallGroup,
+  //     stockNumber:req.body.stockNumber,
+  //     layout:'./stockRegistration'
+  // });
+  // Stock.find({rental: req.body.rental},function(req,res){
+  //   if(rental=="O")
+  //   {
+  //     var stock = new Stock({
+  //       stockCount:req.body.stockCount
+  //     })
+  //     stock.updateOne(stockCount,{$inc:-1},function(err,res){
+  //       res.json({stockCount:req.body.stockCount,message : "rental합니다."})
+  //     })
+  //   }
+  //   else res.json({message:"렌탈하지 않습니다."})
+  // })
+  // // stoke.updateOne(res)
+  // })
+})
+router.get('/index',(req,res)=>{
+  // var stock = new Stock({
+  //   stockNumber   : req.body.stockNumber,
+  //   category      : req.body.category,
+  //   stockName     : req.body.stockName,
+  //   stockInfo     : req.body.stockInfo ,
+  //   updated_at    : req.body.updated_at,
+  //   startDate     : req.body.startDate,
+  //   endDate       : req.body.endDate,
+  //   rental        : req.body.rental,
+  //   stockMount    : req.body.stockMount,
+  //   stockCount    : req.body.stockCount,
+  //   stockImage    : req.body.stockImage,
+  //   returnDate    : req.body.returnDate
+  // })
+  Stock.find().then(stock=>{
+    console.log("read all finish")
+    res.status(200).json({
+      message:"Read all Success",
+      data:{stock:stock}
+    })
+  })
+  .catch(err=>{
+    res.status(500).json({message:err})
+  })
+})
+/****************************
+ *물품 대여시 저장할 값 
+ * 
+ ****************************/
+
+router.post('/index',(req,res,next)=>{
+  const stock = new Stock ({
+    stockNumber : req.body.stockNumber,
+    stockCount : req.body.stockCount,
+    stockMount : req.body.stockMount,
+    startDate : req.body.startDate,
+    endDate : req.body.ndDate,
+    returnDate : req.body.returnDate
+  })
+  stock.update({stockNumber:req.body.stockNumber},{stockCount:stockCount},{stockMount:stockMount},{startDate:startDate},{endDate:endDate},{returnDate:returnDate})
+
+  // const stockNumber=req.body.stockNumber;
+  // const {stockCount , stockMount , startDate , endDate, returnDate}=req.body
+  // Stock.find({stockNumber:stockNumber}).then(async stock=>{
+  //   if(!stock)return res.status(404).json({message:"stock not found"})
+  //     console.log("read Detail 완료");
+  //     stock.stockCount=stockCount;
+  //     stock.stockMount=stockMount;
+  //     stock.startDate=startDate;
+  //     stock.endDate=endDate;
+  //     stock.returnDate=returnDate;
+  //     var output= await stock.save();
+  //     console.log(stockCount,stockMount,startDate,endDate,returnDate)
+  //       res.status(200).json({
+  //         message:"update success",
+  //         data:{stock:output}
+  //       })
+  //       .catch(err=>{
+  //         res.status(500).json({
+  //           message:err
+  //         })
+  //       })
+      // })
+})
+/**************************************************
+ * 물품번호로 페이지 생성하여 물품마다 상세페이지 지정
+ * 
+***************************************************/
+router.get("/:stockNumber", function(req, res, next) {
+  const stockNumber = req.body.stockNumber;
+  posts
+    .findOne({ stockNumber: stockNumber })
+    .then(stock => {
+      if (!stock) return res.status(404).json({ message: "post not found" });
+      console.log("Read Detail 완료");
+      res.status(200).json({
+        message: "Read Detail success",
+        data: {
+          stock: stock
+        }
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err
+      });
+    });
+});
+/***************************************
+ * 물품찾을때 물품 수량이 없으면 제외
+ * 
+ ****************************************/
+router.get('/index',function(req,res,next){
+  //만약 stockMount가 0이면 제외
+  {
+    if(stockMount!=0){
+      //stockName이 입력한 값과 같은 Document 조회
+      var stock=Stock.find({"stockName":{$eq:req.body.bigGroup}}).sort({smallGroup:'asc'})
+      res.json({stock})
+    }
+    else{
+      res.send({message:"품절"})
+    }
+  }
 })
 
-router.get('/stockRegistration',(req,res)=>{
-  Stock.find(req.body)
-  console.log(req.body.category.bigGroup)
-  console.log(req.body.stockNumber)
-  console.log(req.body.category.smallGroup)
-  
-  return res.render('stockRegistration',
-  {
-    bigGroup : req.body.category.bigGroup,
-    smallGroup:req.body.category.smallGroup,
-    stockNumber:req.body.stockNumber,
-    layout:'./stockRegistration'
-  });
-})
-// router.get('/stockRegistration',function(req,res,next){
-//   var type = req.query.type;
-//   if(type == 'smallGroup')
-//   {
-//     Stock.find().where('smallGroup').select('smallGroup').sort({smallGroup:'asc'})
-//     res.render('stockRegistration',{title:'Express',smallGroupdata : Stock, layout:'./stockRegistration'});
-//   }
-//   Stock.query(query, function(error,bigGroupdata){
-//     var data_arr = [];
-//     bigGroupdata.forEach(function(row){
-//       data_arr.push(row.Data);
-//     });
-//     res.json(data_arr);
-//   })
-// })
 
 
 //var employee = require('../controllers/EmployeeController.js');
@@ -109,8 +213,6 @@ router.get('/stockRegistration',(req,res)=>{
 /***************************************************
  * 회원가입 및 로그인 기능
  * *************************************************/
-
-
 router.get('/', (req, res) => res.render('login', {content: '로그인'}))
 
 //app.get('/api/hello', (req, res) => res.send('Hello World!~~ '))
@@ -154,7 +256,6 @@ router.post('/', (req, res) => {
           .status(200)
           .json({ loginSuccess: true, userId: user._id })
       })
-    
     })
   })
 })

@@ -67,6 +67,9 @@ var userSchema = new mongoose.Schema({
     },
     Manager:{
         type        :String,
+    },
+    stockCount:{
+        type        :Number,
     }
 })
 

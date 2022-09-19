@@ -7,31 +7,20 @@ var mongoose = require('mongoose');
 var stockName = new mongoose.Schema({
     stockNumber: {
         type        : String,
-        //maxlength   : 50,
         unique      : true,
-        //required     : true
     },
     category : {
         bigGroup: {
             type        : String,
-            // maxlength   : 50,
         },
         smallGroup:{
             type        : [String],
-            // maxlength   : 50,
         }
     },
     stockName :{
         type        : String,
     },
     stockInfo: {
-        type        : String,
-    },
-    role: {
-        type        : Number,
-        default     : 0,
-    },
-    stockimage: {
         type        : String,
     },
     updated_at : {
@@ -52,10 +41,14 @@ var stockName = new mongoose.Schema({
         image       : String,
     },
     startDate:{
-        Date        : Date,
+        type        : Date,
     },
     endDate:{
-        Date        : Date,
+        type        : Date,
+    },
+    returnDate:{
+        type        : Date,
+        default     : Date.now
     }
 })
 
