@@ -6,10 +6,12 @@ var bodyParser = require('body-parser')
 router.use(bodyParser.json())
 router.use(cookieParser());
 
+
 var { User } = require('../Models/addUser');
 var { auth } = require('../Middleware/Auth');
 var { Stock } = require('../Models/stockName');
 const app = require('../app');
+
 
 
 
@@ -136,26 +138,6 @@ router.get("/index/:stockNumber", function(req, res, next) {
     });
 });
 
-//var employee = require('../controllers/EmployeeController.js');
-
-// router.get('/', employee.list);
-
-// router.get('/show/:id', employee.show);
-
-// router.get('/create', employee.create);
-
-// router.post('/save', employee.save);
-
-// router.get('/edit/:id', employee.edit);
-
-// router.post('/update/:id', employee.update);
-
-// router.post('/delete/:id', employee.delete);
-
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-
 
 /***************************************************
  * 회원가입 및 로그인 기능
@@ -179,6 +161,9 @@ router.post('/addUser', (req, res) => {
     }
   })
 })
+
+
+
 
 router.post('/', (req, res) => {
   //요청된 사번을 데이터베이스에서 있는지 찾는다.
@@ -228,6 +213,7 @@ router.get('/auth', auth, (req, res) => {
 * 물품관리 페이지
 * 
 ****************************************/
+
  router.get('/index',auth,(req, res) => {
   var user = User({userName:req.user.userName})
   console.log(user.userName)
@@ -239,7 +225,8 @@ router.get('/auth', auth, (req, res) => {
       userName: user.userName,
       message: "Read all Success",
       userName:`${user.userName}`+"님 환영합니다.",
-      data: { stock: stock }
+      data: { stock: stock },
+      layout:'./index'
     })
   })
     .catch(err => {

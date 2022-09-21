@@ -44,8 +44,8 @@
               box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
               
               /* 임시 지정 */
-              /* width: 500px;
-              height: 500px; */
+              width: 26rem;
+              height: 15rem;
       
             /* ========= 모달이 나타날 때 천천히 나타나는 효과 ========= */
       
@@ -63,9 +63,41 @@
               transform: translate(-50%, -50%);
               transition: all .5s;
             }
+
+            .hidden {
+              position: absolute;
+              left: -9999px;
+            }
+
+            .gpTableSection {
+              width:100%;
+              height: 80%;
+              overflow:auto;
+              box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+              margin-top: .75rem;
+            }
+            .gpTableSection table {
+              white-space:nowrap;
+              border-collapse:collapse;
+            }
+            #groupPlus tbody tr td input {
+              width: 12rem;
+            }
+            .plusBtn {
+              width: 1rem;
+              height: 1rem;
+              box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+              display: inline-block;
+              background-color: var(--first-color);
+              border: 1px solid var(--first-color);
+              color:  var(--body-color);
+              border-radius: .5rem;
+              font-weight: var(--font-medium);
+              transition: .3s;
+            }
           </style>
           <body>
-            <button id="show">+</button>
+            <button class="plusBtn" id="show">+</button>
             <!-- 화면 전체를 어둡게 만들어주는 배경(background) -->
             <div class="background">
               <!-- 모달팝업을 감싸주는 창(window) -->
@@ -74,24 +106,23 @@
                 <div class="popup">
                   <section class="registrationWrap">
                     <section class="headerWrap">
-                      <h2>물품 관리 상세 페이지</h2>
-        
+                      <h2 class="hidden">물품 관리 상세 페이지</h2>
                     </section>
+                    <div class="gpTableSection">
                     <section class="contentWrap">
                       <h3 class="hidden">대분류, 소분류 추가</h3>
-                      <form action="dddd.ejs" method="post">
+                      <!-- <form action="" method="get"> -->
                         <table id="groupPlus">
                         <thead>
                           <tr>
-                            <th>분류 추가하기</th>
+                            <th><label for="bigGroup">대분류</label></th>
+                            <th><label for="smallGroup">소분류</label></th>
                           </tr>
                         </thead>
                         <tbody>
-                          <td><label for="bigGroup">대분류</label></td>
                           <td>
                             <input type="text" id="bigGroup" name="bigGroup" placeholder="추가하실 대분류를 입력해 주세요.">
                           </td>
-                          <td><label for="smallGroup">소분류</label></td>
                           <td>
                             <input type="text" id="smallGroup" name="smallGroup" placeholder="추가하실 소분류를 입력해 주세요.">
                           </td>
@@ -99,10 +130,14 @@
                     </table>   
                         
                     </form>
+                  </div>
+                    
+                  <div class="btnWrap">
+                    <button class="btn rBtn" id="submitGroupPlus">추가하기</button>
+                    <button class="btn" id="close">확인</button>
+                  </div>
                     </section>
                   </section>
-                  <button id="submitGroupPlus" onclick="addList()">추가하기</button>
-                  <button id="close">확인</button>
                 </div>
               </div>
             </div>
