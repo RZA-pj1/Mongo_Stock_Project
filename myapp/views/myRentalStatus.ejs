@@ -1,0 +1,145 @@
+<!-- 
+
+      담당자 : 이승현
+      콘셉트 : 키오스크 설정 기반 재고 관리 시스템
+      페이지 설명 : 나의 대여 현황 페이지
+      기능 설명 : 1. 반납 기능
+                  > [반납 시 해당 물품의 대여 가능 개수 증가 및 대여 중 수 감소]
+                  > [데이터 베이스에 반납일 저장]
+
+  -->
+  <!DOCTYPE html>
+  <html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--=============== JQUERY ===============-->
+    <script src="js/jquery.min.js"></script>
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="css/myRentalStatus.css">
+    
+    <title>나의 대여 현황</title>
+  </head>
+  <body>
+    <!--=============== HEADER ===============-->
+    <header>
+
+      <%- include('partials/header.ejs'); %>
+
+    </header>
+    <section class="myWrap container">
+      <section class="headerWrap">
+        <h2>나의 대여 현황</h2>
+        <!-- [DB에 반납일 저장하기!] -->
+        <!-- [반납 시 해당 물품의 대여 가능 개수 증가 및 대여 중 수 감소하기!] -->
+        <input type="button" class="submitBtn" id="stockReturn" value="반납">
+      </section>
+      <section class="contentWrap">
+        <h3 class="hidden">나의 대여 현황 상세 목록</h3>
+        <div class="tableSection">
+          
+        <form action="" method="post">
+          
+          <table id="myRental">
+          <thead>
+            <tr>
+              <th class="check_row"><label for="check_row">선택</label></th>
+              <th><label for="bigGroup">대분류</label></th>
+              <th><label for="smallGroup">소분류</label></th>
+              <th><label for="productName">이름</label></th>
+              <th><label for="productCode">제품 코드</label></th>
+              <th><label for="returnPeriod" id="returnPeriod" class="returnPeriod">대여일</label></th>
+              <th><label for="returnPeriod" id="returnPeriod" class="returnPeriod">반납일</label></th>
+              <th><label for="rentalPurpose">대여 목적</label></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>  
+              <td class="check_row"><input type="checkbox" name="check_row" id="check_row"></td>
+              <td>
+                <input type="text" id="bigGroup" name="bigGroup" class="bigGroup" placeholder="대분류 정보 받아오기">
+              </td>
+              <td>
+                <input name="smallGroup" id="smallGroup" placeholder="소분류 정보 받아오기">
+              </td>
+              <td><input type="text" name="productName" id="productName" placeholder="물품명을 입력해 주세요."></td>
+              <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
+                id="productCode" name="productCode" value="제품 코드" placeholder="문자와 숫자로 이루어진 제품코드 정보 받아오기"></td>
+              <!-- 반납이 필요하지 않는 물품은 제외한다. -->
+              <td>
+                <div>
+                  <input type="text" id="startDate" autocomplete="off" placeholder="대여일 받아오기">
+                </div>
+              </td>
+              <td> 
+                <div>
+                  <input type="text" id="endDate" autocomplete="off" placeholder="반납일 받아오기">
+                </div>
+              </td> 
+              <td><input type="text" id="rentalPurpose" name="rentalPurpose" placeholder="대여 목적을 받아오기"></td>
+            </tr>
+
+            <tr>  
+              <td><input type="checkbox" name="check_row" id="check_row"></td>
+              <td>
+                <input type="text" id="bigGroup" name="bigGroup" class="bigGroup" placeholder="대분류 정보 받아오기">
+              </td>
+              <td>
+                <input name="smallGroup" id="smallGroup" placeholder="소분류 정보 받아오기">
+              </td>
+              <td><input type="text" name="productName" id="productName" placeholder="물품명을 입력해 주세요."></td>
+              <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
+                id="productCode" name="productCode" value="제품 코드" placeholder="문자와 숫자로 이루어진 제품코드 정보 받아오기"></td>
+              <!-- 반납이 필요하지 않는 물품은 제외한다. -->
+              <td>
+                <div>
+                  <input type="text" id="startDate" autocomplete="off" placeholder="대여일 받아오기">
+                </div>
+              </td>
+              <td> 
+                <div>
+                  <input type="text" id="endDate" autocomplete="off" placeholder="반납일 받아오기">
+                </div>
+              </td> 
+              <td><input type="text" id="rentalPurpose" name="rentalPurpose" placeholder="대여 목적을 받아오기"></td>
+            </tr>
+            <!-- <tr>
+              <td></td>
+            </tr> -->
+            
+            </tbody>
+          </table>
+          
+        </form>
+      </div>
+      </section>
+    </section>
+    <!--=============== FOOTER ===============-->
+    <footer>
+
+      <%- include('partials/footer.ejs'); %>
+
+    </footer>
+    <script type="text/javascript">
+      /******************************************************************************
+       * 담당자      : 이승현
+       * Function명 : selectGroup
+       * 함수 설명   : remove와 append 함수를 사용
+       * 기능 설명   : 대분류, 소분류 선택란
+       *            
+      *******************************************************************************/ 
+     
+  
+      /******************************************************************************
+       * 담당자      : 이승현
+       * 기능 설명   : 1. 편집 기능
+                        > [수량은 숫자만 입력 가능]
+                        > + 아니면 알림창 띄우기 기능
+       *            
+      *******************************************************************************/ 
+      
+    </script>
+  </body>
+  </html>

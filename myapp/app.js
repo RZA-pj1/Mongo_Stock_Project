@@ -11,7 +11,11 @@ var config = require('./config/key');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-
+/**
+ * 담당자 : 이승현
+ * 함수 설명 : view engine을 ejs로 세팅
+ * 기능 설명 : ejs를 사용하기 위한 랜더링 기능 
+ */
 var app = express();
 
 // view engine setup

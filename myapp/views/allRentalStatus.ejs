@@ -1,0 +1,105 @@
+<!-- 
+
+      담당자 : 이승현
+      콘셉트 : 키오스크 설정 기반 재고 관리 시스템
+      페이지 설명 : 대여 현황 페이지 
+      기능 설명 : [열람 기능] - 열람 권한이 있는 사람만 볼 수 있어야 함
+
+  -->
+  <!DOCTYPE html>
+  <html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--=============== JQUERY ===============-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="css/allRentalStatus.css">
+    <title>대여 현황</title>
+  </head>
+  <body>
+    <!--=============== HEADER ===============-->
+    <header>
+
+      <%- include('partials/header.ejs'); %>
+
+    </header>
+    <section class="allRentalWrap container">
+      <section class="headerWrap">
+        <h2>대여 현황</h2>
+      </section>
+      <section class="contentWrap">
+        <h3 class="hidden">대여 현황 상세 목록</h3>
+        <div class="tableSection">
+        <form id="rentalStatus" action="" method="post">
+          <table id="all_rental_status">
+            <thead>
+              <tr>
+                <th><label for="check_row">선택</label></th>
+                <th><label for="bigGroup">대분류</label></th>
+                <th><label for="smallGroup">소분류</label></th>
+                <th><label for="productName">제품명</label></th>
+                <th><label for="productCode">제품 코드</label></th>
+                <th><label for="userName">현재 대여자 이름</label></th>
+                <th><label for="rentalPurpose">대여 사유</label></th>
+                <th><label for="startDate" id="startDate" class="returnPeriod">대여일</label></td>
+              </tr>
+            </thead>
+          <tbody>
+          <tr>
+            <td><input type="checkbox" name="check_row" id="check_row"></td>
+            <td>
+              <input type="text" id="bigGroup" name="bigGroup" class="bigGroup" placeholder="대분류 정보 받아오기">
+            </td>
+            <td>
+              <input name="smallGroup" id="smallGroup" placeholder="소분류 정보 받아오기">
+            </td>
+            <td>
+              <input type="text" name="productName" id="productName" placeholder="물품명을 입력해 주세요.">
+            </td>
+            <td>
+              <input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
+              id="productCode" name="productCode" value="제품 코드" placeholder="제품코드 정보 받아오기">
+            </td>
+            <td>
+              <input type="text" id="userName" name="userName" placeholder="현재 대여자 이름을 가져오세요."/>
+            </td>
+            <td>
+              <input type="text" id="rentalPurpose" name="rentalPurpose" placeholder="대여 목적 받아오기.">
+            </td>
+            <td>
+              <input type="text" id="startDate" autocomplete="off" placeholder="대여일 받아오기">
+            </td>
+          </tr>
+
+        </tbody>
+      </table>  
+      </form> 
+      </div>
+      </section>
+    </section>
+    <!--=============== FOOTER ===============-->
+    <footer>
+
+    <%- include('partials/footer.ejs'); %>
+
+  </footer>
+  <script type="text/javascript">
+    /******************************************************************************
+     * 담당자      : 이승현
+     * Function명 : fn_egov_init_date()
+     * 함수 설명   : jquery datetimepicker plugin을 사용하여 시작일, 종료일 설정한다.
+     *              부가적인 옵션 설정을 통해 간결하게 1시간 단위으 시간 설정과, 한국어 설정,
+     *              스크롤(휠) 이벤트 차단, 최소 날짜와 최대 날짜 설정을 도와주었다.
+     * 기능 설명   : 1. 반납 시간 설정 기능
+                    > [시작일, 종료일 설정 가능]
+                    > [시간 단위로 설정 기능]
+      *            
+    *******************************************************************************/ 
+    
+
+  </script>
+  </body>
+  </html>

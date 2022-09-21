@@ -1,0 +1,122 @@
+<!-- 
+
+    담당자 : 이승현
+    페이지 설명 : 이용자 관리 페이지 - (관리자 전용)
+    기능 설명 :  1. 이용자 추방 기능
+                2. 비밀번호 초기화 기능 
+                  > [초기화를 하면 선택된 이용자 비번이 0405로 변경]
+                3. 권한 부여 및 회수 기능
+                  > [권한은 물품 편집, 물품 대여, 물품 열람, 관리자]
+
+ -->
+ <!DOCTYPE html>
+ <html lang="ko">
+ <head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!--=============== JQUERY ===============-->
+   <script src="js/jquery.min.js"></script>
+   
+   <!--=============== CSS ===============-->
+   <link rel="stylesheet" href="css/userManagement.css">
+    
+   <title>이용자 관리 페이지</title>
+   <style>
+  
+   </style>
+ </head>
+ <body>
+   <!--=============== HEADER ===============-->
+   <header>
+ 
+    <%- include('partials/header.ejs'); %>
+ 
+   </header>
+   <section class="userManagement container">
+    <section class="headerWrap">
+      <h2>이용자 관리</h2>
+      <div class="btnWrap">
+        <input class="btn" type="button" name="userOut" value="추방">
+        <input class="btn" type="button" name="givePermission" value="권한 부여">
+        <input class="btn" type="button" name="withdrawPermission" value="권한 회수">
+      </div>
+    </section>
+     <section id="contentWrap">
+       <h3 class="hidden">이용자 관리</h3>
+       <div class="tableSection">
+       <form action="" method="post">
+         <table id="userInfoList">
+          <thead>
+            <tr>
+              <th><label for="user_info_row">선택</label></th>
+              <th><label for="userName">이름</label></th>
+              <th><label for="team">부서</label></th>
+              <th><label for="teamPosition">직책</label></th>
+              <th><label for="email">메일</label></th>
+              <th><label for="editPermission">편집 권한</label></th>
+              <th><label for="rentalPermission">대여 권한</label></th>
+              <th><label for="readPermission">열람 권한</label></th>
+              <th><label for="pwReset">비밀번호 초기화</label></th>
+            </tr>
+          </thead>
+          <tbody>
+            
+                <!-- <label for="userInfoListCheck"> -->
+
+            <tr>
+              <td><input type="checkbox" name="user_info_row" id="user_info_row"></td>
+              <td>
+                <input type="text" id="userName" name="userName" placeholder="이름을 가져오세요."/>
+              </td>
+              <td>
+                <input type="text" id="teamList1" name="team" class="teamList1" placeholder="teamList1 정보 받아오기">
+                <input type="text" id="teamList2" name="team" class="teamList2" placeholder="teamList2 정보 받아오기">
+              </td>
+              <td>
+                <input type="text" id="teamPosition" name="teamPosition" class="teamPosition" placeholder="직책 정보 받아오기">
+              </td>
+              <td> 
+                <input type="text" name="email"  id="email" value="" size="20" placeholder="이메일 정보 받아오기"/> 
+              </td> 
+              <td>
+                <input type="checkbox" name="editPermission" id="editPermission" value="편집 권한 부여">
+              </td>
+              <td>
+                <input type="checkbox" name="rentalPermission" id="rentalPermission" value="대여 권한 부여">
+              </td>
+              <td>
+                <input type="checkbox" name="readPermission" id="readPermission" value="열람 권한 부여">
+              </td>
+              <!-- 담당자 : 이승현
+                  함수 설명 : 
+                  기능 설명 : 2. 클릭 시 선택 된 사용자 비밀번호가 초기값 '0405'로 변경됨 -->
+              <td>
+                <input type="button" name="pwReset" id="pwReset" value="0405">
+              </td>
+            </tr>
+            </label>
+          </tbody>  
+        </table>
+      </form>
+    </div>
+  </section>
+</section>
+   <!--=============== FOOTER ===============-->
+   <footer>
+ 
+     <%- include('partials/footer.ejs'); %>
+ 
+   </footer>
+   <script type="text/javascript">
+     /******************************************************************************
+      * 담당자      : 이승현
+      * Function명 : selectTeam
+      * 함수 설명   : remove와 append 함수를 사용
+      * 기능 설명   : 영업부를 선택하면 영업부에 해당하는 부서만 보이도록 
+      *              부서 선택에 조건으로 selcet option 추가하는 기능
+      * Params     : 
+      * Return     : true or false
+      *            
+     *******************************************************************************/ 
+    // 상단 선택 버튼 클릭 시 체크된 Row의 값을 가져온다.

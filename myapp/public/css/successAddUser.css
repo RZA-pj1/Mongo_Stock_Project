@@ -1,0 +1,101 @@
+@import url(common.css);
+
+/* Section - Success Join Hgroup */
+
+#success_join h2 {
+	width: 100%;
+	/* padding-top: 100px; */
+	text-align: center;
+	font-size: var(--h2-font-size);
+	color: hsl(233, 26%, 24%);
+	margin-bottom: 1rem;
+}
+
+#success_join p {
+	width: 100%;
+	color: #9698a6;
+	text-align: center;
+	margin: 20px 0;
+}
+
+#success_join img {
+	width: 10rem;
+	height: 10rem;
+	/* margin: auto; */
+	/* display: block; */
+}
+
+/* ======= flex를 이용한 가로 배열 ====== */
+.successAddUser {
+  display: flex;
+	justify-content: center;
+  /* width: 54%; */
+  /* height: 32rem; */
+  /* margin: 0 auto; */
+}
+
+.successAddUser_box {
+	/* width: 100px;
+	height: 100px;
+	text-align: center; */
+}
+
+
+/* infoWrap - table CSS setting */
+#infoWrap table {
+	margin: 0 auto;
+	width: 400px;
+	/* height: 200px; */
+  border-collapse: collapse;
+}
+
+#infoWrap table tr {
+  border-bottom: 1px solid #b5b5b5;
+}
+
+#infoWrap table tr:nth-child(1){
+	border-top: 3px solid #000;
+}
+
+#infoWrap table tr td {
+  /* display: block;
+  width: 150px;
+  height: 50px; */
+  width: 200px;
+  height: 70px;
+  text-indent: 30px;
+}
+
+#infoWrap .info-title {
+  width: 110px;
+  background-color:#f5f5f5;
+}
+
+/* infoWrap CSS setting */
+#infoWrap {
+	height: 4rem;
+	margin: 0 auto;
+	/* background-color: rgb(243, 243, 243); */
+	position: relative;
+	
+}
+
+/* login button CSS setting */
+/* #login {
+	display: block;
+	padding: 14px 0;
+	width: 120px; margin: 30px auto 0;
+	background: linear-gradient(120deg, #2bb7da, #31d35c);
+	border-radius: 24px;
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	border: none;
+	text-align: center;
+} */
+
+.loginBtn {
+	/* width: 120px; */
+	height: 65px;
+	margin: 30px 0 0 30px;
+}
