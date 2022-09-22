@@ -39,7 +39,7 @@
      </hgroup>
      <div id="contentWrap">
        <h3 class="hidden">회원 가입 내용</h3>
-         <form action="/successAddUser" method="post">
+         <!-- <form action="/successAddUser" method="post"> -->
                <table>
                    <tr>
                        <td><label for="userName">이름</label></td>
@@ -130,7 +130,7 @@
            <a class="addUserBtn">
              <input class="button" onclick="javascript:GoToEnroll()" type="submit" value="확인"/>
            </a>
-         </form>
+         <!-- </form> -->
      </div>
    </section>
    <!--=============== FOOTER ===============-->
@@ -311,7 +311,7 @@
          }
        }
  
-       // 로그인 버튼을 클릭했을 때 실행되는 함수                                 
+       // 회원가입 확인 버튼을 클릭했을 때 실행되는 함수                                 
        function GoToEnroll(){
          var obEmail = document.getElementById("email");
          if (!obEmail.value) {

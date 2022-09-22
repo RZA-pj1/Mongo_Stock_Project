@@ -21,13 +21,13 @@
     
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="css/login.css">
-    <title><%- content %></title>
+    <title>로그인</title>
 </head>
 <body>
     <div id="loginSection">
     <section id="loginLeft" class="loginSection">
-        <h2 class="hidden"><%- content %></h2>
-            <form name="customer" id="document" action="/index" method="post">
+        <h2 class="hidden">로그인</h2>
+            <!-- <form name="user" id="document" action="/index" method="post"> -->
                 <table>
                     <thead class="hidden">
                         <tr>
@@ -38,7 +38,7 @@
                         <tr>
                             <th><label for="userId">사원번호</label></th>
                             <td>
-                                <input type="text" name="userId" id="userId" maxlength="12" placeholder="아이디를 입력하세요." value="${cookie.userNumber.value}"/>
+                                <input type="text" name="userId" id="userId" maxlength="12" placeholder="아이디를 입력하세요."/>
                             </td>
                             <td>
                                 <input id="idSaveCheck" class="checkbox" type="checkbox" name="userNumberCheck" value="true"/>사원번호 저장
@@ -61,9 +61,9 @@
                         id='go_index'    
                         type='submit'
                         class="button"
-                        onclick='indexPage()'
+                        
                         value='로그인' />
-                    </form>
+                    <!-- </form> -->
                     <!-- <input type="submit" id="submitButton" value="로그인"/> -->
                 <div class="findUser">
                     <p>회원 정보가 아직 없으신가요?</p>
@@ -188,9 +188,9 @@
          *              [로그인] 버튼 클릭 시 메인 화면으로 Redirect 하기
          *            
         *******************************************************************************/ 
-        function indexPage()  {
-            window.location.replace("http://localhost:5000/index");
-        }
+        // function indexPage()  {
+        //     window.location.replace("http://localhost:5000/index");
+        // }
         function addUserPage()  {
             window.location.replace("http://localhost:5000/addUser");
         }

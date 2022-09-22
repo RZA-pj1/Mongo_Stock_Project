@@ -142,10 +142,17 @@ router.get("/index/:stockNumber", function(req, res, next) {
 /***************************************************
  * 회원가입 및 로그인 기능
  * *************************************************/
-router.get('/', (req, res) => res.render('login', {content: '로그인'}))
+router.get('/', (req, res) => {
+  res.render('login', {content: '로그인'})
+})
 
 //app.get('/api/hello', (req, res) => res.send('Hello World!~~ '))
-router.get('/addUser',(req,res) => res.render('addUser',{content:'회원가입'}))
+router.get('/addUser',(req,res) => {
+  res.render('addUser',{
+  layout: './addUser',
+  hellow:`???`
+})
+})
 router.post('/addUser', (req, res) => {
   //회원 가입 할떄 필요한 정보들을  client에서 가져오면 
   //그것들을  데이터 베이스에 넣어준다. 
@@ -157,14 +164,18 @@ router.post('/addUser', (req, res) => {
       return res.json({addUserSuccess: false, err})
     }
     else{
-      return res.render('successAddUser', { layout: './successAddUser',addUserSuccess:true,message:"회원가입 성공"})
+      return res.render('successAddUser', { 
+      layout: './successAddUser',
+      addUserSuccess:true,
+      message:"회원가입 성공",
+      hellow:``})
     }
   })
 })
 
 
 
-
+// 로그인 시 사번, 비밀번호 체크
 router.post('/', (req, res) => {
   //요청된 사번을 데이터베이스에서 있는지 찾는다.
   User.findOne({ userId: req.body.userId }, (err,user) => {
@@ -214,19 +225,18 @@ router.get('/auth', auth, (req, res) => {
 * 
 ****************************************/
 
- router.get('/index',auth,(req, res) => {
+router.get('/index',auth,(req, res) => {
   var user = User({userName:req.user.userName})
   console.log(user.userName)
   Stock.find().then(stock => {
     let use = new User({ userName: req.body.userName })
     console.log("read all finish")
-    console.log(use.userName)
     return res.status(200).render('index', {
       userName: user.userName,
       message: "Read all Success",
-      userName:`${user.userName}`+"님 환영합니다.",
+      hellow:`${user.userName}`,
       data: { stock: stock },
-      layout:'./index'
+      layout: './index'
     })
   })
     .catch(err => {
@@ -238,7 +248,13 @@ router.get('/logout', auth, (req, res) => {
     { token: "" }
     , (err, user) => {
       if (err) return res.json({ logoutsuccess: false, err });
-      return res.render('/',{content: '로그인'})
+      else return res.render('/',{content: '로그인'})
+      // if(err) {
+      //   return res.json({ logoutsuccess: false, err });
+      // } 
+      // else{
+      //   return res.render('/login',{content: '로그인'})
+      // }
     })
 })
 // app.get('/mypage', auth, function (요청, 응답) { 

@@ -49,11 +49,12 @@
         <div class="nav__menu-login" id="nav-menu-login">
             <ul class="nav__list nav__menu-login__ul">
                 <li class="nav__item nav__menu-login__li userInfo">
-                    <a href="/welcome" class="nav__link nav__menu-login__a">ㅇㅇㅇ님, 환영합니다.</a>
+                    <!-- <a href="/welcome" class="nav__link nav__menu-login__a">ㅇㅇㅇ님, 환영합니다.</a> -->
+                    <a href="" class="nav__link nav__menu-login__a"><%= hellow %> 님, 환영합니다.</a>
                 </li>
 
                 <li class="nav__item nav__menu-login__li logout">
-                    <a href="/logout" onclick='logoutPage()' class="nav__link nav__menu-login__a">로그아웃</a>
+                    <a href="" onclick='logoutPage()' class="nav__link nav__menu-login__a">로그아웃</a>
                 </li>
                 <!-- 관리자에게만 보이게 권한 부여할 것! -->
                 <li class="nav__item nav__menu-login__li">
@@ -108,9 +109,9 @@
         document.location.href = "/index.ejs";
     }
     /*=============== 로그아웃 ===============*/
-    function logoutPage()  {
-        document.location.href = "/logout.ejs";
-    }
+    // function logoutPage()  {
+    //     document.location.href = "/logout.ejs";
+    // }
     /*=============== 물품 관리 ===============*/
     function stockManagementPage()  {
         document.location.href = "/index.ejs";
