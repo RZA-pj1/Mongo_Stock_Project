@@ -1,0 +1,72 @@
+/* @import url(common.css); */
+
+.headerWrap {
+  height: 100%;
+  display: flex;
+	justify-content: space-between;
+}
+.headerWrap h2 {
+  margin: auto 0;
+
+}
+.headerWrap::before {
+  display: inline-block;
+  height: 100%;
+  margin-right: 0; 
+  vertical-align: middle;
+
+}
+
+.headerWrap .submitBtn {
+  width: 4rem;
+  height: 2.35rem;
+  box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+  display: inline-block;
+  background-color: var(--first-color);
+  border: 1px solid var(--first-color);
+  color:  var(--body-color);
+  border-radius: .5rem;
+  font-weight: var(--font-medium);
+  transition: .3s;
+}
+.headerWrap .submitBtn:hover{
+  background-color: var(--first-color-alt);
+}
+
+.tableSection {
+  width:100%;
+  height: 70vh;
+  overflow:auto;
+  box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+  margin-top: .75rem;
+}
+.tableSection table {
+  white-space:nowrap;
+  border-collapse:collapse;
+
+}
+.tableSection table th {
+  height: 3rem;
+  font-size: var(--h3-font-size);
+  background-color: #f5f5f5;
+
+}
+.tableSection table tr {
+  height: 3rem;
+  border-bottom: 1px solid #b5b5b5;
+}
+
+.tableSection table tr td:nth-child(1) input {
+  width: 3rem;
+}
+
+.tableSection table tr td input[value="제품 코드"] {
+  color: var(--text-color);
+}
+/* 작성자 : 이승현
+  기능 설명 : 수량을 제외한 나머지 목차들을 선택하는 선택자 :not(선택자) */
+.tableSection table tr :not(td:nth-child(1)) input{
+  width: 9rem;
+  margin: .9rem .4rem;
+  height: 1.85rem;
+}

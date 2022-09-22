@@ -1,0 +1,226 @@
+ /* 큰 화면 데스크탑 */
+ @media screen and (min-width: 1200px){
+  .home__social{
+    right: -3rem;
+    row-gap: 4.5rem;
+  }
+  .home__social-follow{
+    font-size: var(--small-font-size);
+  }
+  .home__social-follow::after{
+    width: 1.5rem;
+    right: -60%;
+  }
+  .home__social-link{
+    font-size: 1.15rem;
+  }
+
+  .thinking__container{
+    column-gap: 7rem;
+  }
+
+  .scrollup{
+    right: 3rem;
+  }
+}
+ 
+  /* 데스크탑 *** defalut */
+  @media screen and (min-width: 992px){
+    .container{
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    .section{
+      padding: 3rem 0 1rem;
+    }
+    .section__title,
+    .section__title-center{
+      font-size: var(--h1-font-size);
+    }
+  
+    .home{
+      padding: 13rem 0 5rem;
+    }
+    .home__img{
+      width: 350px;
+    }
+    .home__description{
+      padding-right: 7rem;
+    }
+  
+    .thinking__img{
+      width: 380px;
+    }
+  
+    .stock__container{
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .stock__bg{
+      padding: 3.5rem 2.5rem;
+    }
+    .stock__card-title{
+      font-size: var(--normal-font-size);
+    }
+  
+    .diary__description{
+      padding: 0 16rem;
+    }
+    .diary__container{
+      padding: 4rem 0;
+      grid-template-columns: repeat(3, 185px);
+      gap: 4rem 6rem;
+    }
+    .diary__img{
+      width: 160px;
+    }
+    .diary__circle{
+      width: 110px;
+      height: 110px;
+    }
+    .diary__title,
+    .diary__hashtag{
+      font-size: var(--normal-font-size);
+    }
+  
+    .incinerator__container{
+      padding: 1rem 0 4rem;
+    }
+    .incinerator__title{
+      text-align: initial;
+    }
+    .incinerator__group{
+      row-gap: 2rem;
+    }
+    .incinerator__header{
+      padding: 1rem;
+    }
+    .incinerator__description{
+      padding: 0 3.5rem 2.25rem 2.75rem;
+    }
+  
+    .footer__logo{
+      font-size: var(--h3-font-size);
+    }
+    .footer__container{
+      grid-template-columns: 1fr .5fr .5fr .5fr;
+    }
+    .footer__copy{
+      margin: 7rem 0 2rem;
+    }
+  }
+  
+  /* 모바일 디바이스 */
+  @media screen and (min-width: 576px){
+    .section{
+      padding: .5rem 0 1rem ;
+      
+    }
+    .stock__container{
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .diary__description{
+      padding: 0 4rem;
+    }
+    .diary__container{
+      grid-template-columns: repeat(2, 170px);
+      justify-content: center;
+      column-gap: 5rem;
+    }
+  
+    .footer__subscribe{
+      width: 400px;
+    }
+  }
+  
+  
+  
+  
+  
+  
+  /*=============== BREAKPOINTS. 반응형 ===============*/
+  /* 테블릿 디바이스 */
+  @media screen and (min-width: 767px){
+    body{
+      margin: 0;
+    }
+  
+    .nav{
+      height: calc(var(--header-height) + 0.9rem);
+      column-gap: 3rem;
+    }
+    .nav__toggle,
+    .nav__close{
+      display: none;
+    }
+    .nav__list{
+      flex-direction: row;
+      /* 수정사항 : 원래는 3rem */
+      column-gap: 2rem;
+    }
+    .nav__menu{
+      margin-left: auto;
+    }
+  
+    .home__container,
+    .thinking__container,
+    .incinerator__container,
+    .contact__container,
+    .footer__container{
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .home{
+      padding: 10rem 0 5rem;
+    }
+    .home__container{
+      align-items: center;
+    }
+    .home__img{
+      width: 280px;
+      order: 1;
+    }
+    .home__social{
+      top: 30%;
+    }
+  
+    .incinerator__container{
+      align-items: flex-start;
+    }
+  
+    .footer__container{
+      column-gap: 3rem;
+    }
+    .footer__subscribe{
+      width: initial;
+    }
+  }
+
+  /* 20220916 */
+
+  .bodyIndex {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: var(--header-height) auto 50px;
+    grid-template-areas: 
+    'header header'
+    'indexLeft indexRight'
+    'footer footer'
+    ;
+  }
+  header {
+    grid-area: header;
+  }
+  #indexLeft {
+    grid-area: indexLeft;
+  }
+  #indexRight {
+    grid-area: indexRight;
+  }
+  footer {
+    grid-area: footer;
+  }
