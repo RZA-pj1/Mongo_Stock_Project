@@ -16,8 +16,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <!--=============== FAVICON ===============-->
-   <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <!--=============== FAVICON ===============-->
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon_package/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./public/img/favicon_package/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon_package/favicon-16x16.png">
+    <link rel="manifest" href="img/favicon_package/site.webmanifest">
+    <link rel="mask-icon" href="img/favicon_package/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
    <!--=============== REMIX ICONS ===============-->
    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -29,7 +35,6 @@
   <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
   
   <!--=============== CSS ===============-->
-  <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/partials/header.css">
   <title>상단 메뉴</title>
 </head>
@@ -37,33 +42,36 @@
   <!--==================== HEADER ====================-->
   <header class="header" id="header">
     <nav class="nav container">
-        <a href="#" class="nav__logo">
-            <i class="ri-cpu-line nav__logo-icon"></i>R.Z.A
+        <a href="/index" class="nav__logo" indexPage()>
+            <i class="fa-solid fa-microchip"></i>R.Z.A
         </a>
+
         <div class="nav__menu-login" id="nav-menu-login">
             <ul class="nav__list nav__menu-login__ul">
                 <li class="nav__item nav__menu-login__li userInfo">
-                    <a href="header"  class="nav__link nav__menu-login__a"><p id="name" class="name" name="name" value=''><%= userName %></p>님 환영합니다.</a>
+                    <!-- <a href="/welcome" class="nav__link nav__menu-login__a">ㅇㅇㅇ님, 환영합니다.</a> -->
+                    <a href="" class="nav__link nav__menu-login__a"><%= hellow %> 님, 환영합니다.</a>
                 </li>
+
                 <li class="nav__item nav__menu-login__li logout">
-                    <a href="/logout" onclick='logoutPage()' class="nav__link nav__menu-login__a">로그아웃</a>
+                    <a href="" onclick='logoutPage()' class="nav__link nav__menu-login__a">로그아웃</a>
                 </li>
                 <!-- 관리자에게만 보이게 권한 부여할 것! -->
                 <li class="nav__item nav__menu-login__li">
-                    <a href="/userManagement" onclick='userManagementPage()' class="nav__link nav__menu-login__a active-link">이용자 관리</a>
+                    <a href="/userManagement" onclick='userManagementPage()' class="nav__link nav__menu-login__a">이용자 관리</a>
                 </li>
             </ul>
         </div>
         <div class="nav__menu" id="nav-menu">
             <ul class="nav__list">
                 <li class="nav__item">
-                    <a href="/commodityManagement" onclick='commodityManagementPage()' class="nav__link">물품 관리</a>
+                    <a href="/stockManagement" onclick='stockManagementPage()' class="nav__link">물품 관리</a>
                 </li>
                 <li class="nav__item">
-                    <a href="/commodityRegistration" onclick='commodityRegistrationPage()' class="nav__link">물품 등록</a>
+                    <a href="/stockRegistration" onclick='stockRegistrationPage()' class="nav__link">물품 등록</a>
                 </li>
                 <li class="nav__item">
-                    <a href="/allRentalStatus" onclick='allRentalStatusPage()' class="nav__link">대여 현황</a>
+                    <a href="/allRentalStatus" onclick='allRentalStatusPage()' class="nav__link active-link">대여 현황</a>
                 </li>
                 <li class="nav__item">
                     <a href="/myRentalStatus" onclick='myRentalStatusPage()' class="nav__link">마이페이지</a>
@@ -89,41 +97,28 @@
 <script>
     /******************************************************************************
      * 담당자      : 이승현
-     * Function명  : logoutPage(), commodityManagementPage(), 
-     *               commodityRegistrationPage(), allRentalStatusPage()
+     * Function명  : logoutPage(), stockManagementPage(), 
+     *               stockRegistrationPage(), allRentalStatusPage()
      * 함수 설명   : document.location.href를 통해 이동할 페이지를 지정해 준다.
      * 기능 설명   : 1. 각 페이지로 이동하는 기능  
      *              [각 메뉴] 버튼 클릭 시 메인 화면으로 Redirect 하기
      *            
-    *******************************************************************************/     
-    
-    /*=============== 로그아웃 ===============*/
-    function logoutPage()  {
-        $.ajax({
-        type : "GET",            // HTTP method type(GET, POST) 형식이다.
-         url : "/logout",      // 컨트롤러에서 대기중인 URL 주소이다.
-         data : params,            // Json 형식의 데이터이다.
-         success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
-             // 응답코드 > 0000
-             if(res.logoutsuccess!=false){
-                alert("logout 성공");
-                window.location.replace("/");}
-            else{
-                alert("logout실패");}
-        },
-         error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-             alert("통신 실패.")
-        }
-        });
-        document.location.href = "/logout.ejs";
+    *******************************************************************************/ 
+    /*=============== 메인 index ===============*/
+    function indexPage()  {
+        document.location.href = "/index.ejs";
     }
+    /*=============== 로그아웃 ===============*/
+    // function logoutPage()  {
+    //     document.location.href = "/logout.ejs";
+    // }
     /*=============== 물품 관리 ===============*/
-    function commodityManagementPage()  {
+    function stockManagementPage()  {
         document.location.href = "/index.ejs";
     }
     /*=============== 물품 등록 ===============*/
-    function commodityRegistrationPage()  {
-        document.location.href = "/commodityRegistration.ejs";
+    function stockRegistrationPage()  {
+        document.location.href = "/stockRegistration.ejs";
     }
     /*=============== 대여 현황 ===============*/
     function allRentalStatusPage()  {
@@ -150,7 +145,17 @@
 
 
 
-
+    /******************************************************************************
+     * 담당자      : 이승현
+     * Function명  : linkAction(), scrollHeader()
+     * 함수 설명   : addEventListener와 add, remove 함수 및 클릭 이벤트를 
+     *              사용하여 nav toggle 효과를 주었고,
+     *              scroll event를 부여했다.
+     * 기능 설명   : 1. 모바일에서 상단 메뉴가 사라지고 버튼 클릭 시 나타난다.
+     *              2. 스크롤을 80viewport 이상 내리면 헤더 아랫 부분 은은한 그림자를 주어
+     *                 헤더 영역을 돋보이게 만든다.
+     *            
+    *******************************************************************************/
     /*=============== 반응형. SHOW MENU ===============*/
     const navMenu = document.getElementById('nav-menu'),
         navToggle = document.getElementById('nav-toggle'),
@@ -188,6 +193,28 @@
         else header.classList.remove('scroll-header')
     }
     window.addEventListener('scroll', scrollHeader)
+
+    
+    /*=============== 로그아웃 ===============*/
+    function logoutPage()  {
+        $.ajax({
+        type : "GET",            // HTTP method type(GET, POST) 형식이다.
+         url : "/logout",      // 컨트롤러에서 대기중인 URL 주소이다.
+         data : params,            // Json 형식의 데이터이다.
+         success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+             // 응답코드 > 0000
+             if(res.logoutsuccess!=false){
+                alert("logout 성공");
+                window.location.replace("/");}
+            else{
+                alert("logout실패");}
+        },
+         error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+             alert("통신 실패.")
+        }
+        });
+        document.location.href = "/logout.ejs";
+    }
 
 </script>
 </body>

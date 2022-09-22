@@ -37,8 +37,11 @@
     <section class="editWrap container">
       <section class="headerWrap">
         <h2>물품 편집</h2>
+        <form action="/add?_method=PUT" method="post">
         <div class="btnWrap">
           <button id="reset" class="btn">초기화</button>
+          <!-- 담당자 : 이승현
+              기능 설명 : 수정 요청 시 사용한다던 PUT 요청 사용하기 -->
           <button id="edit" class="btn">편집</button>
           <button id="cancel" class="btn">취소</button>
         </div>
@@ -46,7 +49,6 @@
       <section class="contentWrap">
         <h3 class="hidden">물품 편집 내용</h3>
         <div class="tableSection">
-        <form action="" method="post">
           <table id="stock">
           <thead>
             <tr>
@@ -63,7 +65,7 @@
           <tbody>
           <tr>
             <td><input type="checkbox" name="check_row" id="check_row"></td>
-            <td><input type="text" name="productName" id="productName" placeholder="물품명을 입력해 주세요."></td>
+            <td><input value="<%= stock.productName %>" type="text" name="productName" id="productName" placeholder="물품명을 입력해 주세요."></td>
             <!-- 
             담당자 : 이승현
             기능 설명 : 대분류, 소분류 

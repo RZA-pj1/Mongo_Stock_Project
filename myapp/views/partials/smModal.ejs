@@ -60,8 +60,8 @@
               box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
               
               /* 임시 지정 */
-              /* width: 500px;
-              height: 500px; */
+              width: 40rem;
+              height: 40rem;
       
             /* ========= 모달이 나타날 때 천천히 나타나는 효과 ========= */
       
@@ -79,6 +79,85 @@
               transform: translate(-50%, -50%);
               transition: all .5s;
             }
+      
+            .registrationWrap {
+              width: 28rem;
+              height: 26rem;
+              margin: 1rem auto;
+            }
+      
+            .btnWrap {
+              margin-top: 1rem;
+              display: flex;
+              justify-content: space-around;
+            }
+            .btn {
+              width: 8rem;
+              height: 3rem;
+              box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+              display: inline-block;
+              background-color: var(--first-color);
+              border: 1px solid var(--first-color);
+              color:  var(--body-color);
+              border-radius: .5rem;
+              font-weight: var(--font-medium);
+              transition: .3s;
+            }
+            .btns {
+              width: 5rem;
+              height: 3rem;
+              box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+              display: inline-block;
+              background-color: var(--first-color);
+              border: 1px solid var(--first-color);
+              color:  var(--body-color);
+              border-radius: .5rem;
+              font-weight: var(--font-medium);
+              transition: .3s;
+            }
+            /* ===== only master 관리자에게만 보이는 항목 ===== */
+            .onlyMaster {
+              display: flex;
+              justify-content: flex-end;
+              margin-bottom: 1rem;
+            }
+            #search {
+              width: 22rem;
+              height: 2rem;
+            }
+            #confirmRentalPeopleList {
+              padding: 0.25rem;
+              font-size: var(--small-font-size);
+              background-color: var(--first-color-lighten);
+            }
+            #confirmRentalPeopleList:hover {
+              background-color: var(--first-color);
+              color: var(--body-color);
+            }
+      
+            
+            .gpTableSection {
+              width:100%;
+              height: 80%;
+              overflow:auto;
+              box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+              margin-top: .75rem;
+            }
+            .gpTableSection table {
+              white-space: nowrap;
+              border-collapse: collapse;
+            }
+            .gpTableSection table tr td input {
+              width: 15rem;
+            }
+            #productCode {
+              color: var(--text-color);
+            }
+            #close {
+              position: absolute;
+              bottom: 2rem;
+              left: 16rem;
+            }
           </style>
           <body>
             <button id="show">팝업 열기</button>
@@ -90,7 +169,7 @@
                 <div class="popup">
                   <section class="registrationWrap">
                     <section class="headerWrap">
-                      <h2>물품 관리 상세 페이지</h2>
+                      <h2 class="hidden">물품 관리 상세 페이지</h2>
                       <!-- 
                           담당자 : 이승현
                           class명 : onlyMaster
@@ -101,10 +180,11 @@
                           <div class="searchBox">
                             <label><input type="text" id="search" onkeyup="filter()" placeholder="물품이름, 대여자 이름으로 검색하세요." /></label>
                           </div>
-                          <button id="ConfirmRentalPeopleList">대여자 명단 확인</button> 
+                          <button id="confirmRentalPeopleList">대여자 명단 확인</button> 
                         </div>
                        
-                      <div class="listBox">
+                       <!-- 검색 기능  -->
+                      <!-- <div class="listBox">
                         <div class="listInner">
                             <span class="country">Australia</span>
                             <span class="city">Canberra</span>
@@ -117,75 +197,78 @@
                             <span class="country">Austria</span>
                             <span class="city">Vienna</span>
                         </div>
-                      </div>  
-                      <button>대여자 목록 호출</button>
-                      <button>물품 대여/반납 이력 호출</button>
-                      <!-- 열람 권한 -->
-                      <button id="exportExcel">엑셀 내보내기</button>
+                      </div>   -->
+                      <div class="btnWrap">
+                        <button class="btn">대여자 목록 호출</button>
+                        <button class="btn">물품 대여/반납 이력 호출</button>
+                        <!-- 열람 권한 -->
+                        <button class="btn" id="exportExcel">엑셀 내보내기</button>
+                      </div>
+                      
                     </section>
+                    <div class="gpTableSection">
                     <section class="contentWrap">
                       <h3 class="hidden">물품 관리 내용</h3>
-                      <form action="dddd.ejs" method="get">
+                      <form action="" method="get">
                         <table id="stock">
-                        <thead>
+                          <tbody>
                           <tr>
-                            <th>물품 관리</th>
+                            <td><label for="productName">이름</label></td>
+                            <td><input type="text" name="productName" id="productName" placeholder="물품명이 들어올 겁니다"></td>
                           </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                          <td><label for="productName">이름</label></td>
-                          <td><input type="text" name="productName" id="productName" placeholder="물품명이 들어올 겁니다"></td>
-                        </tr>
-                        <tr>
-                          <td><label for="group">분류</label></td>
-                          <td><input type="text" name="group" id="group" placeholder="물품의 분류 종목이 들어올 겁니다"></td>
-                        </tr>  
-                        <tr>
-                          <td><label for="productCode">제품 코드</label></td>
-                          <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
-                            id="productCode" name="productCode" value="제품 코드" placeholder="제품 코드는 문자와 숫자로 받아올 겁니다"></td>
-                        </tr>
-                        <tr>
-                          <td>대여 가능 여부</td>
-                          <td><input type="text" id="rentable" placeholder="대여 가능 여부를 표시해 줄 겁니다."></td>
-                          <!-- <td><label for="rentable"><input type="radio" id="rentable" name="rentable" value="O">O</label></td>
-                          <td><label for="anRentable"><input type="radio" id="anRentable" name="anRentable" value="X">X</label></td> -->
-                        </tr>
-                        <tr>
-                          <td>반납 필요 여부</td>
-                          <td><input type="text" id="mustReturn" placeholder="반납여부를 표시해 줄 겁니다."></td>
-                          <!-- <td><label for="mustReturn"><input type="radio" id="mustReturn" name="mustReturn" value="O">O</label></td>
-                          <td><label for="notMustReturn"><input type="radio" id="notMustReturn" name="notMustReturn" value="X">X</label></td> -->
-                        </tr>
-                        <tr>
-                          <td><label for="rentableNumber">대여 가능 수량</label></td>
-                          <td><input type="text" id="rentableNumber" placeholder="대여 가능 수량을 받아와서 표시됩니다."></td>
-                        </tr>
-                        <tr>
-                          <td><label for="rentingNumber">대여 중 수량</label></td>
-                          <td><input type="text" id="rentingNumber" placeholder="현재 대여 중인 수량을 받아와서 표시됩니다."></td>
-                        </tr>
-                        <tr>
-                          <td><label for="totalNumber">총 수량</label></td>
-                          <td><input type="text" id="totalNumber" placeholder="총 수량을 받아와서 표시됩니다."></td>
-                        </tr>
-                        <tr>
-                          <td><label for="">등록일</label></td>
-                          <td><input type="text" placeholder="등록되거나 마지막으로 수정된 날짜를 받아와서 표시해 줍니다."></td>
-                        </tr>
-                      </tbody>
-                    </table>   
+                          <tr>
+                            <td><label for="group">분류</label></td>
+                            <td><input type="text" name="group" id="group" placeholder="물품의 분류 종목이 들어올 겁니다"></td>
+                          </tr>  
+                          <tr>
+                            <td><label for="productCode">제품 코드</label></td>
+                            <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
+                              id="productCode" name="productCode" value="제품 코드" placeholder="제품 코드는 문자와 숫자로 받아올 겁니다"></td>
+                          </tr>
+                          <tr>
+                            <td>대여 가능 여부</td>
+                            <td><input type="text" id="rentable" placeholder="대여 가능 여부를 표시해 줄 겁니다."></td>
+                            <!-- <td><label for="rentable"><input type="radio" id="rentable" name="rentable" value="O">O</label></td>
+                            <td><label for="anRentable"><input type="radio" id="anRentable" name="anRentable" value="X">X</label></td> -->
+                          </tr>
+                          <tr>
+                            <td>반납 필요 여부</td>
+                            <td><input type="text" id="mustReturn" placeholder="반납여부를 표시해 줄 겁니다."></td>
+                            <!-- <td><label for="mustReturn"><input type="radio" id="mustReturn" name="mustReturn" value="O">O</label></td>
+                            <td><label for="notMustReturn"><input type="radio" id="notMustReturn" name="notMustReturn" value="X">X</label></td> -->
+                          </tr>
+                          <tr>
+                            <td><label for="rentableNumber">대여 가능 수량</label></td>
+                            <td><input type="text" id="rentableNumber" placeholder="대여 가능 수량을 받아와서 표시됩니다."></td>
+                          </tr>
+                          <tr>
+                            <td><label for="rentingNumber">대여 중 수량</label></td>
+                            <td><input type="text" id="rentingNumber" placeholder="현재 대여 중인 수량을 받아와서 표시됩니다."></td>
+                          </tr>
+                          <tr>
+                            <td><label for="totalNumber">총 수량</label></td>
+                            <td><input type="text" id="totalNumber" placeholder="총 수량을 받아와서 표시됩니다."></td>
+                          </tr>
+                          <tr>
+                            <td><label for="">등록일</label></td>
+                            <td><input type="text" placeholder="등록되거나 마지막으로 수정된 날짜를 받아와서 표시해 줍니다."></td>
+                          </tr>
+                        </tbody>
+                      </table>   
+                      </form>
+                    </div>
+                    <div class="btnWrap">
                         <!-- 편집 권한 -->
-                        <button id="registration">등록</button>
-                        <button id="edit">편집</button>
+                          <button class="btns" id="registration">등록</button>
+                          <button class="btns" id="edit">편집</button>
       
-                        <!-- 대여 권한 -->
-                        <button id="rental">대여</button>
-                    </form>
+                          <!-- 대여 권한 -->
+                          <button class="btns" id="rental">대여</button>
+                      </div>
                     </section>
+                  <button class="btn" id="close">확인</button>
+      
                   </section>
-                  <button id="close">확인</button>
                 </div>
               </div>
             </div>

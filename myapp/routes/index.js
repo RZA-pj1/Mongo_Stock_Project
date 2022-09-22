@@ -6,6 +6,7 @@ var bodyParser = require('body-parser')
 router.use(bodyParser.json())
 router.use(cookieParser());
 
+
 var { User } = require('../Models/addUser');
 var { auth } = require('../Middleware/Auth');
 var { Stock } = require('../Models/stockName');
@@ -13,11 +14,12 @@ const app = require('../app');
 
 
 
+
 /**********************************************
  * 물품 편집 등록 기능
 **********************************************/
 
-router.post('/stockRegistration/:userId',auth ,(req, res) =>{
+router.post('/stockRegistration',auth ,(req, res) =>{
   //물품등록할때 필요한 정보들을 Clinent 에서 가져오면
   //그것들을 데이터베이스에 넣어준다 
   var use= new User({registMan : req.user.registMan,isAdmin:req.user.isAdmin})
@@ -50,14 +52,13 @@ router.post('/stockRegistration/:userId',auth ,(req, res) =>{
 //물품등록 페이지
 //대분류 소분류 저장시켜라
 
-router.get('/stockRegistration/:userId',auth,(req,res)=>{
+router.get('/stockRegistration',auth,(req,res)=>{
   var use = new User({registMan:req.user.registMan})
   const category = req.query.category
   //등록권한 확인후 원하는 기능 진행
-  if(use.registMan===1){
+  if(use.registMan==1){
   Stock.find({"category":category},(err,stock)=>{
-    if(!err){
-      return res.status(500).json({err})}
+    
     if(!stock){
      return res.json(err,{message:"찾으시는 데이터가 없습니다."})}
     else{
@@ -67,7 +68,8 @@ router.get('/stockRegistration/:userId',auth,(req,res)=>{
         user : use.userName,
         message:"Read all Success",
         data:{stock:stock},
-        userName:req.user.userName
+        userName:req.user.userName,
+        // layout: './stockRegistration'
       })
     }
   })
@@ -136,34 +138,21 @@ router.get("/index/:stockNumber", function(req, res, next) {
     });
 });
 
-//var employee = require('../controllers/EmployeeController.js');
-
-// router.get('/', employee.list);
-
-// router.get('/show/:id', employee.show);
-
-// router.get('/create', employee.create);
-
-// router.post('/save', employee.save);
-
-// router.get('/edit/:id', employee.edit);
-
-// router.post('/update/:id', employee.update);
-
-// router.post('/delete/:id', employee.delete);
-
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-
 
 /***************************************************
  * 회원가입 및 로그인 기능
  * *************************************************/
-router.get('/', (req, res) => res.render('login', {content: '로그인'}))
+router.get('/', (req, res) => {
+  res.render('login', {content: '로그인'})
+})
 
 //app.get('/api/hello', (req, res) => res.send('Hello World!~~ '))
-router.get('/addUser',(req,res) => res.render('addUser',{content:'회원가입'}))
+router.get('/addUser',(req,res) => {
+  res.render('addUser',{
+  layout: './addUser',
+  hellow:`???`
+})
+})
 router.post('/addUser', (req, res) => {
   //회원 가입 할떄 필요한 정보들을  client에서 가져오면 
   //그것들을  데이터 베이스에 넣어준다. 
@@ -175,11 +164,18 @@ router.post('/addUser', (req, res) => {
       return res.json({addUserSuccess: false, err})
     }
     else{
-      return res.render('successAddUser', { layout: './successAddUser',addUserSuccess:true,message:"회원가입 성공"})
+      return res.render('successAddUser', { 
+      layout: './successAddUser',
+      addUserSuccess:true,
+      message:"회원가입 성공",
+      hellow:``})
     }
   })
 })
 
+
+
+// 로그인 시 사번, 비밀번호 체크
 router.post('/', (req, res) => {
   //요청된 사번을 데이터베이스에서 있는지 찾는다.
   User.findOne({ userId: req.body.userId }, (err,user) => {
@@ -228,18 +224,19 @@ router.get('/auth', auth, (req, res) => {
 * 물품관리 페이지
 * 
 ****************************************/
- router.get('/index',auth,(req, res) => {
+
+router.get('/index',auth,(req, res) => {
   var user = User({userName:req.user.userName})
   console.log(user.userName)
   Stock.find().then(stock => {
     let use = new User({ userName: req.body.userName })
     console.log("read all finish")
-    console.log(use.userName)
     return res.status(200).render('index', {
       userName: user.userName,
       message: "Read all Success",
-      userName:`${user.userName}`+"님 환영합니다.",
-      data: { stock: stock }
+      hellow:`${user.userName}`,
+      data: { stock: stock },
+      layout: './index'
     })
   })
     .catch(err => {
@@ -251,7 +248,13 @@ router.get('/logout', auth, (req, res) => {
     { token: "" }
     , (err, user) => {
       if (err) return res.json({ logoutsuccess: false, err });
-      return res.render('/',{content: '로그인'})
+      else return res.render('/',{content: '로그인'})
+      // if(err) {
+      //   return res.json({ logoutsuccess: false, err });
+      // } 
+      // else{
+      //   return res.render('/login',{content: '로그인'})
+      // }
     })
 })
 // app.get('/mypage', auth, function (요청, 응답) { 
@@ -298,7 +301,9 @@ router.get("/index/:userNumber",auth, function(req, res, next) {
   router.get('/upload',function(요청,응답){
     응답.render('upload.ejs')
   });
-  router.post('/upload', upload.single('input의 name속성이름'),function(요청,응답){ 응답.send('업로드완료')});
+  router.post('/upload', upload.single('input의 name속성이름'),function(요청,응답){ 
+    응답.send('업로드완료')
+  });
 
 
 
@@ -389,11 +394,11 @@ router.post('/:userName',auth,(req,res)=>{
   const user = new User({
     userId: req.user.userId,
     _id: req.user._id,
-    isAdmin: req.user.role === 0 ? false : true,
-    isAuth: true,
-    isEdit:req.user.editMan === 0 ? false:true,
-    isRental:req.user.rentalMan === 0 ? false:true,
-    isRegist : req.user.registMan ===0 ? false:true,
+    // isAdmin: req.user.role === 0 ? false : true,
+    // isAuth: true,
+    // isEdit:req.user.editMan === 0 ? false:true,
+    // isRental:req.user.rentalMan === 0 ? false:true,
+    // isRegist : req.user.registMan ===0 ? false:true,
     email: req.user.email,
     userName: req.user.userName,
     teamList: req.user.teamList,
@@ -405,15 +410,18 @@ router.post('/:userName',auth,(req,res)=>{
     registMan : req.user.registMan
   })
   
-    const userNumber = req.body.userNumber;
-    User.findOne({ userNumber: userNumber} ,(err,user)=>{
-        if (!user) return res.status(404).json({ message: "post not found" });
+    const userId = req.body.userId;
+    User.findOne({ userId: userId} ,(err,user)=>{
+        if (!user) {
+          return res.status(404).json({ message: "post not found" });
         console.log("Read Detail 완료");
-        return res.status(200).json({
+        }else{
+          return res.status(200).json({
           message: "Read Detail success",
           data: {user: user},
           message:`${user.userName}`+"님 환영합니다."
         });
+        } 
     })
 })
 /*******************************

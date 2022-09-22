@@ -1,7 +1,7 @@
 <!-- 
 
     담당자 : 이승현
-    함수 설명 : 
+    페이지 설명 : 회원가입 페이지
     기능 설명 :  1. 회원가입 완료 후 로그인 페이지 이동
                 2. 비밀번호 검증기능 - [비밀번호 최소 4자리 이상 특수문자]
                 3. 메일 검증 기능 - [@, . 등은 있어야 함]
@@ -15,16 +15,16 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <!--=============== JQUERY ===============-->
-   <script src="../public/view_js/jquery.min.js"></script>
+   <script src="js/jquery.min.js"></script>
    
    <!--=============== FONTAWESOME ===============-->
    <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
    
    <!--=============== CSS ===============-->
-   <link rel="stylesheet" href="/public/css/add_user.css">
+   <link rel="stylesheet" href="css/addUser.css">
+   
    <title>회원가입 페이지</title>
  </head>
- <link rel="stylesheet" type="text/css" href='css/add_user.css'/>
  <body>
    <!--=============== HEADER ===============-->
    <header>
@@ -32,23 +32,26 @@
      <%- include('partials/header.ejs'); %>
  
    </header>
-   <section id="add_user">
-     <h2>회원 가입</h2>
+   <section id="add_user" class="container">
+     <hgroup>
+       <h2>회원 가입</h2>
+       <h3>회원 가입을 통해 더 많은 서비스를 제공받을 수 있습니다.</h3>
+     </hgroup>
      <div id="contentWrap">
-       <h2 class="hidden">회원 가입 내용</h2>
-         <form method="post">
+       <h3 class="hidden">회원 가입 내용</h3>
+         <!-- <form action="/successAddUser" method="post"> -->
                <table>
                    <tr>
                        <td><label for="userName">이름</label></td>
                        <td><input type="text" id="userName" name="userName" placeholder="이름을 입력하세요."/></td>
                        <td></td>
-                   </tr>
+                   </tr> 
                    <tr>
                        <td><label for="team">부서</label></td>
                        <td>
-                         <select id="teamList1" name="teamList1" class="teamList" onchange="selectTeam()">
+                         <select id="teamList1" name="team" class="teamList" onchange="selectTeam()">
                             <!--onchage: select안에 있는 옵션들의 값이 바꼈을때 명령이 실행
-                                onclick을 안하는 이유: 키보드 사용자는 click을 할수 없으므로-->
+                             onclick을 안하는 이유: 키보드 사용자는 click을 할수 없으므로-->
                            <option value="default" selected>-- 선택 --</option>
                            <option value="영업부">영업부</option>
                            <option value="기술부">기술부</option>
@@ -57,28 +60,31 @@
                          </select>
                      </td>
                      <td>
-                       <select name="teamList2" id="teamList2">
+                       <select name="team" id="teamList2">
                          <option value="">-- 선택 --</option>
                        </select>
                      </td>
                    </tr>
                    <tr>
-                    <td><label for="teamPosition">직책</label></td>
-                    <td>
-                      <select name="teamPosition" id="teamPosition">
-                        <option value="연구원 보조">연구원 보조</option>
-                        <option value="연구원">연구원</option>
-                        <option value="주임연구원">주임연구원</option>
-                        <option value="전임연구원">전임연구원</option>
-                        <option value="선임연구원">선입연구원</option>
-                        <option value="책임연구원">책임연구원</option>
-                        <option value="수석연구원">수석연구원</option>
-                      </select>
-                    </td>
+                     <td><label for="teamPosition">직책</label></td>
+                     <td>
+                       <select name="teamPosition" id="teamPosition">
+                         <option value="연구원 보조">연구원 보조</option>
+                         <option value="연구원">연구원</option>
+                         <option value="주임연구원">주임연구원</option>
+                         <option value="전임연구원">전임연구원</option>
+                         <option value="선임연구원">선입연구원</option>
+                         <option value="책임연구원">책임연구원</option>
+                         <option value="수석연구원">수석연구원</option>
+                       </select>
+                     </td>
+                     <td></td>
+ 
                    </tr>
                    <tr>
                      <td id="label"><label for="userId">사원번호</label></td>
                      <td><input type="text" name="userId" id="userId" maxlength="12" placeholder="사원번호를 입력하세요."/></td>
+                     <td></td>
                      <!-- <td><input type="button" id="duplicateCheck" name="duplicateCheck" value="중복 확인"/></td> -->
                    </tr>
                    <!-- 담당자 : 이승현
@@ -90,35 +96,41 @@
                        <td> 
                          <input type="text" name="email"  id="email" value="" size="20" placeholder="name@example.com"/> 
                        </td> 
+                       <td></td>
+ 
                    </tr>
                    <!-- 2. 비밀번호 검증 기능
                    // sccript로 구현하는 것 같은데 아직 진행 못했어요 -->
                    <tr class="input password">
                      <!--patter으로 비밀번호 유효성 검사 minlength와 maxlength로 글자 수 제한--> 
                      <td><label for="password">비밀번호</b></td>
-                     <td>
-                       <input type="password" name="password" id="txtPassword1" class="txtPassword" placeholder="비밀번호를 입력하세요." />
+                     <td class="passwdWrap">
+                       <input type="password" id="txtPassword1" class="txtPassword" placeholder="비밀번호를 입력하세요." />
                        <div class="eyes">
                          <i class="fa-solid fa-eye"></i>
                        </div>
                      </td>
+                     <td></td>
+ 
                    </tr>
                    <tr class="input password">
                      <td><label for="password">비밀번호 확인</b></td>
-                     <td>
-                       <input type="password" id="txtPassword2" class="txtPassword">
+                     <td class="passwdWrap">
+                       <input type="password" id="txtPassword2" class="txtPassword" placeholder="비밀번호를 확인하세요.">
                        <div class="eyes">
                          <i class="fa-solid fa-eye"></i>
                        </div>
                      </td>
-                     <td><a onclick="fn_pw_check()">확인</a></td>
+                     <td><a class="pwCheck" href="#" onclick="fn_pw_check()">확인</a></td>
                    </tr> 
                </table>
            <!-- 1. 회원가입 완료 후 로그인 페이지로 이동 
            // 제 생각인데 회원가입 완료 페이지를 만들어서 [로그인하기] 버튼을 만들어 
              클릭 시 이동하는 방법이 좋을 것 같아요 -->
-           <a href="successAddUser"><input onclick="javascript:GoToEnroll()" type="submit" id="submitButton" value="확인"/></a>
-         </form>
+           <a class="addUserBtn">
+             <input class="button" onclick="javascript:GoToEnroll()" type="submit" value="확인"/>
+           </a>
+         <!-- </form> -->
      </div>
    </section>
    <!--=============== FOOTER ===============-->
@@ -299,7 +311,7 @@
          }
        }
  
-       // 로그인 버튼을 클릭했을 때 실행되는 함수                                 
+       // 회원가입 확인 버튼을 클릭했을 때 실행되는 함수                                 
        function GoToEnroll(){
          var obEmail = document.getElementById("email");
          if (!obEmail.value) {

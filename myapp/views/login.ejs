@@ -1,81 +1,90 @@
 <!-- 
 
     담당자 : 이승현
-    함수 설명 : 
+    페이지 설명 : 로그인 페이지
     기능 설명 :  1. 비밀번호, 사번 검증 - [비밀번호, 사번 둘 중 하나가 틀린 경우 둘 다 오류 표시]
                 2. 회원가입 페이지 이동
                 3. 메인 페이지 이동 기능 - [토큰을 이용한 사용자 검증]
 
  -->
  <!DOCTYPE html>
- <html lang="ko">
- <head>
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!--=============== JQUERY ===============-->
-     <!-- <script src="js/jquery.min.js"></script> -->
-     <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
-     <!--=============== FONTAWESOME ===============-->
-     <!-- <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css"> -->
-     
-     <!--=============== CSS ===============-->
-     <!-- <link rel="stylesheet" href="/public/css/login.css"> -->
-     <title><%- content %></title>
- </head>
- <body>
-   <section id="loginLeft" class="loginSection">
-     <h2 class="hidden"><%- content %></h2>
-         <form name="customer" action="login" method="post">
-             <table>
-                 <thead class="hidden">
-                     <tr>
-                         <th colspan="2">구조상 필요한 표머리</th>
-                     <tr>
-                 </thead>
-                 <tbody>
-                     <tr>
-                         <th><label for="userId">사원번호</label></th>
-                         <td>
-                             <input type="number" name="userId" id="userId" maxlength="12" placeholder="사원번호를 입력하세요."/>
-                         </td>
-                         <td>
-                             <input id="idSaveCheck" class="checkbox" type="checkbox" name="userNumberCheck" value="true"/>사원번호 저장
-                         </td>
-                     </tr>
-                     <tr class="input password">
-                         <th><label for="password" class="label password">비밀번호</label></th>
-                         <td>
-                             <input type="password" id="password" name="password" class="form-input" maxlength="20" placeholder="비밀번호를 입력하세요."/>
-                             <div class="eyes">
-                                 <i class="fa-solid fa-eye"></i>
-                             </div>
-                         </td>
-                         
-                     </tr>
-                 </tbody>
-                 </table>
-                 <input 
-                     id='go_index'    
-                     type='button'
-                     
-                     value='로그인' />
-                 <!-- <input type="submit" id="submitButton" value="로그인"/> -->
-             <ul>
-                 <!-- <li><a href="addUser.ejs">회원가입</a></li> 2. 회원가입 페이지 이동 -->
-                 <!-- <li><a href="find_userId.ejs">아이디 찾기</a></li> -->
-                 <!-- <li><a href="find_passwd.ejs">비밀번호 찾기</a></li> -->
-             </ul>
-             <!-- 로그인 API -->
-             <div>Google로 로그인하기</div>
-             <div>Facebook으로 로그인하기</div>
-             <div>Kakaotalk으로 로그인하기</div>
-         </form>
-     </section>
-     <!-- 디자인한 그림, 움짤 넣기! -->
-     <section id="loginRight" class="loginSection">
-         <img src="images/home.png" alt="">
-     </section>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--=============== JQUERY ===============-->
+    <script src="js/jquery.min.js"></script>
+
+    <!--=============== FONTAWESOME ===============-->
+    <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
+    
+    <!--=============== CSS ===============-->
+    <link rel="stylesheet" href="css/login.css">
+    <title>로그인</title>
+</head>
+<body>
+    <div id="loginSection">
+    <section id="loginLeft" class="loginSection">
+        <h2 class="hidden">로그인</h2>
+            <!-- <form name="user" id="document" action="/index" method="post"> -->
+                <table>
+                    <thead class="hidden">
+                        <tr>
+                            <th colspan="2">구조상 필요한 표머리</th>
+                        <tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th><label for="userId">사원번호</label></th>
+                            <td>
+                                <input type="text" name="userId" id="userId" maxlength="12" placeholder="아이디를 입력하세요."/>
+                            </td>
+                            <td>
+                                <input id="idSaveCheck" class="checkbox" type="checkbox" name="userNumberCheck" value="true"/>사원번호 저장
+                            </td>
+                        </tr>
+                        <tr class="input password">
+                            <th><label for="password" class="label password">비밀번호</label></th>
+                            <td>
+                                <input type="password" id="password" name="password" class="form-input" maxlength="20" placeholder="비밀번호를 입력하세요.">
+                                    <div class="eyes">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </div>
+                                </input>    
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                    </table>
+                    <input 
+                        id='go_index'    
+                        type='submit'
+                        class="button"
+                        
+                        value='로그인' />
+                    <!-- </form> -->
+                    <!-- <input type="submit" id="submitButton" value="로그인"/> -->
+                <div class="findUser">
+                    <p>회원 정보가 아직 없으신가요?</p>
+                    <ul>
+                        <li><a onclick='addUserPage()'>회원가입</a></li> <!-- 2. 회원가입 페이지 이동 -->
+                        <li><a href="find_userId.ejs">아이디 찾기</a></li>
+                        <li><a href="find_passwd.ejs">비밀번호 찾기</a></li>
+                    </ul>
+                </div>
+                    
+                <!-- 로그인 API -->
+                <!-- <div>Google로 로그인하기</div>
+                <div>Facebook으로 로그인하기</div>
+                <div>Kakaotalk으로 로그인하기</div> -->
+            
+        </section>
+        <!-- 디자인한 그림, 움짤 넣기! -->
+        <section id="loginRight" class="loginSection">
+            <img src="img/home.png" alt="" class="loginImg">
+        </section>
+    </div>
      <script>
          /**
           * 
@@ -97,31 +106,31 @@
          *******************************************************************************/ 
          
 
-        //  $(document).ready(function(){
+         $(document).ready(function(){
  
-        //  // 저장된 쿠키값을 가져와서 ID 칸에 넣어준다. 없으면 공백으로 들어감.
-        //  var key = getCookie("key");
-        //  $("#userId").val(key); 
+         // 저장된 쿠키값을 가져와서 ID 칸에 넣어준다. 없으면 공백으로 들어감.
+         var key = getCookie("key");
+         $("#userId").val(key); 
          
-        //  if($("#userId").val() != ""){ // 그 전에 ID를 저장해서 처음 페이지 로딩 시, 입력 칸에 저장된 ID가 표시된 상태라면,
-        //      $("#idSaveCheck").attr("checked", true); // ID 저장하기를 체크 상태로 두기.
-        //  }
+         if($("#userId").val() != ""){ // 그 전에 ID를 저장해서 처음 페이지 로딩 시, 입력 칸에 저장된 ID가 표시된 상태라면,
+             $("#idSaveCheck").attr("checked", true); // ID 저장하기를 체크 상태로 두기.
+         }
          
-        //  $("#idSaveCheck").change(function(){ // 체크박스에 변화가 있다면,
-        //      if($("#idSaveCheck").is(":checked")){ // ID 저장하기 체크했을 때,
-        //          setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
-        //      }else{ // ID 저장하기 체크 해제 시,
-        //          deleteCookie("key");
-        //      }z
-        //  });
+         $("#idSaveCheck").change(function(){ // 체크박스에 변화가 있다면,
+             if($("#idSaveCheck").is(":checked")){ // ID 저장하기 체크했을 때,
+                 setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
+             }else{ // ID 저장하기 체크 해제 시,
+                 deleteCookie("key");
+             }z
+         });
          
-        //  // ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
-        //  $("#userId").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
-        //      if($("#idSaveCheck").is(":checked")){ // ID 저장하기를 체크한 상태라면,
-        //          setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
-        //      }
-        //  });
-        //  });
+         // ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
+         $("#userId").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
+             if($("#idSaveCheck").is(":checked")){ // ID 저장하기를 체크한 상태라면,
+                 setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
+             }
+         });
+         });
  
          function setCookie(cookieName, value, exdays){
          var exdate = new Date();
@@ -156,56 +165,63 @@
           * 기능 설명   : 눈 이모티콘 클릭 시 비밀번호 보이기/가리기 기능
           *            
          *******************************************************************************/ 
-        //  $(function(){
-        //      // 눈표시 클릭 시 패스워드 보이기
-        //      $('.eyes').on('click',function(){
-        //          $('.input.password').toggleClass('active');
+         $(function(){
+             // 눈표시 클릭 시 패스워드 보이기
+             $('.eyes').on('click',function(){
+                 $('.input.password').toggleClass('active');
  
-        //          if( $('.input.password').hasClass('active') == true ){
-        //              $(this).find('.fa-eye').attr('class',"fas fa-eye-slash").parents('.input').find('#password').attr('type',"text");
-        //                          // i 클래스                // 텍스트 보이기 i 클래스
-        //          }
-        //          else{
-        //              $(this).find('.fa-eye-slash').attr('class',"fas fa-eye").parents('.input').find('#password').attr('type','password');
-        //          }
-        //      });
-        //  });
+                 if( $('.input.password').hasClass('active') == true ){
+                     $(this).find('.fa-eye').attr('class',"fas fa-eye-slash").parents('.input').find('#password').attr('type',"text");
+                                 // i 클래스                // 텍스트 보이기 i 클래스
+                 }
+                 else{
+                     $(this).find('.fa-eye-slash').attr('class',"fas fa-eye").parents('.input').find('#password').attr('type','password');
+                 }
+             });
+         });
  
          /******************************************************************************
-          * 담당자      : 이승현
-          * Function명  : indexPage
-          * 함수 설명   : window.location.replace를 통해 이동할 페이지를 지정해 준다.
-          * 기능 설명   : 3. 메인 페이지 이동 기능 - [토큰을 이용한 사용자 검증]
-          *              [로그인] 버튼 클릭 시 메인 화면으로 Redirect 하기
-          *            
-         *******************************************************************************/ 
-         $("#go_index").click(function(){
+         * 담당자      : 이승현
+         * Function명  : indexPage
+         * 함수 설명   : window.location.replace를 통해 이동할 페이지를 지정해 준다.
+         * 기능 설명   : 3. 메인 페이지 이동 기능 - [토큰을 이용한 사용자 검증]
+         *              [로그인] 버튼 클릭 시 메인 화면으로 Redirect 하기
+         *            
+        *******************************************************************************/ 
+        // function indexPage()  {
+        //     window.location.replace("http://localhost:5000/index");
+        // }
+        function addUserPage()  {
+            window.location.replace("http://localhost:5000/addUser");
+        }
+
+        $("#go_index").click(function(){
  
- // json 형식으로 데이터 set
- var params = {
-         userId         : $("#userId").val()
-         , userName     : $("#name").val()
-         , password     : $("#password").val()
- }
-     
- // ajax 통신
- $.ajax({
-     type : "POST",            // HTTP method type(GET, POST) 형식이다.
-     url : "/",      // 컨트롤러에서 대기중인 URL 주소이다.
-     data : params,            // Json 형식의 데이터이다.
-     success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
-         // 응답코드 > 0000
-         if(res.loginSuccess!=false){
-            alert(res.successmessage);
-            window.location.replace("/index");}
-        else{
-            alert(res.message);}
-     },
-     error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-         alert("통신 실패.")
-     }
- });
-});
+        // json 형식으로 데이터 set
+        var params = {
+                userId         : $("#userId").val()
+                , userName     : $("#name").val()
+                , password     : $("#password").val()
+        }
+            
+        // ajax 통신
+        $.ajax({
+            type : "POST",            // HTTP method type(GET, POST) 형식이다.
+            url : "/",      // 컨트롤러에서 대기중인 URL 주소이다.
+            data : params,            // Json 형식의 데이터이다.
+            success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                // 응답코드 > 0000
+                if(res.loginSuccess!=false){
+                    alert(res.successmessage);
+                    window.location.replace("/index");}
+                else{
+                    alert(res.message);}
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                alert("통신 실패.")
+            }
+        });
+        });
          
          
      </script>

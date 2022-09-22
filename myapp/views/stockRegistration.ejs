@@ -65,11 +65,11 @@
               ---------------------------------------->
               <select id="bigGroup" name="bigGroup" class="bigGroup" onchange="selectGroup()">
                 <option herf="/stockRegistration?bigGroup=" value="default" selected>-- 대분류 --</option>
-                <% for(var count=0; count < bigGroup.length; count++){%>
-                  <option value="<%= bigGroup[count]%>">
-                    <%= bigGroup[count]%>
+                <% for(var count=0; count < bigGroup.length; count++){ %>
+                  <option value="<%= bigGroup[count] %>">
+                    <% bigGroup[count] %>
                   </option>
-                  <%}%>
+                  <% } %>
                     <!-- <option value="default" selected>-- 대분류 --</option> -->
                     <!-- <option value="오실로스코프">오실로스코프</option>
                 <option value="신호, 스펙트럼 및 변조 분석기">신호, 스펙트럼 및 변조 분석기</option>
@@ -198,17 +198,36 @@
      * 기능 설명   : 3-1. [수량은 숫자만 입력 가능] + 아니면 알림창 띄우기 기능
      *            
     *******************************************************************************/
-    //input 숫자만 입력
-    $("#quantity").on("keyup", function (event) {
-      if (event.which && (event.which > 47 && event.which < 58 || event.which == 8)) {
-
-      } else {
-        alert('숫자만 입력해주세요.');
-        $(this).val($(this).val().replace(/[^0-9]/g, ""));
+    // input 숫자와 문자만 입력
+      // 지정된 텍스트 상자에 대한 입력을 지정된 입력 필터로 제한
+      function setInputFilter(textbox, inputFilter) {
+        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+          textbox.addEventListener(event, function() {
+            if (inputFilter(this.value)) {
+              this.oldValue = this.value;
+              this.oldSelectionStart = this.selectionStart;
+              this.oldSelectionEnd = this.selectionEnd;
+            } else if (this.hasOwnProperty("oldValue")) {
+              this.value = this.oldValue;
+              this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+              alert('문자와 숫자만 입력해주세요.');
+              $(this).val($(this).val().replace(/[^0-9a-zA-Zㄱ-ㅎ]/g,""));
+            } else {
+              
+              this.value = "";
+            }
+          });
+        });
       }
-    });
+
+      // 입력 필터를 설치
+      setInputFilter(document.getElementById("productCode"), function(value) {
+        return /^[0-9a-zA-Zㄱ-ㅎ]*$/i.test(value); });
     
 
+
+
+        
     //아이디가 bigGroup인 select가 값이 바뀌면 진행
     $('#bigGroup').on('change', function () {
       console.log(bigGroup);
