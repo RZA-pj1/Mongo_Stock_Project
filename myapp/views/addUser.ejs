@@ -17,6 +17,9 @@
    <!--=============== JQUERY ===============-->
    <script src="js/jquery.min.js"></script>
    
+   <!--=============AJAX JQUERY ============ -->
+   <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
    <!--=============== FONTAWESOME ===============-->
    <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
    
@@ -49,7 +52,7 @@
                    <tr>
                        <td><label for="team">부서</label></td>
                        <td>
-                         <select id="teamList1" name="team" class="teamList" onchange="selectTeam()">
+                         <select id="teamList1" name="teamList1" class="teamList" onchange="selectTeam()">
                             <!--onchage: select안에 있는 옵션들의 값이 바꼈을때 명령이 실행
                              onclick을 안하는 이유: 키보드 사용자는 click을 할수 없으므로-->
                            <option value="default" selected>-- 선택 --</option>
@@ -60,7 +63,7 @@
                          </select>
                      </td>
                      <td>
-                       <select name="team" id="teamList2">
+                       <select name="teamList2" id="teamList2">
                          <option value="">-- 선택 --</option>
                        </select>
                      </td>
@@ -105,7 +108,7 @@
                      <!--patter으로 비밀번호 유효성 검사 minlength와 maxlength로 글자 수 제한--> 
                      <td><label for="password">비밀번호</b></td>
                      <td class="passwdWrap">
-                       <input type="password" id="txtPassword1" class="txtPassword" placeholder="비밀번호를 입력하세요." />
+                       <input type="password" id="txtPassword1" name="txtPassword" class="txtPassword" placeholder="비밀번호를 입력하세요." />
                        <div class="eyes">
                          <i class="fa-solid fa-eye"></i>
                        </div>
@@ -121,14 +124,14 @@
                          <i class="fa-solid fa-eye"></i>
                        </div>
                      </td>
-                     <td><a class="pwCheck" href="#" onclick="fn_pw_check()">확인</a></td>
+                     <td><a class="pwCheck" onclick="fn_pw_check()">확인</a></td>
                    </tr> 
                </table>
            <!-- 1. 회원가입 완료 후 로그인 페이지로 이동 
            // 제 생각인데 회원가입 완료 페이지를 만들어서 [로그인하기] 버튼을 만들어 
              클릭 시 이동하는 방법이 좋을 것 같아요 -->
            <a class="addUserBtn">
-             <input class="button" onclick="javascript:GoToEnroll()" type="submit" value="확인"/>
+             <input class="button" onclick="GoToEnroll()" type="submit" value="확인"/>
            </a>
          <!-- </form> -->
      </div>
@@ -326,20 +329,23 @@
              return;
            }
            else{
-            // var param={
-            //   userId      : ("#userId").val(),
-            //   userName    : ("#userName").val(),
-            //   password    : (".txtPassword").val(),
-            //   email       : ("#email").val(),
-            //   teamList    : ("#teamList1").val(),
-            //   teamPosition : ("#teamPosition").val()
-            // }
+            var param={
+              userId      : $("#userId").val(),
+              userName    : $("#userName").val(),
+              password    : $(".txtPassword").val(),
+              email       : $("#email").val(),
+              teamList1   : $("#teamList1").val(),
+              teamList2   : $("#teamList2").val(),
+              teamPosition : $("#teamPosition").val()
+            }
             $.ajax({
               type : "POST",            // HTTP method type(GET, POST) 형식이다.
-              url : "/addUser",      // 컨트롤러에서 대기중인 URL 주소이다.
-              data : param,            // Json 형식의 데이터이다.
-              success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
-                // 응답코드 > 0000
+              url : "/addUser",         // 컨트롤러에서 대기중인 URL 주소이다.
+              data : param,             // Json 형식의 데이터이다.
+              // dataType : JSON,          //Jason형식데이터로 받겠다.
+              success : function(res){  // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+              console.log(res)  
+              // 응답코드 > 0000
                 if(res.addUserSuccess!=false){
                   alert("회원가입 성공");
                   window.location.replace("/successAddUser");}
@@ -347,7 +353,8 @@
                   alert("회원가입 실패");}
             },
             error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-               alert("통신 실패.")
+              console.log(XMLHttpRequest, textStatus, errorThrown) 
+              alert("통신 실패.")
             }
             });
            }

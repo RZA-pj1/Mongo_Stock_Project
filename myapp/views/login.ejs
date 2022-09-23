@@ -16,6 +16,9 @@
     <!--=============== JQUERY ===============-->
     <script src="js/jquery.min.js"></script>
 
+    <!--============= AJAX JQUERY =============-->
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
     <!--=============== FONTAWESOME ===============-->
     <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
     
@@ -121,15 +124,15 @@
                  setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
              }else{ // ID 저장하기 체크 해제 시,
                  deleteCookie("key");
-             }z
+             }
          });
          
          // ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
-         $("#userId").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
-             if($("#idSaveCheck").is(":checked")){ // ID 저장하기를 체크한 상태라면,
-                 setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
-             }
-         });
+        //  $("#userId").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
+        //      if($("#idSaveCheck").is(":checked")){ // ID 저장하기를 체크한 상태라면,
+        //          setCookie("key", $("#userId").val(), 7); // 7일 동안 쿠키 보관
+        //      }
+        //  });
          });
  
          function setCookie(cookieName, value, exdays){

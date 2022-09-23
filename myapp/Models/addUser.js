@@ -61,15 +61,15 @@ var userSchema = new mongoose.Schema({
     },
     editMan:{
         type        : String,
+        default     : 0,
     },
     rentalMan:{
         type        : String,
+        default     : 0,
     },
     registMan:{
         type        :String,
-    },
-    Manager:{
-        type        :String,
+        default     : 0,
     },
     stockCount:{
         type        :Number,
