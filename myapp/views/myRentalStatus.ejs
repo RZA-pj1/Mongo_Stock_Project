@@ -123,23 +123,23 @@
 
     </footer>
     <script type="text/javascript">
-      /******************************************************************************
-       * 담당자      : 이승현
-       * Function명 : selectGroup
-       * 함수 설명   : remove와 append 함수를 사용
-       * 기능 설명   : 대분류, 소분류 선택란
-       *            
-      *******************************************************************************/ 
-     
-  
-      /******************************************************************************
-       * 담당자      : 이승현
-       * 기능 설명   : 1. 편집 기능
-                        > [수량은 숫자만 입력 가능]
-                        > + 아니면 알림창 띄우기 기능
-       *            
-      *******************************************************************************/ 
-      
+    // ajax 통신
+    $.ajax({
+      type : "GET",             // HTTP method type(GET, POST) 형식이다.
+      url : "/myRentalStatus",  // 컨트롤러에서 대기중인 URL 주소이다.
+      data : params,            // Json 형식의 데이터이다.
+      success : function(res){  // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+          // 응답코드 > 0000
+          if(res.loginSuccess!=false){
+              alert(res.successmessage);
+              window.location.replace("/index");}
+          else{
+              alert(res.message);}
+      },
+      error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+          alert("통신 실패.")
+      }
+  });
     </script>
   </body>
   </html>

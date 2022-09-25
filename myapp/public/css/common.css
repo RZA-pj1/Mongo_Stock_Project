@@ -209,7 +209,7 @@
   body.dark-theme{
     --first-color-dark: hsl(var(--hue), 8%, 20%);
     --title-color: hsl(var(--hue), 4%, 95%);
-    --text-color: hsl(var(--hue), 4%, 75%);
+    --text-color: hsl(var(--hue), 4%, 25%);
     --body-color: hsl(var(--hue), 8%, 12%);
     --container-color: hsl(var(--hue), 8%, 16%);
   }
@@ -241,6 +241,10 @@
   
   .dark-theme .scroll-header{
     box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+  }
+
+  .dark-theme #pick_stock td {
+    color: var(--title-color);
   }
   
  

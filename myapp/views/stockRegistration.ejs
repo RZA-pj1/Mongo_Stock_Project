@@ -30,109 +30,122 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!--=============== JQUERY ===============-->
-  <script src="view_js/jquery.min.js"></script>
+  <script src="js/jquery.min.js"></script>
 
+  <!--=============== CSS ===============-->
+  <link rel="stylesheet" href="css/stockRegistration.css">
+    
   <title>물품 등록</title>
 </head>
-
 <body>
+  <!--=============== HEADER ===============-->
+  <header>
+
+    <%- include('partials/header.ejs'); %>
+
+  </header>
+  <div class="registrationSection container">
   <section class="registrationWrap">
     <section class="headerWrap">
       <h2>물품 등록</h2>
-      <button id="reset">초기화</button>
-      <button id="callExcel">엑셀 불러오기</button>
+      <div class="btnWrap">
+        <button class="btn" id="btn_reset">초기화</button>
+        <button class="btn" id="btn_callExcel">엑셀 불러오기</button>
+      </div>
     </section>
     <section class="contentWrap">
       <h3 class="hidden">물품 등록 내용</h3>
-      <!-- <form action="/stockRegistration" method="post"> -->
-      <table id="stock">
-        <thead>
-          <tr>
-            <th>물품 정보</th>
-          </tr>
-        </thead>
+      <!-- ** form action 때문에 groupPlusModal창 실행이 안 됨. 오류 수정 요망. -->
+      <div class="tableSection">
+      <!-- <form id="reset_test_form"> -->
+        <table id="stock">
         <tbody>
-          <tr>
-            <td><label for="productName">이름</label></td>
+        <tr>
+            <th><label for="productName">이름</label></th>
             <td><input type="text" name="productName" id="productName" placeholder="물품명을 입력해 주세요."></td>
           </tr>
           <tr>
-            <td><label for="group">분류</label></td>
+            <th><label for="bigGroup">대분류</label></th>
+            <!-- <td><label for="group">분류</label></td> -->
             <td>
-              <!--------------------------------------
-                 담당자 : 김건희
-                 기능   : 셀럭트 박스 동적 리스트
-              ---------------------------------------->
               <select id="bigGroup" name="bigGroup" class="bigGroup" onchange="selectGroup()">
-                <option herf="/stockRegistration?bigGroup=" value="default" selected>-- 대분류 --</option>
-                <% for(var count=0; count < bigGroup.length; count++){ %>
-                  <option value="<%= bigGroup[count] %>">
-                    <% bigGroup[count] %>
-                  </option>
-                  <% } %>
-                    <!-- <option value="default" selected>-- 대분류 --</option> -->
-                    <!-- <option value="오실로스코프">오실로스코프</option>
+                <option value="default" selected>-- 대분류 --</option>
+                <option value="오실로스코프">오실로스코프</option>
                 <option value="신호, 스펙트럼 및 변조 분석기">신호, 스펙트럼 및 변조 분석기</option>
                 <option value="구성 요소 및 액세서리">구성 요소 및 액세서리</option>
                 <option value="신호 발생기">신호 발생기</option>
                 <option value="Keithley 장비 및 제품">Keithley 장비 및 제품</option>
                 <option value="Keithley 반도체 테스트 시스템">Keithley 반도체 테스트 시스템</option>
                 <option value="Keithley 스위칭 및 데이터 획득 시스템">Keithley 스위칭 및 데이터 획득 시스템</option>
-                <option value="소프트웨어">소프트웨어</option> -->
+                <option value="소프트웨어">소프트웨어</option>
               </select>
             </td>
+            <th><label for="smallGroup">소분류</label></th>
             <td>
               <select name="smallGroup" id="smallGroup">
                 <option value="">-- 소분류 --</option>
               </select>
             </td>
             <td>
-              <%- include('partials/groupPlusModel.ejs'); %>
-                <!-- <button id="groupPlus" value="분류 등록">+</button> -->
+              <%- include('partials/groupPlusModal.ejs'); %>
+              <!-- <button id="groupPlus" value="분류 등록">+</button> -->
             </td>
+          </tr>  
+          <tr>
+            <th><label for="rentable">대여 가능 여부</label></th>
+            <td><input type="radio" id="rentable" name="rentable" value="O">가능
+              <input type="radio" id="anRentable" name="rentable" value="X">불가능</td>
           </tr>
           <tr>
-            <td>대여 가능 여부</td>
-            <td><label for="rentable"><input type="radio" id="rentable" name="rentable" value="O">O</label></td>
-            <td><label for="anRentable"><input type="radio" id="anRentable" name="rentable" value="X">X</label></td>
-          </tr>
-          <tr>
-            <td>반환 필요 여부</td>
-            <td><label for="mustReturn"><input type="radio" id="mustReturn" name="rentable" value="O">O</label></td>
-            <td><label for="notMustReturn"><input type="radio" id="notMustReturn" name="rentable" value="X">X</label>
-            </td>
+            <th><label for="mustReturn">반납 필요 여부</label></th>
+            <td><input type="radio" id="mustReturn" name="mustReturn" value="O">필요
+              <input type="radio" id="notMustReturn" name="mustReturn" value="X">불필요</td>
           </tr>
           <!-- 
-            담당자 : 이승현
-            기능 설명 : 3-2. [제품 코드는 문자+숫자]
-            구현 방법 : oninput 이벤트와 정규식을 사용해서 가능하다.
-                        oninput 이벤트는 input 값이 바뀌면 발생하는 이벤트 이며 이 이벤트가 발생할 때,
-                        숫자만 입력받는 정규식이 적용되고 숫자가 아닌 값이 입력되면 replace 함수로 대체하게 된다.
-                        
-                        ** 문자라고 해서 영어뿐만 아닌 한글도 포함하였다.
-                        *** 여기서는 문자와 숫자를 제외한 것은 아예 타이핑이 안 된다.
-           -->
+              담당자 : 이승현
+              기능 설명 : 예외) 제품 코드는 [문자+숫자]로만 이루어지도록 한다.
+              구현 방법 : (keyPress, keyDown, input) event 받아서 replace - 입력 후 리플레이스 되는 형태라서 그런지 한글은 특히 입력/삭제가 눈에 보인다.
+                          이전 입력된 값을 저장했다가 숫자가 아닌 값이 들어오면 이전 값으로 돌려 놓는 형태
+  
+                          ** 문자라고 해서 영어뿐만 아닌 한글도 포함하였다.
+                          *** 여기서는 문자와 숫자를 제외한 것은 아예 타이핑이 안 된다.
+             -->
           <tr>
-            <td><label for="productCode">제품 코드</label></td>
-            <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');" id="productCode"
-                name="productCode" value="제품 코드" placeholder="제품 코드는 문자와 숫자로 이루어져야 합니다."></td>
+            <th><label for="productCode">제품 코드</label></th>
+            <td><input type="text" onKeyup="this.value=this.value.replace(/[^-0-9a-zA-Zㄱ-ㅎ]/g,'');"
+              id="productCode" name="productCode" value="제품 코드" placeholder="제품 코드는 문자와 숫자로 이루어져야 합니다."></td>
           </tr>
           <!-- 
-            담당자 : 이승현
-            기능 설명 : 3-1. [수량은 숫자만 입력 가능]
-            구현 방법 : * 아래에 js로 숫자 제외한 것을 타이핑했을 때 경고창이 뜨게 설정했다. (176 Line)
+              담당자 : 이승현
+              기능 설명 : 3-1. [수량은 숫자만 입력 가능]  
+              구현 방법 : * javaScript로 유효성 검증 함수를 활용
            -->
           <tr>
-            <td><label for="quantity">수량</label></td>
-            <td><input type="text" id="quantity"></td>
+            <th><label for="quantity">수량</label></th>
+            <td><input type="number" id="quantity" name="quantity" value="수량" placeholder="숫자만 입력이 가능합니다."></td>
           </tr>
         </tbody>
-      </table>
-      <button id="registration">등록</button>
-      <button id="cancel">취소</button>
-      </form>
+      </table>  
+        <!-- </form> -->
+      </div>
+      <div class="btnWrap">
+        <button class="btn rBtn" id="registration">등록</button>
+        <button class="btn cBtn" id="cancel" onclick="goCancle()">취소</button>
+      </div>
+      
+      </section>
+      
     </section>
-  </section>
+    <section class="registrationWrapImg">
+      <img src="img/stockRegistration.png" alt="">
+    </section>
+    </div>
+    <!--=============== FOOTER ===============-->
+    <footer>
+  
+      <%- include('partials/footer.ejs'); %>
+  
+    </footer>
   <script type="text/javascript">
     /******************************************************************************
      * 담당자      : 이승현
@@ -192,78 +205,154 @@
     //     // append 함수를 이용해 셀렉트 박스 안에 만들어진 option을 삽입
     //   }
     // }
+/******************************************************************************
+       * 담당자      : 이승현
+       * 기능 설명   : 3. 등록 기능                    
+                        > 3-1. [수량은 숫자만 입력 가능]
+                        > + 아니면 알림창 띄우기 기능
+       * 함수 설명   :- window.event의 다양한 속성 중 paste, keypress를 사용하여 각각 붙여넣기,
+                       키보드 키를 눌렀을 때 이벤트가 수행될 수 있도록 설젇했고,
+                     - getData() >> 이 이벤트는 이벤트의 clipboardData속성을 호출하여
+                       클립보드 내용에 액세스할 수 있다
+                                
+      *******************************************************************************/ 
+      function validate(evt) {
+        var theEvent = evt || window.event;
 
-    /******************************************************************************
-     * 담당자      : 이승현
-     * 기능 설명   : 3-1. [수량은 숫자만 입력 가능] + 아니면 알림창 띄우기 기능
-     *            
-    *******************************************************************************/
-    // input 숫자와 문자만 입력
-      // 지정된 텍스트 상자에 대한 입력을 지정된 입력 필터로 제한
-      function setInputFilter(textbox, inputFilter) {
-        ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
-          textbox.addEventListener(event, function() {
-            if (inputFilter(this.value)) {
-              this.oldValue = this.value;
-              this.oldSelectionStart = this.selectionStart;
-              this.oldSelectionEnd = this.selectionEnd;
-            } else if (this.hasOwnProperty("oldValue")) {
-              this.value = this.oldValue;
-              this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-              alert('문자와 숫자만 입력해주세요.');
-              $(this).val($(this).val().replace(/[^0-9a-zA-Zㄱ-ㅎ]/g,""));
-            } else {
-              
-              this.value = "";
-            }
-          });
-        });
+        // 붙여넣기 시작하면 이벤트 시작
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+        // 사용자가 키를 눌렀을 때 이벤트 수행
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        // 숫자가 아닌 다른 것을 입력했을 때 오류 알림
+        var regex = /[0-9]|\./;
+        if( !regex.test(key) ) {
+          alert('수량은 숫자만 입력해주세요.');
+          theEvent.returnValue = false;
+          if(theEvent.preventDefault) theEvent.preventDefault();
+        }
       }
+     /******************************************************************************
+   * 담당자      : 이승현
+   * 기능 설명   : 3-2. [제품 코드는 문자+숫자] 
+   *              > 제품 코드는 숫자와 문자만 입력 가능
+   * 함수 설명   :  setInputFilter기능 을 사용하여 텍스트의 입력 값을 필터링 할 수 있다
+   *               문자+숫자로만 입력 가능한 정규표현식은, 
+   *               /[^0-9a-zA-Zㄱ-ㅎ]/g  이다.
+   *            
+  *******************************************************************************/ 
+  // input 숫자와 문자만 입력
+  // 지정된 텍스트 상자에 대한 입력을 지정된 입력 필터로 제한
+  function setInputFilter(textbox, inputFilter) {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+      textbox.addEventListener(event, function() {
+        if (inputFilter(this.value)) {
+          this.oldValue = this.value;
+          this.oldSelectionStart = this.selectionStart;
+          this.oldSelectionEnd = this.selectionEnd;
+        } else if (this.hasOwnProperty("oldValue")) {
+          this.value = this.oldValue;
+          this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+          alert('문자와 숫자만 입력해주세요.');
+          $(this).val($(this).val().replace(/[^0-9a-zA-Zㄱ-ㅎ]/g,""));
+        } else {
+          
+          this.value = "";
+        }
+      });
+    });
+  }
 
-      // 입력 필터를 설치
-      setInputFilter(document.getElementById("productCode"), function(value) {
-        return /^[0-9a-zA-Zㄱ-ㅎ]*$/i.test(value); });
-    
+  // 입력 필터를 설치
+  setInputFilter(document.getElementById("productCode"), function(value) {
+    return /^[0-9a-zA-Zㄱ-ㅎ]*$/i.test(value); });
+
+/******************************************************************************
+   * 담당자      : 이승현
+   * 기능 설명   : 4. 초기화 기능
+   *                > [작성 내용 모두 지우는 기능]
+   *              #id selector 를 사용해 [초기화] 버튼을 클릭했을 때 value 값을 삭제
+   *              함으로 초기화 기능을 부여함
+   * 
+   * 함수 설명   : input >> 클릭하면 사용자가 입력한 value 값을 null값으로 변환
+   *              radio >> 클릭하면 deselect 함수를 호출하고 함수 내에서는 radio 
+   *                       버튼타입의 input 중에서 name값이 fruit인 것들의 체크상태를
+   *                       false로 설정
+   *            
+  *******************************************************************************/ 
+  $(document).ready(function() {
+    // btn_reset을 클릭했을 때의 함수
+    $("#btn_reset").click(function() {
+      // text 속성
+      document.getElementById("productName").value = '';
+      document.getElementById("productCode").value = '';
+      // number 속성
+      document.getElementById("quantity").value = '';
+      // select 속성
+      document.getElementById("bigGroup").value = '';
+      document.getElementById("smallGroup").value = '';
+      // radio 속성
+      $("input:radio[name='rentable']").prop('checked', false);
+      $("input:radio[name='mustReturn']").prop('checked', false);
+      
+    })
+  })
+  /******************************************************************************
+   * 담당자      : 이승현
+   * 기능 설명   : 5. 취소 기능
+                    > [작성 중인 화면 종료]
+                    >> [취소] 버튼을 클릭하면 화면 종료하는 기능
+   * 함수 설명   : javaScript의 History Object를 통해 
+                  한 페이지 뒤로 가는 기능 구현이 가능했습니다.
+   *            
+  *******************************************************************************/
+  function goCancle() {
+    window.history.back();
+  }
 
 
 
-        
-    //아이디가 bigGroup인 select가 값이 바뀌면 진행
-    $('#bigGroup').on('change', function () {
-      console.log(bigGroup);
-      $('#smallGroup').html('<option value="">-- 소분류 --</option>');
 
-      bigGroup = $(this).val();
 
-      if (bigGroup != "") {
+  //아이디가 bigGroup인 select가 값이 바뀌면 진행
+  $('#bigGroup').on('change', function () {
+    console.log(bigGroup);
+    $('#smallGroup').html('<option value="">-- 소분류 --</option>');
 
-        $("select[name=smallGroup]").attr("disabled",false);
+    bigGroup = $(this).val();
 
-        jQuery.ajax({
-          type: "GET",
-          url: "/stockRegistration?bigGroup="+bigGroup,
-          cache: false,
-          data:{ category:{
-            bigGroup : $("#bigGroup").val(),
-            smallGroup: $("#smallGroup").val()
-          }},
-          datatype: "JSON",
-          success: function (obj) {
-            var data = JSON.parse(obj);
+    if (bigGroup != "") {
 
-            $.each(data, function (res, req) {
-                $('<option></option>').val(res).text(req).appendTo($('#smallGroup'));
-            });
+      $("select[name=smallGroup]").attr("disabled",false);
+
+      jQuery.ajax({
+        type: "GET",
+        url: "/stockRegistration?bigGroup="+bigGroup,
+        cache: false,
+        data:{ category:{
+          bigGroup : $("#bigGroup").val(),
+          smallGroup: $("#smallGroup").val()
+        }},
+        datatype: "JSON",
+        success: function (obj) {
+          var data = JSON.parse(obj);
+
+          $.each(data, function (res, req) {
+              $('<option></option>').val(res).text(req).appendTo($('#smallGroup'));
+          });
 
         },
         error: function (xhr, status, error) {
             console.log("ERROR!!!");
         }
     });
-} else {
-    $("select[name=smallGroup]").attr("disabled",true);
-}
-$(this).closest('form').submit();
+  } else {
+      $("select[name=smallGroup]").attr("disabled",true);
+  }
+  $(this).closest('form').submit();
 });
 
 

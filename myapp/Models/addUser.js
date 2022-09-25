@@ -60,15 +60,15 @@ var userSchema = new mongoose.Schema({
         type : String,
     },
     editMan:{
-        type        : String,
+        type        : Number,
         default     : 0,
     },
     rentalMan:{
-        type        : String,
+        type        : Number,
         default     : 0,
     },
     registMan:{
-        type        :String,
+        type        :Number,
         default     : 0,
     },
     stockCount:{
@@ -105,6 +105,7 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
     })
 }
 
+//토큰 생성 함수
 userSchema.methods.generateToken = function (cb) {
     var user = this;
     console.log('user._id', user._id)
@@ -119,7 +120,7 @@ userSchema.methods.generateToken = function (cb) {
         cb(null, user)
     })
 }
-
+//토큰 디코드 함수
 userSchema.statics.findByToken = function (token, cb) {
     var user = this;
     // user._id + ''  = token

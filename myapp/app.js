@@ -20,10 +20,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json())
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static('public'))
+app.use(express.static('public'));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -68,7 +69,7 @@ module.exports = app;
 
 
 // const app = express()
-// const port = 5000
+// const port = 3000
 
  
 // app.use(express.static('public')) // 정적 폴더 지정
@@ -131,6 +132,5 @@ module.exports = app;
 
 // // 포트 5000에서 수신 대기 중
 // app.listen(port, () => console.info('Listening on port ${port}'))
-
 
 // module.exports = router;
