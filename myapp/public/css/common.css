@@ -234,16 +234,11 @@
     background-color: var(--first-color-dark);
   }
   
-  .dark-theme .diary__circle,
-  .dark-theme .footer__subscribe{
-    background-color: var(--container-color);
-  }
-  
   .dark-theme .scroll-header{
     box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
   }
 
-  .dark-theme #pick_stock td {
+  .dark-theme .pick_stock td {
     color: var(--title-color);
   }
   

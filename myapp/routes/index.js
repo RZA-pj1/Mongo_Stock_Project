@@ -174,10 +174,17 @@ router.post('/index',auth,(req,res)=>{
   var manager = stock.rentalMan
   if(manager==1){
   stock.update({stockNumber:req.body.stockNumber},
-    {stockCount : req.body.stockCount,
-    stockMount : parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
-    startDate : req.body.startDate,
-    endDate : req.body.endDate,
+    {stockCount : req.body.stockCount,  // 대여 중 수량
+    stockMount  : req.body.stockMount,  // 총 수량
+    // 대여 가능 수량 계산
+    stockRentableNumber : parseInt(parseInt(req.body.stockMount)-parseInt(stockCount)), // 대여 가능 수량 계산 
+    startDate : req.body.startDate, // 대여일
+    endDate : req.body.endDate, // 반납일
+    rental  : req.body.rental,  // 대여 가능 여부
+    mustReturn  : req.body.mustReturn,  // 반납 여부
+    updated_at : req.body.updated_at, // 최종 등록일
+
+    // 실제 반납일자
     returnDate : req.body.returnDate},(err)=>{
       if(stockmount<=0){
         console.log(req.body.stockMount)

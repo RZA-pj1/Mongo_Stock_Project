@@ -10,7 +10,7 @@ var mongoose = require('mongoose');
 
 
 var stockName = new mongoose.Schema({
-    //품번(Sirial Number)
+    //품번(Sirial Number) , 쿨품 코드
     stockNumber: {
         type        : String,
         unique      : true,
@@ -33,28 +33,29 @@ var stockName = new mongoose.Schema({
     stockInfo: {
         type        : String,
     },
-    updated_at : {
-        type        : Date,
-        default     : Date.now()
-    },
     //대여 여부
     rental: {
-        type        : Number ,
-        default     : 0
+        type        : String ,
+
     },
     //반납여부
     return:{
         type        : Number,
         default     : 0
     },
-    //현재 물량
-    stockMount:{
+    // 대여 가능 수량
+    stockRentable:{
         type        : Number,
+        default     : 0
     },
-    //대여물품 수량
+    //대여 중 수량
     stockCount:{
         type        : Number,
         default     : 0
+    },
+    //총 수량
+    stockMount:{
+        type        : Number,
     },
     //물품 이미지 랜더
     stockImage:{
@@ -74,7 +75,13 @@ var stockName = new mongoose.Schema({
     returnDate:{
         type        : Date,
         default     : Date.now()
+    },
+    // 등록일
+    updated_at : {
+        type        : Date,
+        default     : Date.now()
     }
+
 })
 
 const Stock = mongoose.model('stocks', stockName)

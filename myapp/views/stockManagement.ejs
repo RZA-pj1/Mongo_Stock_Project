@@ -64,10 +64,16 @@
               <option value="" class="small_group_option">소분류1</option>
               <option value="">소분류2</option>
           </select>
-
+<a href="<%- include('partials/smModal.ejs'); %>"></a>
           <!-- ============== 오실로스코프 ============== -->
           <table id="1" class="pick_stock sub container hidden">
-              <tr>
+            <tr>
+                <td>
+                    <img src="img/indexImg/오실로스코프TBS1000C-1.png" alt="TBS1000C 디지털 스토리지 오실로스코프">
+                    <%= data[0].stockNumber %><br>  <!-- 제품코드 -->
+                    <%=data[0].stockName%><br>  <!-- 제품명 -->
+                    <%=data[0].stockInfo%>  <!-- 물품정보 -->
+                </td>
               <!-- 제품명 다음 오는 [ex) 50MHz ~ 200MHz]은 대역폭을 의미한다. -->
                   <td><img src="img/indexImg/오실로스코프TBS1000C-1.png" alt="TBS1000C 디지털 스토리지 오실로스코프"><br>
                   TBS1000C 디지털 스토리지 오실로스코프<br>50MHz ~ 200MHz
@@ -524,12 +530,16 @@
         $(".title:not(:eq(7))").removeClass('select_title')
     })
 
-    
     var params = {
-                stockNumber         : $("#userId").val()
-                ,category:{bigGroup: $("#")}
-                ,stockName     : $("#name").val()
-                ,stockMount     : $("#password").val()
+        stockName     : $("#productName").val()     // 제품명
+        // *** 오류코드
+        // ,category:{bigGroup: $("#")}             // 분류
+        ,stockNumber    : $("#productCode").val()   // 제품코드
+        ,rental         : $('#mustReturn')    // 대여 가능 여부(O,X)
+        // *** 해결해야 할 것 : get으로 백에서 계산된 값 받아오기 ***
+        // ,stockRentableNumber    : $("").val()       // 대여 가능 수량
+        ,stockCount     : $("#rentingNumber").val() // 대여 중 수량
+        ,stockMount     : $("#totalNumber").val()   // 총 수량
         }
             
         // ajax 통신
@@ -541,7 +551,9 @@
                 // 응답코드 > 0000
                 if(res.loginSuccess!=false){
                     alert(res.successmessage);
-                    window.location.replace("/index");}
+                    // window.location.replace("/index");
+                }
+                    
                 else{
                     alert(res.message);}
             },

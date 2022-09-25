@@ -317,43 +317,43 @@
 
 
 
-  //아이디가 bigGroup인 select가 값이 바뀌면 진행
-  $('#bigGroup').on('change', function () {
-    console.log(bigGroup);
-    $('#smallGroup').html('<option value="">-- 소분류 --</option>');
+//   //아이디가 bigGroup인 select가 값이 바뀌면 진행
+//   $('#bigGroup').on('change', function () {
+//     console.log(bigGroup);
+//     $('#smallGroup').html('<option value="">-- 소분류 --</option>');
 
-    bigGroup = $(this).val();
+//     bigGroup = $(this).val();
 
-    if (bigGroup != "") {
+//     if (bigGroup != "") {
 
-      $("select[name=smallGroup]").attr("disabled",false);
+//       $("select[name=smallGroup]").attr("disabled",false);
 
-      jQuery.ajax({
-        type: "GET",
-        url: "/stockRegistration?bigGroup="+bigGroup,
-        cache: false,
-        data:{ category:{
-          bigGroup : $("#bigGroup").val(),
-          smallGroup: $("#smallGroup").val()
-        }},
-        datatype: "JSON",
-        success: function (obj) {
-          var data = JSON.parse(obj);
+//       jQuery.ajax({
+//         type: "GET",
+//         url: "/stockRegistration?bigGroup="+bigGroup,
+//         cache: false,
+//         data:{ category:{
+//           bigGroup : $("#bigGroup").val(),
+//           smallGroup: $("#smallGroup").val()
+//         }},
+//         datatype: "JSON",
+//         success: function (obj) {
+//           var data = JSON.parse(obj);
 
-          $.each(data, function (res, req) {
-              $('<option></option>').val(res).text(req).appendTo($('#smallGroup'));
-          });
+//           $.each(data, function (res, req) {
+//               $('<option></option>').val(res).text(req).appendTo($('#smallGroup'));
+//           });
 
-        },
-        error: function (xhr, status, error) {
-            console.log("ERROR!!!");
-        }
-    });
-  } else {
-      $("select[name=smallGroup]").attr("disabled",true);
-  }
-  $(this).closest('form').submit();
-});
+//         },
+//         error: function (xhr, status, error) {
+//             console.log("ERROR!!!");
+//         }
+//     });
+//   } else {
+//       $("select[name=smallGroup]").attr("disabled",true);
+//   }
+//   $(this).closest('form').submit();
+// });
 
 
   </script>
