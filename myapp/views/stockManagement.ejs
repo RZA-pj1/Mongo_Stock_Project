@@ -36,7 +36,6 @@
   <body>
       
       <div class="container">
-      <%- include('partials/smModal.ejs'); %>
       <h3 id="stock_h3" class="hidden">메뉴</h3>
       <form action="">
       <table id="stock_big_group" class="container">
@@ -47,14 +46,14 @@
        -->
           <tr>
               <td class="title">오실로스코프</td>
-              <td class="title">신호, 스펙트럼 및 변조 분석기</td>
-              <td class="title">구성 요소 및 액세서리</td>
+              <td class="title">신호 및 스펙트럼 분석기</td>
+              <td class="title">부품</td>
               <td class="title">신호 발생기</td>
           </tr>
           <tr>
-              <td class="title">Keithley 장비 및 제품</td>
-              <td class="title">Keithley 반도체 테스트 시스템</td>
-              <td class="title">Keithley 스위칭 및 데이터 획득 시스템</td>
+              <td class="title">Keithley 장비</td>
+              <td class="title">Keithley 반도체</td>
+              <td class="title">Keithley 스위칭</td>
               <!-- <,> 버튼 클릭 시 초과된 카테고리를 보여준다! -->
               <td class="title"><button class="btn_left">&#60;</button>
                 <button class="btn_right">&#62;</button></td>
@@ -65,8 +64,9 @@
               <option value="" class="small_group_option">소분류1</option>
               <option value="">소분류2</option>
           </select>
-          
-          <table id="pick_stock" class="sub container">
+
+          <!-- ============== 오실로스코프 ============== -->
+          <table id="1" class="pick_stock sub container hidden">
               <tr>
               <!-- 제품명 다음 오는 [ex) 50MHz ~ 200MHz]은 대역폭을 의미한다. -->
                   <td><img src="img/indexImg/오실로스코프TBS1000C-1.png" alt="TBS1000C 디지털 스토리지 오실로스코프"><br>
@@ -114,24 +114,416 @@
                   <td><img src="img/indexImg/오실로스코프TPS2000_t-13.png" alt="8 시리즈 샘플링 오실로스코프"><br>
                   8 시리즈 샘플링 오실로스코프<br>30GHz
                   </td>
-                  <td><img src="img/indexImg/오실로스코프MDO3000-14.png" alt="a-LIST_캡슐커피(블랙그라운드)"><br>
+                  <td><img src="img/indexImg/오실로스코프MDO3000-14.png" alt=""><br>
                   TPS2000<br>100MHz - 200MHz
                   </td>
-                  <td><img src="img/indexImg/오실로스코프mdo4000c-15.png" alt="a-LIST_콜드브루RTD원액"><br>
+                  <td><img src="img/indexImg/오실로스코프mdo4000c-15.png" alt=""><br>
                   MDO3000<br>100MHz - 1GHz
                   </td>
-                  <td><img src="img/indexImg/오실로스코프mso5000-16.png" alt="a-LIST_스틱커피(디카페인)"><br>
+                  <td><img src="img/indexImg/오실로스코프mso5000-16.png" alt=""><br>
                   MDO4000C<br>200MHz - 1GHz
                   </td>
               </tr>
           </table>
+
+          <!-- ============== 신호 및 스펙트럼 분석기 ============== -->
+          <table id="2" class="pick_stock sub container hidden">
+            <tr>
+                <td><img src="img/indexImg/분석기rsa306spectrumanalyzerlaptop-1.png" alt="RSA306B: 소형 및 휴대형"><br>
+                    RSA306B: 소형 및 휴대형<br> 6.2GHz
+                </td>
+                <td><img src="img/indexImg/분석기MDO34-2.png" alt="3 시리즈 MDO 혼합 도메인 오실로스코프"><br>
+                    3 시리즈 MDO 혼합 도메인 오실로스코프<br>최대 3GHz
+                </td>
+                <td><img src="img/indexImg/분석기tek-rsa507a_04a_500x375-3.png" alt="MSO/DPO2000B"><br>
+                MSO/DPO2000B<br>70MHz ~ 200MHz
+                </td>
+                <td><img src="img/indexImg/분석기rsa600spectrumanalyzerlaptop-4.png" alt="RSA600 시리즈: 높은 충실도, 작은 크기"><br>
+                RSA600 시리즈: 높은 충실도, 작은 크기<br> 7.5GHz
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/분석기rsa5000b_slider_image-5.png" alt="RSA5000B 시리즈: 고급 신호 분석"><br>
+                RSA5000B 시리즈: 고급 신호 분석<br>100MHz - 1GHz
+                </td>
+                <td><img src="img/indexImg/분석기rsa7100a-6.png" alt="RSA7100B: 넓은 대역폭 분석 및 기록"><br>
+                RSA7100B: 넓은 대역폭 분석 및 기록<br>200MHz - 1.5GHz
+                </td>
+                <td><img src="img/indexImg/분석기signalvu-pc-7.png" alt="스펙트럼 분석기 소프트웨어"><br>
+                스펙트럼 분석기 소프트웨어<br>
+                </td>
+                <td><img src="img/indexImg/분석기datavu-pc-8.png" alt="DataVu-PC: 기록 및 분석 소프트웨어"><br>
+                DataVu-PC: 기록 및 분석 소프트웨어<br>1GHz
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/분석기4200a-parameter-analyzer-mosfet-9.png" alt="4200A-SCS 파라미터 분석기"><br>
+                4200A-SCS 파라미터 분석기<br>1GHz ~ 10GHz
+                </td>
+                <td><img src="img/indexImg/분석기4200A_SCS-Front_Femtofarad-10.png" alt="Keithley의 최신 커패시턴스-전압 장치(CVU)"><br>
+                Keithley의 최신 커패시턴스-전압 장치(CVU)<br>1GHz ~ 8GHz
+                </td>
+                <td><img src="img/indexImg/분석기4200a-cviv-multi-switch-11.png" alt="4200A-CVIV 멀티 스위치"><br>
+                4200A-CVIV 멀티 스위치<br>8GHz - 33GHz
+                </td>
+                <td><img src="img/indexImg/분석기4200a-scs_with_mpi_ts3500-se_prober-12.png" alt="4200A-SCS 파라미터 분석기"><br>
+                4200A-SCS 파라미터 분석기<br>13GHz ~ 70GHz
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/분석기4200a-scs_with_mpi_ts3500-se_probe-13.png" alt="4200A-SCS 파라미터 분석기"><br>
+                4200A-SCS 파라미터 분석기<br>30GHz
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <!-- ============== 부품 ============== -->
+        <table id="3" class="pick_stock sub container hidden">
+            <tr>
+                <td><img src="img/indexImg/부품1.png" alt="IsoVu 절연 프로브"><br>
+                    IsoVu 절연 프로브
+                </td>
+                <td><img src="img/indexImg/부품2.png" alt="광대역 광 프로브"><br>
+                    광대역 광 프로브
+                </td>
+                <td><img src="img/indexImg/부품3.png" alt="파워 레일 프로브"><br>
+                    파워 레일 프로브
+                </td>
+                <td><img src="img/indexImg/부품4.png" alt="전류 프로브"><br>
+                    전류 프로브
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/부품5.png" alt="고전압 디퍼런셜 프로브"><br>
+                    고전압 디퍼런셜 프로브
+                </td>
+                <td><img src="img/indexImg/부품6.png" alt="저전압 디퍼런셜 프로브"><br>
+                    저전압 디퍼런셜 프로브
+                </td>
+                <td><img src="img/indexImg/부품7.png" alt="패시브 프로브"><br>
+                    패시브 프로브
+                </td>
+                <td><img src="img/indexImg/부품8.png" alt="고전압 싱글 엔드"><br>
+                    고전압 싱글 엔드
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/부품9.png" alt="저전압 싱글 엔드"><br>
+                    저전압 싱글 엔드
+                </td>
+                <td><img src="img/indexImg/부품10.png" alt="로직 애널라이저 프로브"><br>
+                    로직 애널라이저 프로브
+                </td>
+                <td><img src="img/indexImg/부품11.png" alt="저대역 광 프로브"><br>
+                    저대역 광 프로브
+                </td>
+                <td><img src="img/indexImg/부품12.png" alt="프로브 및 오실로스코프용 액세서리"><br>
+                    프로브 및 오실로스코프용 액세서리
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/부품13.png" alt="벤치 키트 및 랙 마운트 키트"><br>
+                    벤치 키트 및 랙 마운트 키트
+                </td>
+                <td><img src="img/indexImg/부품14.png" alt="케이블"><br>
+                    케이블
+                </td>
+                <td><img src="img/indexImg/부품15.png" alt="커넥터, 어댑터 및 도구"><br>
+                    커넥터, 어댑터 도구
+                </td>
+                <td><img src="img/indexImg/부품16.png" alt="테스트 리드선 및 프로브"><br>
+                    테스트 리드선 및 프로브
+                </td>
+            </tr>
+        </table>
+          <!-- ============== 신호 발생기 ============== -->
+          <table id="4" class="pick_stock sub container hidden">
+            <tr>
+            <!-- 제품명 다음 오는 [ex) 50MHz ~ 200MHz]은 대역폭을 의미한다. -->
+                <td><img src="img/indexImg/신호발생기afg31000-front_0-1.png" alt="AFG31000 임의 함수 발생기"><br>
+                AFG31000 임의 함수 발생기<br>25MHz~250MHz
+                </td>
+                <td><img src="img/indexImg/신호발생기afg1022_frontview-2.png" alt="AFG1000임의/함수 발생기"><br>
+                AFG1000임의/함수 발생기<br>25 MHz - 60 MHz
+                </td>
+                <td><img src="img/indexImg/신호발생기afg2000-arbitrary-function-generator_0-3.png" alt="AFG2000 임의/함수 발생기"><br>
+                AFG2000 임의/함수 발생기<br>20MHz
+                </td>
+                <td><img src="img/indexImg/신호발생기awg5200-arbitrary-waveform-generator-front-4.png" alt="AWG5200"><br>
+                AWG5200<br>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/신호발생기awg70000_screen-005-teaser-5.png" alt="AWG70000B 임의 파형 발생기"><br>
+                AWG70000B 임의 파형 발생기<br>최대 20GHz
+                </td>
+                <td><img src="img/indexImg/신호발생기rf-signal-generator_6.png" alt=" ASK, QPSK, DQPSK, π/4 DQPSK, 8PSK"><br>
+                    ASK, QPSK, DQPSK, π/4 DQPSK, 8PSK<br>350MHz ~ 2GHz
+                </td>
+                <td><img src="img/indexImg/신호발생기i-q-contellation-7.png" alt="TSG4100A 시리즈 RF 신호 발생기"><br>
+                TSG4100A 시리즈 RF 신호 발생기<br>200MHz - 1.5GHz
+                </td>
+                <td><img src="img/indexImg/신호발생기ocxo-time-base-8.png" alt="OCXO 시간 기반의 RF 신호 발생기"><br>
+                    OCXO 시간 기반의 RF 신호 발생기<br>1GHz
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/신호발생기afg3100_to_tsg4100a-9.png" alt="AFG31000 임의 함수 발생기"><br>
+                    AFG31000 임의 함수 발생기<br>1GHz ~ 10GHz
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="" alt="">
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <!-- ============== Keithley 장비 ============== -->
+        <table id="3" class="pick_stock sub container hidden">
+            <tr>
+                <td><img src="img/indexImg/장비1.png" alt="키슬리 2400 그래픽 터치스크린 시리즈 SMU"><br>
+                    키슬리 2400 그래픽 터치스크린 시리즈 SMU
+                </td>
+                <td><img src="img/indexImg/장비2.png" alt="SMU 2600B: 단일 또는 듀얼 채널 시스템"><br>
+                    SMU 2600B: 단일 또는 듀얼 채널 시스템
+                </td>
+                <td><img src="img/indexImg/장비3.png" alt="2601B-PULSE SourceMeter® 10μs Pusler/SMU 장비"><br>
+                    2601B-PULSE SourceMeter® 10μs Pusler/SMU 장비
+                </td>
+                <td><img src="img/indexImg/장비4.png" alt="키슬리 2400 표준 시리즈 SMU"><br>
+                    키슬리 2400 표준 시리즈 SMU
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/장비5.png" alt="SMU 2650 시리즈(고전력용)"><br>
+                    SMU 2650 시리즈(고전력용)
+                </td>
+                <td><img src="img/indexImg/장비6.png" alt="SMU 2606B: 고밀도 SMU"><br>
+                    SMU 2606B: 고밀도 SMU
+                </td>
+                <td><img src="img/indexImg/장비7.png" alt="레이저 다이오드의 광학 SMU"><br>
+                    레이저 다이오드의 광학 SMU
+                </td>
+                <td><img src="img/indexImg/장비8.png" alt="Keithley KickStart 제어 소프트웨어"><br>
+                    오실로스코프용 Keithley KickStart 제어 소프트웨어
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/장비9.png" alt="Keithley I-V 트레이서 소프트웨어"><br>
+                    Keithley I-V 트레이서 소프트웨어
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="" alt="">
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <!-- ============== Keithley 반도체 ============== -->
+        <table id="3" class="pick_stock sub container hidden">
+            <tr>
+                <td><img src="img/indexImg/반도체1.png" alt="Keithley 4200A-SCS 반도체 특성 분석기"><br>
+                    Keithley 4200A-SCS 반도체 특성 분석기
+                </td>
+                <td><img src="img/indexImg/반도체2.png" alt="Keithley 파라메트릭 곡선 트레이서 구성"><br>
+                    Keithley 파라메트릭 곡선 트레이서 구성
+                </td>
+                <td><img src="img/indexImg/반도체3.png" alt="Keithley 파라메트릭 테스트 시스템"><br>
+                    Keithley 파라메트릭 테스트 시스템
+                </td>
+                <td><img src="img/indexImg/반도체4.png" alt="Keithley 700 시리즈 반도체 스위칭 시스템"><br>
+                    Keithley 700 시리즈 반도체 스위칭 시스템
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/반도체5.png" alt="Keithley ACS(자동 특성화 제품군) 소프트웨어"><br>
+                    Keithley ACS(자동 특성화 제품군) 소프트웨어
+                </td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="" alt="">
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="" alt="">
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <!-- ============== Keithley 시스템 ============== -->
+        <table id="3" class="pick_stock sub container hidden">
+            <tr>
+            <!-- 제품명 다음 오는 [ex) 50MHz ~ 200MHz]은 대역폭을 의미한다. -->
+                <td><img src="img/indexImg/시스템1.png" alt="Keithley DAQ6510 6½ Digits 데이터 획득 및 로깅 멀티미터 시스템"><br>
+                    Keithley DAQ6510 6½ Digits 데이터 획득 및 로깅 멀티미터 시스템
+                </td>
+                <td><img src="img/indexImg/시스템2.png" alt="Keithley 2700 멀티미터/데이터 획득/스위치 시스템"><br>
+                    Keithley 2700 멀티미터/데이터 획득/스위치 시스템
+                </td>
+                <td><img src="img/indexImg/시스템3.png" alt="Keithley 3700A 시스템 스위치/멀티미터"><br>
+                    Keithley 3700A 시스템 스위치/멀티미터
+                </td>
+                <td><img src="img/indexImg/시스템4.png" alt="Keithley 2790 에어백 및 전기 장치 테스트 시스템"><br>
+                    Keithley 2790 에어백 및 전기 장치 테스트 시스템
+                </td>
+            </tr>
+            <tr>
+                <td><img src="img/indexImg/시스템5.png" alt="시리즈 S46 마이크로파 전환 시스템"><br>
+                    시리즈 S46 마이크로파 전환 시스템
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="" alt="">
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><img src="" alt="">
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        
       </form>
       </div>
           <!-- <td><button class="btn_left">&#60;</button>
           <button class="btn_right">&#62;</button>
           </td> -->
   <script>
-  
+  /******************************************************************************
+     * 담당자      : 이승현
+     * 함수 설명   : jQuery :eq() 선택자를 이용해서 hidden class를 부여하고 삭제하였다.
+     * 기능 설명   : 대분류 메뉴 클릭 시 대분류 메뉴 항목 전환하고,
+     *              클릭한 메뉴의 테이블만 보이게 한다.
+     *              추가로 어떤 대분류에 해당하는 내용인지 알 수 있도록
+     *              해당 대분류에 hover 효과 고정과 같은 class인 select_title을 부여했다.
+     *            
+    *******************************************************************************/
+    $(window).ready(function(){
+	    $(".sub:eq(0)").removeClass('hidden')
+	    $(".title:eq(0)").addClass('select_title')
+    
+    // 대분류 메뉴 클릭 시 대분류 메뉴 항목 전환
+    // 클릭한 메뉴의 테이블만 보이기
+    $("#stock_big_group tr .title:eq(0)").on('click', function() {
+        // $(".sub:eq(1), .sub:eq(2), .sub:eq(3), .sub:eq(4), .sub:eq(5), .sub:eq(5), .sub:eq(7)").addClass('hidden')
+        $(".sub:not(:eq(0))").addClass('hidden')
+        $(".sub:eq(0)").removeClass('hidden')
+
+        $(".title:eq(0)").addClass('select_title')
+        $(".title:not(:eq(0))").removeClass('select_title')
+    })
+    $("#stock_big_group tr .title:eq(1)").on('click', function() {
+        $(".sub:not(:eq(1))").addClass('hidden')
+        $(".sub:eq(1)").removeClass('hidden')
+        // 대분류 메뉴 현재 위치 알려주기
+        $(".title:eq(1)").addClass('select_title')
+        $(".title:not(:eq(1))").removeClass('select_title')
+    })
+    $("#stock_big_group tr .title:eq(2)").on('click', function() {
+        $(".sub:not(:eq(2))").addClass('hidden')
+        $(".sub:eq(2)").removeClass('hidden')
+
+        $(".title:eq(2)").addClass('select_title')
+        $(".title:not(:eq(2))").removeClass('select_title')
+    })
+    $("#stock_big_group tr .title:eq(3)").on('click', function() {
+        $(".sub:not(:eq(3))").addClass('hidden')
+        $(".sub:eq(3)").removeClass('hidden')
+
+        $(".title:eq(3)").addClass('select_title')
+        $(".title:not(:eq(3))").removeClass('select_title')
+    })
+    $("#stock_big_group tr .title:eq(4)").on('click', function() {
+        $(".sub:not(:eq(4))").addClass('hidden')
+        $(".sub:eq(4)").removeClass('hidden')
+
+        $(".title:eq(4)").addClass('select_title')
+        $(".title:not(:eq(4))").removeClass('select_title')
+    })
+    $("#stock_big_group tr .title:eq(5)").on('click', function() {
+        $(".sub:not(:eq(5))").addClass('hidden')
+        $(".sub:eq(5)").removeClass('hidden')
+
+        $(".title:eq(5)").addClass('select_title')
+        $(".title:not(:eq(5))").removeClass('select_title')
+    })
+    $("#stock_big_group tr .title:eq(6)").on('click', function() {
+        $(".sub:not(:eq(6))").addClass('hidden')
+        $(".sub:eq(6)").removeClass('hidden')
+
+        $(".title:eq(6)").addClass('select_title')
+        $(".title:not(:eq(6))").removeClass('select_title')
+    })
+    $("#stock_big_group tr .title:eq(7)").on('click', function() {
+        $(".sub:not(:eq(7))").addClass('hidden')
+        $(".sub:eq(7)").removeClass('hidden')
+
+        $(".title:eq(7)").addClass('select_title')
+        $(".title:not(:eq(7))").removeClass('select_title')
+    })
+    })
   </script>
   </body>
   </html>

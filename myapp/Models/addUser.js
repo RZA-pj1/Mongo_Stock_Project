@@ -57,16 +57,16 @@ var userSchema = new mongoose.Schema({
         type : String,
     },
     editMan:{
-        type        : String,
+        type        : Number,
     },
     rentalMan:{
-        type        : String,
+        type        : Number,
+        // checkbox에서 클릭 후 체크를 하면 클릭값에 따라 1일 경우, 0일 경우 나눌 생각
+        default     : 0,    // 0일 경우 권한이 없다. 
     },
     registMan:{
-        type        :String,
-    },
-    Manager:{
-        type        :String,
+        type        : Number,
+        default     : 0, 
     },
     stockCount:{
         type        :Number,

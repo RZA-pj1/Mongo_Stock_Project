@@ -26,7 +26,7 @@
    <!--=============== HEADER ===============-->
    <header>
  
-     <%- include('partials/header.ejs'); %>
+        <%- include('partials/header.ejs'); %>
  
    </header>
    <section id="success_join" class="container">
@@ -38,7 +38,7 @@
       <!-- <a href="login.ejs" class="button loginBtn successAddUser_box"> -->
           <input 
           class="button loginBtn"
-            id='go_login'    
+            id='go_login'
             type='submit'
             onclick='loginPage()'
             value='로그인하러 가기' />
@@ -48,20 +48,20 @@
         <table>
           <tr>
             <td class="info-title">사원번호:</td>
-            <td><jsp:getProperty property="userId" name="customer"/></td>
+            <td><input class="userId" name="userId" value="<%= userId %>"/> </td>
           </tr>
           <tr>
             <td class="info-title">이름:</td>
-            <td><jsp:getProperty property="userName" name="customer"/></td>
+            <td><input class="userName" name="userName" value="<%= userName %>"/>  </td>
           </tr>
           <tr>
             <td class="info-title">이메일:</td>
-            <td><jsp:getProperty property="email" name="customer"/></td>
+            <td><input class="email" name="email" value="<%= email %>"/>  </td>
           </tr>
           <tr>
             <td class="info-title">부서:</td>
-            <td><jsp:getProperty property="group" name="customer"/></td>
-          </tr>	
+            <td><input class="teamList1" name="teamList1" value="<%= teamList1 %>"/>  </td>
+          </tr>   
         </table>
         
       </div>
@@ -83,6 +83,7 @@
      *              [로그인하러 가기] 버튼 클릭 시 login 화면으로 Redirect 하기
      *            
     *******************************************************************************/ 
+   
     function loginPage()  {
             window.location.replace("http://localhost:5000");
             // document.location.href = "/index";

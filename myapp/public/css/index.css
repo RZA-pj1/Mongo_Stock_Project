@@ -5,6 +5,7 @@
 /* ======= flex를 이용한 가로 배열 ====== */
 #indexWrap {
   display: flex;
+  height: 50rem;
   /* padding: .8rem 0; */
 }
 .mainIndex {
@@ -55,11 +56,9 @@
 }
 #stock {
   width: 100%;
-  /* height: 100%; */
   margin: 0 auto;
   border-top: 3px solid #000;
   border-collapse: collapse;
-  /* border: 1px solid var(--content-color); */
 }
 #stock tr {
   height: 3.75rem;
@@ -72,7 +71,6 @@
   width: 150px;
 }
 #stock tbody tr td {
-  /* border: 1px solid var(--content-color); */
   margin: 0;
   padding-left: 0.5rem;
   border-bottom: 1px solid var(--first-color-light);
@@ -89,8 +87,6 @@
 /* 대분류 카테고리 테이블 */
 #stock_big_group {
     width: 100%;
-    /* margin: 20px auto; */
-    /* border-radius: var(--smaller-font-size); */
     overflow: hidden;
     border: calc(var(--mb-0-5) / 1.5) solid var(--first-color);
     table-layout: fixed;
@@ -111,6 +107,10 @@
 #stock_big_group td:hover {
     background-color: var(--first-color);
     color: var(--body-color);
+}
+#stock_big_group .select_title {
+  background-color: var(--first-color);
+  color: var(--body-color);
 }
 #stock_big_group td:hover > .btn_left, #stock_big_group td:hover > .btn_right {
   color: var(--body-color);
@@ -139,17 +139,17 @@
 }
 /* 제품별 테이블 */
 
-#pick_stock {
+.pick_stock {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
     /* margin: 35px auto; */
     margin-bottom: 2rem;
 }
-#pick_stock tr {
+.pick_stock tr {
   
 }
-#pick_stock td {
+.pick_stock td {
     width: 24%;
     overflow: hidden;
     /* height: 30%; */
@@ -161,7 +161,7 @@
     border: 2px solid var(--first-color);
   
 }
-#pick_stock td:hover {
+.pick_stock td:hover {
     background-color: var(--first-color);
     transform: scale(1.4);
     -webkit-transform: scale(1.2);
