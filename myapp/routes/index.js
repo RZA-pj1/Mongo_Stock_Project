@@ -6,20 +6,287 @@ var bodyParser = require('body-parser')
 router.use(bodyParser.json())
 router.use(cookieParser());
 
-
 var { User } = require('../Models/addUser');
 var { auth } = require('../Middleware/Auth');
 var { Stock } = require('../Models/stockName');
+var { Category } = require('../Models/category');
 const app = require('../app');
 
-/***************************************************
- * 로그인 기능
- * *************************************************/
-router.get('/', (req, res) => {
-  res.render('login', {content: '로그인'})
+
+
+/**********************************************
+ * 물품 편집 기능
+**********************************************/
+router.post('/stockEdit',(req,res)=>{
+  const stoke = new Stock({
+    stockNumber   : req.body.stockNumber,
+    stockImage    : req.body.stockImage,
+    stockInfo     : req.body.stockInfo,
+    category:{
+      bigGroup    : req.body.bigGroup,
+      smallGroup  : req.body.smallGroup
+    },
+    rental        : req.body.rental,
+    return        : req.body.return,
+    stockMount    : req.body.stockCount,
+    stockName     : req.body.stockName
+  })
+  stoke.update(
+    {stokeNumber  : req.body.stockNumber},
+    {
+      stockMount  : req.body.stockMount,
+      stockName   : req.body.stockName,
+      stockInfo   : req.body.stockInfo,
+      stockImage  : req.body.stockImage,
+      rental      : req.body.rental,
+      return      : req.body.return,
+      category:{
+        bigGroup    : req.body.bigGroup,
+        smallGroup  : req.body.smallGroup
+      }
+    })
+    return res.status(200).json({
+      stockMount  : req.body.stockMount,
+      stockName   : req.body.stockName,
+      stockInfo   : req.body.stockInfo,
+      stockImage  : req.body.stockImage,
+      rental      : req.body.rental,
+      return      : req.body.return,
+      bigGroup    : req.body.bigGroup,
+      smallGroup  : req.body.smallGroup,
+      stockNumber : req.body.stockNumber
+    })
+})
+router.get('/stockEdit',auth,(req,res)=>{
+  var user = User({userName:req.user.userName})
+  var category = new Category({
+    bigGroup:req.params.bigGroup,
+    smallGroup:req.params.smallGroup
+  })
+  category.findOne().where(stockNumber)
+  return res.status(200).render('stockEdit',{
+    layout    : './stockEdit',
+    bigGroup  : req.params.bigGroup,
+    smallGroup: req.params.smallGroup,
+    hellow    : `${user.userName}님 환영합니다.`
+  })
 })
 
-// 로그인 시 사번, 비밀번호 체크
+/**********************************************
+ * 물품 등록기능
+ *********************************************/
+router.get('/stockRegistration',auth,(req,res)=>{
+  const user= User({userName:req.user.userName})
+  Category.find({}).then(category=>{
+    res.status(200).render('stockRegistration',{
+      category : {category},
+      hellow:`${user.userName}님 환영합니다.`,
+      layout:"/stockRegistration",
+      gofunc : func.renderFunc,
+      userName : user.userName
+    })
+  })
+})
+router.post('/stockRegistration' ,(req, res) =>{
+  //물품등록할때 필요한 정보들을 Clinent 에서 가져오면
+  //그것들을 데이터베이스에 넣어준다
+  const category = new Category({
+    bigGroup :  req.body.bigGroup,
+    smallGroup : req.body.smallGroup
+  })
+  const stoke = new Stock({
+    stockNumber   : req.body.stockNumber,
+    stockImage    : req.body.stockImage,
+    stockInfo     : req.body.stockInfo,
+    category:{
+      category
+    },
+    rental        : req.body.rental,
+    return        : req.body.return,
+    stockMount    : req.body.stockCount,
+    stockName     : req.body.stockName,
+    rentalDate    : req.body.rentalDate,
+    returnDate    : req.body.returnDate,
+    endDate       : req.body.endDate,
+    rental        : req.body.rental,
+    return        : req.body.return
+  });
+  category.save((err,categori)=>{
+    console.log(categori)
+    if (err) {
+       res.json({ stockSaveSuccess: false, err })
+    }
+    else{
+       res.json({
+      //프론트에서 올때는 body에서 바로 오기때문에 다큐먼트에서 내올 필요 없음
+      bigGroup:req.body.bigGroup,
+      smallGroup:req.body.smallGroup,
+      })
+    }
+  })
+    stoke.save((err, stock) => {
+      console.log("stock",stock)
+      
+      if (err) {
+        return res.status(401).json({ stockSaveSuccess: false, err })
+      }
+      else{
+         return res.status(200).json({
+            //프론트에서 올때는 body에서 바로 오기때문에 다큐먼트에서 내올 필요 없음
+            stockNumber:req.body.stockNumber,
+            category:{
+            bigGroup        :req.body.bigGroup,
+            smallGroup      :req.body.smallGroup,
+            },
+            stockSaveSuccess: true,
+            rental          :req.body.rental
+            })
+          }
+      })
+})
+
+/***********************************
+ * 물품 대여시 저장할 값 
+ * 물품찾을때 물품 수량이 없으면 제외
+ ***********************************/
+
+router.post('/index',auth,(req,res)=>{
+  const stock = new Stock ({
+    category:
+    {
+      bigGroup  :  req.body.bigGroup,
+      smallGroup:  req.body.smallGroup
+    },
+    rentalMan   :  req.user.rentalMan,
+    stockNumber :  req.body.stockNumber,
+    stockCount  :  req.body.stockCount,
+    stockMount  :  req.body.stockMount,
+    startDate   :  req.body.startDate,
+    endDate     :  req.body.endDate,
+    returnDate  :  req.body.returnDate,
+    userId      :  req.user.userId
+  })
+  var mount=req.body.stockMount
+  var count=req.body.stockCount
+  var stockmount=mount-count
+  console.log(stockmount)
+
+  var manager = stock.rentalMan
+  if(manager==1){
+  stock.update({stockNumber:req.body.stockNumber},
+    {stockCount : req.body.stockCount,
+    stockMount : parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
+    startDate : req.body.startDate,
+    endDate : req.body.endDate,
+    returnDate : req.body.returnDate},(err)=>{
+      if(stockmount<=0){
+        console.log(req.body.stockMount)
+        req.body.stockMount=0;
+        console.log(stockmount)
+        return res.json({
+          category:{
+            bigGroup  :  req.body.bigGroup,
+            smallGroup:  req.body.smallGroup
+          },
+          stockNumber :  req.body.stockNumber,
+          stockCount  :  req.body.stockCount,
+          stockMount  :  parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
+          startDate   :  req.body.startDate,
+          endDate     :  req.body.endDate,
+          returnDate  :  req.body.returnDate,
+          message:"대여불가 물품입니다."})
+      }
+      else{
+        console.log(stockmount)
+        return res.json({message:"대여가능 물품입니다."})
+      }
+    })
+  }
+  else{return res.json({message:"권한이 없습니다."})}
+})
+/**************************************************
+ * 물품번호로 페이지 생성하여 물품마다 상세페이지 지정
+ * 상세페이지 등록
+***************************************************/
+router.get("/index/:stockNumber",auth,function(req, res, next) {
+  const stockNumber = req.body.stockNumber;
+  const user= User({userName:req.user.userName})
+  Stock
+    .findOne({ stockNumber: stockNumber })
+    .then(stock => {
+      if (!stock) return res.status(404).json({ message: "물건이 없습니다." });
+      console.log("Read Detail 완료");
+      return res.status(200).render({
+        layout:"./partials/smModal",
+        message: "Read Detail success",
+        stockNumber: req.params.stockNumber,
+        stockName : req.params.stockName,
+        stockInfo:req.params.stockInfo,
+        userName : user.userName,
+        hellow:`${user.userName}님 환영합니다.`,
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({
+        message: err
+      });
+    });
+});
+
+//var employee = require('../controllers/EmployeeController.js');
+
+// router.get('/', employee.list);
+
+// router.get('/show/:id', employee.show);
+
+// router.get('/create', employee.create);
+
+// router.post('/save', employee.save);
+
+// router.get('/edit/:id', employee.edit);
+
+// router.post('/update/:id', employee.update);
+
+// router.post('/delete/:id', employee.delete);
+
+// router.get('/', function(req, res, next) {
+//   res.send('respond with a resource');
+// });
+
+
+/***************************************************
+ * 회원가입 및 로그인 기능
+ * *************************************************/
+router.get('/', (req, res) => res.render('login', {content: '로그인'}))
+
+//app.get('/api/hello', (req, res) => res.send('Hello World!~~ '))
+router.get('/addUser',(req,res) =>
+ res.render('addUser',{
+  content:'회원가입',
+  hellow:"회원가입을 진행해 주세요"})
+ )
+router.post('/addUser', (req, res) => {
+  //회원 가입 할떄 필요한 정보들을  client에서 가져오면 
+  //그것들을  데이터 베이스에 넣어준다.
+  
+  var user = new User(req.body)
+  console.log(req.body)
+  console.log(req.body.password)
+  user.save((err, userInfo) => {
+    if (!userInfo){
+      return res.status(500).json({addUserSuccess: false, err})
+    }
+    else{
+      return res.render('addUser',
+      { 
+       layout: './addUser',
+       addUserSuccess:true,
+       message:"회원가입 성공",
+      })
+    }
+  })
+})
+
 router.post('/', (req, res) => {
   //요청된 사번을 데이터베이스에서 있는지 찾는다.
   User.findOne({ userId: req.body.userId }, (err,user) => {
@@ -62,113 +329,86 @@ router.get('/auth', auth, (req, res) => {
     token: req.user.token,
     editMan : req.user.editMan,
     rentalMan : req.user.rentalMan,
-    registMan : req.user.registMan
+    registMan : req.user.registMan,
+    hellow:`${req.user.userName}님 환영합니다.`
   })
 })
-
-/***************************************************
- * 회원가입 기능
- * (1) 회원가입 성공 후
- * *************************************************/
-//app.get('/api/hello', (req, res) => res.send('Hello World!~~ '))
-router.get('/addUser',(req,res) => {
-  res.render('addUser',{
-    content : '회원가입',
-    hellow:`회원가입 진행해 주세요`})
-})
-
-router.post('/addUser', (req, res) => {
-  //회원 가입 할떄 필요한 정보들을  client에서 가져오면 
-  //그것들을  데이터 베이스에 넣어준다. 
-  var user = new User(req.body)
-  console.log(req.body)
-  console.log(req.body.password)
-  user.save((err, userInfo) => {
-    if (!userInfo){
-      return res.status(500).json({addUserSuccess: false, err})
-    }
-    else{
-      return res.render('addUser', 
-      { 
-        layout : './addUser',
-        addUserSuccess: true,
-        message :"회원가입 성공",
-        hellow : `${user.userName}` + "환영합니다."
-      })
-    }
-  })
-})
-/***************************************************
- * (2) 성공 페이지 이동하면 회원가입에 기입된 정보가 뜸
- * *************************************************/
-router.get('/successAddUser', auth, (req,res)=>{
-  var user = User({userId : req.user.userId,
-                  userName : req.user.userName,
-                  email : req.user.email,
-                  teamList1 : req.user.teamList1
-                })
-  console.log(user.userId, user.userName, user.email, user.teamList1)
-  return res.render('successAddUser',
-  {
-    userId : user.userId,
-    userName : user.userName,
-    email : user.email,
-    teamList1 : user.teamList1,
-    layout : './successAddUser',
-    hellow : "환영합니다."
-  })
-})
-
-
 /****************************************
 * 물품관리 페이지
 * 
 ****************************************/
-
-router.get('/index', auth, (req, res) => {
+ router.get('/index',auth,(req, res) => {
   var user = User({userName:req.user.userName})
   console.log(user.userName)
-  Stock.find().then(stock => {
+  Stock.find({$equal:{category:{bigGroup:req.params.bigGroup}}}).limit(16).then(stock => {
     let use = new User({ userName: req.body.userName })
     console.log("read all finish")
     console.log(use.userName)
+    console.log(stock)
     return res.status(200).render('index', {
-      userName: user.userName,
+      userName: use.userName,
       message: "Read all Success",
       hellow:`${user.userName}`+"님 환영합니다.",
-      data: { stock: stock },
-      // layout: './index'
+      data : stock
+      // layout
     })
   })
     .catch(err => {
       return res.status(500).json({ message: err })
     })
 })
+/*******************************
+ * 로그아웃시 띄울화면 
+ * 데이터베이스 토큰 지우기
+ *******************************/
 router.get('/logout', auth, (req, res) => {
+  var use = User({userName : req.user.userName})
   User.findOneAndUpdate(
     { _id: req.user._id },
     { token: "" }
     , (err, user) => {
       if (err) return res.json({ logoutsuccess: false, err });
-      return res.render('login', {layout: './login',
-                                  content: '로그아웃'})
+      return res.render('login',{layout:'./login',hellow:`${use.userName}님 환영합니다.`,content: '로그아웃'})
     })
 })
-// app.get('/mypage', auth, function (요청, 응답) { 
-//   console.log(요청.user); 
-//   응답.render('mypage.ejs', {}) 
-// }) 
 
-
-router.get("/index/:userNumber",auth, function(req, res, next) {
+/********************************
+ * 회원가입되었을때 띄울 화면
+ * 
+ *******************************/
+router.get('/successAddUser',auth,(req,res)=>{
+  
+  var user = User({userId : req.user.userId,
+                  userName : req.user.userName,
+                  email : req.user.email,
+                  teamList1 : req.user.teamList1
+                })
+  console.log(user.userId, user.userName, user.email, user.teamList1)
+  return res.render('successAddUser', 
+  {
+    userId : user.userId,
+    userName : user.userName,
+    email : user.email,
+    teamList1 : user.teamList1,
+    layout:'./successAddUser',
+    hellow:"환영합니다."
+  })
+})
+/*************************************************
+ * 마이페이지에 들어가면 나의 대여 현황이 보이는 기능
+ * 
+ *************************************************/
+router.get("/myRentalStatus/:userNumber",auth, function(req, res, next) {
+  var use = User({userName : req.user.userName})
   const userNumber = req.body.userNumber;
   User
     .findOne({ userNumber: userNumber })
     .then(user => {
       if (!user) return res.status(404).json({ message: "post not found" });
       console.log("Read Detail 완료");
-      return res.status(200).json({
+      return res.status(200).render('myRentalStatus',{
         message: "Read Detail success",
+        hellow:`${use.userName}님 환영합니다.`,
         data: {
           user: user
         }
@@ -183,7 +423,7 @@ router.get("/index/:userNumber",auth, function(req, res, next) {
 
 /**********************************
  * 이미지 업로드 기능 
- * index 화면 get에 넣어야됨
+ * 등록 화면 post에 넣어야됨
  **********************************/
  var storage = multer.diskStorage({
     destination : function(req,file,cb){
@@ -198,180 +438,63 @@ router.get("/index/:userNumber",auth, function(req, res, next) {
   router.post('/upload', upload.single('input의 name속성이름'),function(요청,응답){ 응답.send('업로드완료')});
 
 
-/**********************************************
- * 물품 편집 등록 기능 - stockEdit
-**********************************************/
-
-router.post('/stockRegistration',auth ,(req, res) =>{
-  //물품등록할때 필요한 정보들을 Clinent 에서 가져오면
-  //그것들을 데이터베이스에 넣어준다 
-  var use= new User({registMan : req.user.registMan, isAdmin : req.user.isAdmin})
-
-  const stoke = new Stock({
-    stockNumber:req.body.stockNumber,
-    category:{
-      bigGroup:req.body.category.bigGroup,
-      smallGroup:req.body.category.smallGroup
-    },
-    stockInfo:req.body.stockInfo
-  });
-  //등록권한이 있으면 이 페이지에 들어갈수있도록 해라
-  
-    stoke.save((err, result) => {
-      console.log(result)
-      if (err) {
-        return res.status(401).json({ stockSaveSuccess: false, err })
-      }
-      else{
-       return res.status(200).json({
-          bigGroup:req.body.category.bigGroup,
-          smallGroup:req.body.category.smallGroup,
-          stockSaveSuccess: true,
-          rental:req.body.rental
-        })
-      }
-    })
-})
-/**********************************************
- * 물품 등록 기능 - stockRegistration
-**********************************************/
-//물품등록 페이지
-//대분류 소분류 저장시켜라
-
-// router.get('/stockRegistration', (req, res) => {
-//   res.render('stockRegistration', { layout: './stockRegistration'})
-// })
-
-// *** 20220923 물품등록 기능에서 초기화 기능을 추가 확인을 위해 잠시 주석 처리 ***
-router.get('/stockRegistration', auth, (req, res) => {
-  var use = new User({  // auth에서 가지고 온 것
-    registMan:req.user.registMan
-  })
-  // const category = req.query.category // 새로 짠 스키마
-
-  //등록권한 확인후 원하는 기능 진행
-  if(use.registMan==1){ // 로그인한 사람 권한 확인
-  // *** 대분류, 소분류 받아오기 ***  
-  // Stock.find({}, (err,stock)=>{
-  //   if(!err){
-  //     return res.status(500).json({err})}
-  //   if(!stock){
-  //    return res.json(err,{message:"찾으시는 데이터가 없습니다."})}
-  //   else{
-  //     console.log(stock)
-  //     console.log("read all finish")
-      return res.status(200).render('stockRegistration',{
-        user : use.userName,
-        message:"Read all Success",
-        // category : {bigGroup : req.body.bigGroup, smallGroup:[]},
-        userName:req.user.userName,
-        // layout : '/stockRegistration',
-        hellow : `${use.userName}`+"님 환영합니다."
-      })
-    }else return res.json({message:"권한이 없습니다."})
-  })
-// }
-// })
-
-/***********************************
- * 물품 대여시 저장할 값 
- * 물품찾을때 물품 수량이 없으면 제외
- ***********************************/
-
-router.post('/index',(req,res)=>{
-  const stock = new Stock ({
-    stockNumber : req.body.stockNumber,
-    stockCount : req.body.stockCount,
-    stockMount : req.body.stockMount,
-    startDate : req.body.startDate,
-    endDate : req.body.endDate,
-    returnDate : req.body.returnDate
-  })
-  var mount=req.body.stockMount
-  var count=req.body.stockCount
-  var stockmount=mount-count
-  console.log(stockmount)
-  stock.update({stockNumber:req.body.stockNumber},
-    {stockCount : req.body.stockCount,
-    stockMount : parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
-    startDate : req.body.startDate,
-    endDate : req.body.endDate,
-    returnDate : req.body.returnDate},(err)=>{
-      if(stockmount<=0){
-        console.log(req.body.stockMount)
-        req.body.stockMount=0;
-        console.log(stockmount)
-        return res.json({message:"대여불가 물품입니다."})
-      }
-      else{
-        console.log(stockmount)
-        return res.json(err,{message:"대여가능 물품입니다."})
-      }
-    })
-})
-/**************************************************
- * 물품번호로 페이지 생성하여 물품마다 상세페이지 지정
- * 상세페이지 등록
-***************************************************/
-router.get("/index/:stockNumber", function(req, res, next) {
-  const stockNumber = req.body.stockNumber;
-  Stock
-    .findOne({ stockNumber: stockNumber })
-    .then(stock => {
-      if (!stock) return res.status(404).json({ message: "post not found" });
-      console.log("Read Detail 완료");
-      return res.status(200).render('groupPlusModal',{
-        message: "Read Detail success",
-        data: {
-          stock: stock
-        }
-      });
-    })
-    .catch(err => {
-      return res.status(500).json({
-        message: err
-      });
-    });
-});
-
 
 
 /***************************************
  * 매니저 페이지 만들기
  * 권한 부여 및 관리
 ***************************************/
-router.get('/userManagement/:userId',(req, res)=>{
-  const userId = req.params.userId;
-    User.findOne({ userId: userId },(err,user) => {
-      if(err) return res.status(500).json({message:err})  
-      if (!user) return res.status(404).json({ message: "post not found" });
+router.post('/userManagement',(req,res)=>{
+  return res.json({
+    message:"success"
+  })
+})
+router.get('/userManagement',auth,(req, res)=>{
+  const users=User({userName:req.user.userName})
+  const use =User({
+    userName    : req.params.userName,
+    teamPosition: req.params.teamPosition,
+    email       : req.params.email,
+    userId      : req.user.userId,
+    role        : req.user.role
+  }) 
+    User.findOne({ 
+      userId    : req.params.userId,
+      role      :req.params.role
+     },(err,user) => { 
+      if (use.role==1) {
         console.log("Read Detail 완료");
         console.log(user)
-        if(user.role===1){
-          User.find()
-          return res.render('userManagement',{
-            userId: req.user.userId,
-            _id: req.user._id,
-            isAdmin: req.user.role === 0 ? false : true,
-            isAuth: true,
-            email: req.user.email,
-            userName: req.user.userName,
-            teamList: req.user.teamList,
-            role: req.user.role,
-            teamPosition :req.user.teamPosition,
-            token: req.user.token,
-            isEdit:req.user.editMan === 0 ? false:true,
-            isRental:req.user.rentalMan === 0 ? false:true,
-            isRegist : req.user.registMan ===0 ? false:true,
-            editMan : req.body.editMan,
+          User.updateOne({
+            userId:req.body.userId
+          },
+          {
             rentalMan : req.body.rentalMan,
             registMan : req.body.registMan,
-            message:`${user.userName}`+"관리자님 환영합니다."})}
-        else return res.render(err,{message:"권한이 없습니다"})
-       
+            editMan   : req.body.editMan
+          })
+          return res.render('userManagement',{
+            userId    : req.user.userId,
+            _id       : req.user._id,
+            isAdmin   : req.user.role === 0 ? false : true,
+            isAuth    : true,
+            email     : req.user.email,
+            userName  : req.user.userName,
+            teamList  : req.user.teamList,
+            role      : req.user.role,
+            teamPosition :  req.user.teamPosition,
+            token     : req.user.token,
+            isEdit    :req.user.editMan === 0 ? false:true,
+            isRental  :req.user.rentalMan === 0 ? false:true,
+            isRegist  : req.user.registMan ===0 ? false:true,
+            editMan   : req.params.editMan,
+            rentalMan : req.params.rentalMan,
+            registMan : req.paramsregistMan,
+            hellow   : `${users.userName}`+"관리자님 환영합니다.",
+            layout    : "./userManagement"
+          })}
+        else return res.json({message:"권한이 없습니다"})
       })
-      console.log(user.userId)
-
 })
 /********************************************
  * 관리자 권한 부여  
@@ -405,7 +528,7 @@ router.post('/admin/:userId',auth,(req,res)=>{
       console.log("Read Detail 완료");
       return res.status(200).json({
         message: "Read Detail success",
-        data: {user: user},
+        data: {user: {user}},
         message:`${user.userName}`+"관리자님 환영합니다."
       });
   })
@@ -415,7 +538,7 @@ router.post('/admin/:userId',auth,(req,res)=>{
  * 마이페이지 만들기
  * 로그인하고 해당되는 토큰을 가졌을때만 가능
 *******************************************/
-router.post('/myRentalStatus/:userName', auth, (req,res)=>{
+router.post('/myRentalStatus',(req,res)=>{
   const user = new User({
     userId: req.user.userId,
     _id: req.user._id,
@@ -446,11 +569,46 @@ router.post('/myRentalStatus/:userName', auth, (req,res)=>{
         });
     })
 })
+
 /*******************************
  * 마이페이지 get
  * 자신의 대여현황이 보이게하기
  ******************************/
-router.get('/myRentalStatus/:userName', auth, (req,res) => {
-
+router.get('/myRentalStatus',auth,(req,res)=>{
+const use = User({userName:req.user.userName});
+    User.findOne({ userId:req.user.userId } ,(err,user)=>{
+      Stock.find({$equal:{userId:req.user.userId}},(err,stock)=>{
+        console.log(user)
+        // if (!user) return res.status(404).json({ message: "post not found" });
+        console.log("Read Detail 완료");
+        return res.status(200).render('myRentalStatus',{
+          message: "Read Detail success",
+          data: {
+            userName  : user.userName,
+            email     : user.email,
+            editMan   : user.editMan,
+            rentalMan : user.rentalMan,
+            registMan : user.registMan
+          },
+          layout:"./myRentalStatus",
+          hellow:`${use.userName}`+"님 환영합니다.",
+          userName : use.userName
+        });
+      })
+    })
 })
+/*************************
+ * 물품 관리 페이지
+ * 
+ *************************/
+router.get('/stockManagement',auth,(req,res)=>{
+  var user=User({userName:req.user.userName})
+  res.status(200).render('stockManagement',{hellow:`${user.userName}님 환영합니다`,layout:"./stockManagement"})
+})
+router.get('/allRentalStatus',auth,(req,res)=>{
+  var user=User({userName:req.user.userName})
+  res.status(200).render('allRentalStatus',{hellow:`${user.userName}님 환영합니다`,layout:"./allRentalStatus"})
+})
+
+
 module.exports = router;

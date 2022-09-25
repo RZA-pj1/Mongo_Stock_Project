@@ -1,17 +1,32 @@
 var { User } = require('../Models/addUser');
 
 let auth = (req, res, next) => {
+
     //인증 처리를 하는곳 
     //클라이언트 쿠키에서 토큰을 가져온다.
-
-    let token = req.cookies.x_auth;
+    const token = req.cookies.x_auth;
     // 토큰을 복호화 한후  유저를 찾는다.
     User.findByToken(token, (err, user) => {
         if (err) throw err;
-        // if (!user) return res.json({ isAuth: false, error: true })
-        // console.log('userh', user)
+        if (!user) {
+            return res.render('successAddUser',
+            {
+                layout:"successAddUser",
+                isAuth: false,
+                error: true,
+                hellow:"",
+                message: "불러올 수 있는 값이 없습니다.",
+                userId : "undefined",
+                email : "undefined",
+                userName : "undefined",
+                teamList1 : "undefined",
+            })
+            
+        }
+        
         req.token = token;
         if(req.user = user){
+            //다음에 올 함수를 실행시키기 위해 next()써준다. 
             next();
         }
         else{
@@ -21,27 +36,4 @@ let auth = (req, res, next) => {
     })
 }
 
-
-// const { JsonWebTokenError } = require("jsonwebtoken");
-// const { User } = require("../models/User");
-
-// let auth = (req,res,next)=>{
-// //인증처리
-//     //클라이언트 쿠키에서 토큰을 가져온다.
-//     let token = req.cookies.x_auth;
-
-//     //토큰을 복호화 한후 유저를 찾음
-//     User.findByToken(token,(err,user)=>{
-//         if(err) throw err;
-//         if(!user) return res.json({isAuth: false, error: true})
-//         req.token = token;
-//         req.user = user;
-//         next();
-//     })
-        
-//     //유저가 있으면 인증한다
-
-//     //유저가 없으면 인증 못한다.
-
-// }
 module.exports = { auth };

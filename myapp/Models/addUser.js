@@ -50,7 +50,10 @@ var userSchema = new mongoose.Schema({
         type        : Date,
         defailt     : Date.now
     },
-    teamList:{
+    teamList1:{
+        type : String,
+    },
+    teamList2:{
         type : String,
     },
     teamPosition:{
@@ -58,15 +61,15 @@ var userSchema = new mongoose.Schema({
     },
     editMan:{
         type        : Number,
+        default     : 0,
     },
     rentalMan:{
         type        : Number,
-        // checkbox에서 클릭 후 체크를 하면 클릭값에 따라 1일 경우, 0일 경우 나눌 생각
-        default     : 0,    // 0일 경우 권한이 없다. 
+        default     : 0,
     },
     registMan:{
-        type        : Number,
-        default     : 0, 
+        type        :Number,
+        default     : 0,
     },
     stockCount:{
         type        :Number,
@@ -102,6 +105,7 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
     })
 }
 
+//토큰 생성 함수
 userSchema.methods.generateToken = function (cb) {
     var user = this;
     console.log('user._id', user._id)
@@ -116,7 +120,7 @@ userSchema.methods.generateToken = function (cb) {
         cb(null, user)
     })
 }
-
+//토큰 디코드 함수
 userSchema.statics.findByToken = function (token, cb) {
     var user = this;
     // user._id + ''  = token

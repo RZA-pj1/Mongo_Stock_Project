@@ -108,15 +108,42 @@
      <%- include('partials/footer.ejs'); %>
  
    </footer>
-   <script type="text/javascript">
-     /******************************************************************************
-      * 담당자      : 이승현
-      * Function명 : selectTeam
-      * 함수 설명   : remove와 append 함수를 사용
-      * 기능 설명   : 영업부를 선택하면 영업부에 해당하는 부서만 보이도록 
-      *              부서 선택에 조건으로 selcet option 추가하는 기능
-      * Params     : 
-      * Return     : true or false
-      *            
-     *******************************************************************************/ 
-    // 상단 선택 버튼 클릭 시 체크된 Row의 값을 가져온다.
+<script type="text/javascript">
+/******************************************************************************
+* 담당자      :
+* Function명 :
+* 함수 설명   : 
+* 기능 설명   : 
+* Params     : 
+* Return     : 
+*            
+*******************************************************************************/ 
+  var params = {
+  userName      : $("#userName"),
+  team          : $("#team"),
+  email         : $("#email"),
+  editMan       : $("#editPermission").val(),
+  rentalMan     : $("#rentalPermission").val(),
+  registMan     : $("#readPermission").val()
+}
+        
+  //ajax 통신
+$.ajax({
+    type : "GET",            // HTTP method type(GET, POST) 형식이다.
+    url : "/userManagement",      // 컨트롤러에서 대기중인 URL 주소이다.
+    data : params,            // Json 형식의 데이터이다.
+    success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+    // 응답코드 > 0000
+      if(res.loginSuccess!=false){
+          alert("연결성공");
+      }
+      else{
+          alert("연결실패");}
+      },
+      error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+        alert("통신 실패.")
+      }
+});
+</script>
+</body>
+</html>
