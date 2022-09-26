@@ -11,6 +11,7 @@ let auth = (req, res, next) => {
         if (!user) {
             return res.render('successAddUser',
             {
+                hellow:"환영합니다.",
                 layout:"successAddUser",
                 isAuth: false,
                 error: true,

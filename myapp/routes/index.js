@@ -82,7 +82,6 @@ router.get('/stockRegistration',auth,(req,res)=>{
       category : {category},
       hellow:`${user.userName}님 환영합니다.`,
       layout:"/stockRegistration",
-      gofunc : func.renderFunc,
       userName : user.userName
     })
   })
@@ -95,21 +94,21 @@ router.post('/stockRegistration' ,(req, res) =>{
     smallGroup : req.body.smallGroup
   })
   const stoke = new Stock({
-    stockNumber   : req.body.stockNumber,
-    stockImage    : req.body.stockImage,
-    stockInfo     : req.body.stockInfo,
+    stockNumber   : req.body.stockNumber, // 품번
+    stockImage    : req.body.stockImage,  // 물품 이미지
+    stockInfo     : req.body.stockInfo, // 물품 정보
     category:{
       category
     },
-    rental        : req.body.rental,
-    return        : req.body.return,
-    stockMount    : req.body.stockCount,
-    stockName     : req.body.stockName,
-    rentalDate    : req.body.rentalDate,
-    returnDate    : req.body.returnDate,
-    endDate       : req.body.endDate,
-    rental        : req.body.rental,
-    return        : req.body.return
+    stockMount    : req.body.stockMount,  // 총 수량
+    stockCount    : req.body.stockCount,  // 대여 중 수량
+    stockName     : req.body.stockName, // 물품명
+    startDate     : req.body.startDate, // 대여일
+    returnDate    : req.body.returnDate,  // 실제 반납일
+    endDate       : req.body.endDate, // 반납일
+    rental        : req.body.rental,  // 대여여부
+    mustReturn    : req.body.mustReturn, // 반납 여부
+    updated_at    : req.body.updated_at // 등록일, 최종 수정일
   });
   category.save((err,categori)=>{
     console.log(categori)
@@ -173,42 +172,56 @@ router.post('/index',auth,(req,res)=>{
 
   var manager = stock.rentalMan
   if(manager==1){
-  stock.update({stockNumber:req.body.stockNumber},
-    {stockCount : req.body.stockCount,  // 대여 중 수량
-    stockMount  : req.body.stockMount,  // 총 수량
-    // 대여 가능 수량 계산
-    stockRentableNumber : parseInt(parseInt(req.body.stockMount)-parseInt(stockCount)), // 대여 가능 수량 계산 
-    startDate : req.body.startDate, // 대여일
-    endDate : req.body.endDate, // 반납일
-    rental  : req.body.rental,  // 대여 가능 여부
-    mustReturn  : req.body.mustReturn,  // 반납 여부
-    updated_at : req.body.updated_at, // 최종 등록일
-
-    // 실제 반납일자
-    returnDate : req.body.returnDate},(err)=>{
-      if(stockmount<=0){
-        console.log(req.body.stockMount)
-        req.body.stockMount=0;
-        console.log(stockmount)
-        return res.json({
-          category:{
-            bigGroup  :  req.body.bigGroup,
-            smallGroup:  req.body.smallGroup
-          },
-          stockNumber :  req.body.stockNumber,
-          stockCount  :  req.body.stockCount,
-          stockMount  :  parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
-          startDate   :  req.body.startDate,
-          endDate     :  req.body.endDate,
-          returnDate  :  req.body.returnDate,
-          message:"대여불가 물품입니다."})
-      }
-      else{
-        console.log(stockmount)
-        return res.json({message:"대여가능 물품입니다."})
-      }
-    })
-  }
+    stock.findOneAndUpdate({stockNumber:req.body.stockNumber},
+      {stockCount : req.body.stockCount,  // 대여 중 수량
+      stockMount  : req.body.stockMount,  // 총 수량
+      // 대여 가능 수량 계산
+      stockRentableNumber : parseInt(parseInt(req.body.stockMount)-parseInt(stockCount)), // 대여 가능 수량 계산 
+      startDate : req.body.startDate, // 대여일
+      endDate : req.body.endDate, // 반납일
+      rental  : req.body.rental,  // 대여 가능 여부
+      mustReturn  : req.body.mustReturn,  // 반납 여부
+      updated_at : req.body.updated_at, // 최종 등록일
+  
+      // 실제 반납일자
+      returnDate : req.body.returnDate},(err)=>{
+        if(stockmount<=0){
+          console.log(req.body.stockMount)
+          req.body.stockMount=0;
+          console.log(stockmount)
+          return res.json({
+            category:{
+              bigGroup  :  req.body.bigGroup,
+              smallGroup:  req.body.smallGroup
+            },
+            stockNumber :  req.body.stockNumber,
+            stockCount  :  req.body.stockCount,
+            stockMount  :  parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
+            startDate   :  req.body.startDate,
+            endDate     :  req.body.endDate,
+            returnDate  :  req.body.returnDate,
+            layout      : "./partials/smModal",
+            message     : "대여불가 물품입니다."})
+        }
+        else{
+          console.log(stockmount)
+          return res.json({
+            message:"대여가능 물품입니다.",
+            category:{
+              bigGroup  :  req.body.bigGroup,
+              smallGroup:  req.body.smallGroup
+            },
+            stockNumber :  req.body.stockNumber,
+            stockCount  :  req.body.stockCount,
+            stockMount  :  parseInt(parseInt(req.body.stockMount)-parseInt(req.body.stockCount)),
+            startDate   :  req.body.startDate,
+            endDate     :  req.body.endDate,
+            layout      : "./partials/smModal",
+            returnDate  :  req.body.returnDate
+        })
+        }
+      })
+    }
   else{return res.json({message:"권한이 없습니다."})}
 })
 /**************************************************
@@ -610,11 +623,15 @@ const use = User({userName:req.user.userName});
  *************************/
 router.get('/stockManagement',auth,(req,res)=>{
   var user=User({userName:req.user.userName})
-  res.status(200).render('stockManagement',{hellow:`${user.userName}님 환영합니다`,layout:"./stockManagement"})
+  res.status(200).render('stockManagement',{
+    hellow:`${user.userName}님 환영합니다`,layout:"./stockManagement"
+  })
 })
 router.get('/allRentalStatus',auth,(req,res)=>{
   var user=User({userName:req.user.userName})
-  res.status(200).render('allRentalStatus',{hellow:`${user.userName}님 환영합니다`,layout:"./allRentalStatus"})
+  res.status(200).render('allRentalStatus',{
+    hellow:`${user.userName}님 환영합니다`,layout:"./allRentalStatus"
+  })
 })
 
 

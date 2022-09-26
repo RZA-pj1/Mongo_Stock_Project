@@ -6,17 +6,13 @@
 #indexWrap {
   display: flex;
   height: 50rem;
-  /* padding: .8rem 0; */
 }
-.mainIndex {
-  /* width: 50%; */
-}
-.mainIndex:first-child {
+#indexWrap .mainIndex:first-child {
   width: 55%;
   padding-right: 1rem;
   
 }
-.mainIndex:last-child {
+#indexWrap .mainIndex:last-child {
   padding-left: 1rem;
   padding-top: .5rem;
   width: 45%;
@@ -25,22 +21,18 @@
 /* ======== indexLeft 대여화면 ======== */
 .headerWraper {
   padding-bottom: 1rem;
-  /* background-color: var(--content-color); */
-  /* height: 10vh; */
 }
 
 .headerWraper h2 {
   width: 100%;
   text-align: center;
   box-sizing: border-box;
-  /* font-size: var(--h2-font-size); */
 }
 
 .contentWrap {
   height: 30rem;
   border-collapse: separate;
   border-spacing: 0;
-  /* border: calc(var(--mb-0-5) / 1.5) solid var(--first-color); */
 }
 
 .btn_group {
@@ -146,9 +138,6 @@
     /* margin: 35px auto; */
     margin-bottom: 2rem;
 }
-.pick_stock tr {
-  
-}
 .pick_stock td {
     width: 24%;
     overflow: hidden;
@@ -170,7 +159,6 @@
     -o-transform: scale(1.2);
     border: 1px solid #000;
     color: var(--body-color);
-    /* box-shadow: 5px 5px 5px; */
 }
 
 img {
@@ -178,3 +166,133 @@ img {
     height: 120px;
 }
 
+/* ========= 모달창 CSS Code ========= */
+
+  /* ========= 배경을 위한 CSS Code ========= */
+  .background {
+    position: fixed;  /* 스크롤이 발생하더라도 화면에 고정 */
+    top: 0;
+    left: 0;
+    width: 100%;  /* width, height를 이용하여 화면을 가득 차게 만들기 */
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;  /* 화면의 맨 앞으로 모달을 배치 */
+
+    /* 숨기기 */
+    z-index: -1;
+    opacity: 0;
+  }
+  /* ========= 창을 위한 CSS Code ========= */
+  .window {
+    position: relative; /* 팝업에 들어갈 공간을 제한해 주어야 함 */
+    width: 100%;
+    height: 100%;
+  }
+  /* ========= 팝업을 위한 CSS Code ========= */
+  .popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;  
+    transform: translate(-50%, -50%); /* 창의 정 가운데에 배치 */
+    background-color: #ffffff;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+    
+    /* 임시 지정 */
+    width: 40rem;
+    height: 40rem;
+
+  /* ========= 모달이 나타날 때 천천히 나타나는 효과 ========= */
+
+    /* 1. 초기에 약간 아래에 배치 */
+    transform: translate(-50%, -40%);
+  }
+  
+  .show {
+    opacity: 1;
+    z-index: 1000; /* 투명도와 위치가 원래대로 나타나도록 하고 */
+    transition: all .5s;  /* 시간은 0.5초로 지정 */
+  }
+  /* 2. 그 다음에 나타났을 때에 -50% 위치로 되돌아가도록 설정 */
+  .show .popup {
+    transform: translate(-50%, -50%);
+    transition: all .5s;
+  }
+
+  .registrationWrap {
+    width: 28rem;
+    height: 26rem;
+    margin: 1rem auto;
+  }
+
+  .btnWrap {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+  }
+  .btn {
+    width: 8rem;
+    height: 3rem;
+    box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+    display: inline-block;
+    background-color: var(--first-color);
+    border: 1px solid var(--first-color);
+    color:  var(--body-color);
+    border-radius: .5rem;
+    font-weight: var(--font-medium);
+    transition: .3s;
+  }
+  .btns {
+    width: 5rem;
+    height: 3rem;
+    box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+    display: inline-block;
+    background-color: var(--first-color);
+    border: 1px solid var(--first-color);
+    color:  var(--body-color);
+    border-radius: .5rem;
+    font-weight: var(--font-medium);
+    transition: .3s;
+  }
+  /* ===== only master 관리자에게만 보이는 항목 ===== */
+  .onlyMaster {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+  #search {
+    width: 22rem;
+    height: 2rem;
+  }
+  #confirmRentalPeopleList {
+    padding: 0.25rem;
+    font-size: var(--small-font-size);
+    background-color: var(--first-color-lighten);
+  }
+  #confirmRentalPeopleList:hover {
+    background-color: var(--first-color);
+    color: var(--body-color);
+  }
+
+  
+  .gpTableSection {
+    width:100%;
+    height: 80%;
+    overflow:auto;
+    box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+    margin-top: .75rem;
+  }
+  .gpTableSection table {
+    white-space: nowrap;
+    border-collapse: collapse;
+  }
+  .gpTableSection table tr td input {
+    width: 15rem;
+  }
+  #productCode {
+    color: var(--text-color);
+  }
+  #close {
+    position: absolute;
+    bottom: 2rem;
+    left: 16rem;
+  }

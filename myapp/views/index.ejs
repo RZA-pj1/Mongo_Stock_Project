@@ -20,8 +20,7 @@
   
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="css/index.css">
-    <!--=============== JS ===============-->
-    <!-- <script src="js/main/main.js" defer></script> -->
+    
     <title>메인 화면</title>
   </head>
   <body>
@@ -52,12 +51,12 @@
   
   
         -->
-        <section id="indexLeft" class="mainIndex">
+        <div id="indexLeft" class="mainIndex">
           <%- include('stockManagement.ejs'); %>
-        </section>
-        <section id="indexRight" class="mainIndex">
+        </div>
+        <div id="indexRight" class="mainIndex">
           <%- include('rentalScreen.ejs'); %>
-        </section>
+        </div>
       </div>
   <footer>
     <%- include('partials/footer.ejs'); %>
