@@ -29,13 +29,13 @@ var stockName = new mongoose.Schema({
     stockName :{
         type        : String,
     },
+    // 제품 코드
+    productCode :{
+        type        : String,
+    },
     //물품 정보
     stockInfo: {
         type        : String,
-    },
-    updated_at : {
-        type        : Date,
-        default     : Date.now()
     },
     //대여 여부
     rental: {
@@ -43,18 +43,23 @@ var stockName = new mongoose.Schema({
         default     : 0
     },
     //반납여부
-    return:{
+    mustReturn:{
         type        : Number,
         default     : 0
     },
-    //현재 물량
-    stockMount:{
+    // 대여 가능 수량
+    stockRentable:{
         type        : Number,
+        default     : 0
     },
-    //대여물품 수량
+    //대여 중 수량
     stockCount:{
         type        : Number,
         default     : 0
+    },
+    //총 수량
+    stockMount:{
+        type        : Number,
     },
     //물품 이미지 랜더
     stockImage:{
@@ -74,7 +79,13 @@ var stockName = new mongoose.Schema({
     returnDate:{
         type        : Date,
         default     : Date.now()
+    },
+    // 등록일, 최종 수정일
+    updated_at : {
+        type        : Date,
+        default     : Date.now()
     }
+
 })
 
 const Stock = mongoose.model('stocks', stockName)
