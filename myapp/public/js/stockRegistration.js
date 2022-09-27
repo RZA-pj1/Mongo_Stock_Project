@@ -68,23 +68,23 @@ $('#smallGroup').append(option);
           
 *******************************************************************************/ 
 function validate(evt) {
-var theEvent = evt || window.event;
+  var theEvent = evt || window.event;
 
-// 붙여넣기 시작하면 이벤트 시작
-if (theEvent.type === 'paste') {
-key = event.clipboardData.getData('text/plain');
-} else {
-// 사용자가 키를 눌렀을 때 이벤트 수행
-var key = theEvent.keyCode || theEvent.which;
-key = String.fromCharCode(key);
-}
-// 숫자가 아닌 다른 것을 입력했을 때 오류 알림
-var regex = /[0-9]|\./;
-if( !regex.test(key) ) {
-alert('수량은 숫자만 입력해주세요.');
-theEvent.returnValue = false;
-if(theEvent.preventDefault) theEvent.preventDefault();
-}
+  // 붙여넣기 시작하면 이벤트 시작
+  if (theEvent.type === 'paste') {
+    key = event.clipboardData.getData('text/plain');
+  } else {
+    // 사용자가 키를 눌렀을 때 이벤트 수행
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
+  }
+    // 숫자가 아닌 다른 것을 입력했을 때 오류 알림
+    var regex = /[0-9]|\./;
+    if( !regex.test(key) ) {
+      alert('수량은 숫자만 입력해주세요.');
+      theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
 }
 /******************************************************************************
 * 담당자      : 이승현

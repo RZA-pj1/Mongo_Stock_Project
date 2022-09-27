@@ -171,7 +171,7 @@ router.post('/index',auth,(req,res)=>{
   console.log(stockmount)
 
   var manager = stock.rentalMan
-  if(manager==1){
+  if(manager==1){ // 매니저일 때 들어가라
     stock.findOneAndUpdate({stockNumber:req.body.stockNumber},
       {stockCount : req.body.stockCount,  // 대여 중 수량
       stockMount  : req.body.stockMount,  // 총 수량
@@ -222,7 +222,7 @@ router.post('/index',auth,(req,res)=>{
         }
       })
     }
-  else{return res.json({message:"권한이 없습니다."})}
+  else{return res.json({message:"권한이 없습니다."})} // 관리자가 아닐 때
 })
 /**************************************************
  * 물품번호로 페이지 생성하여 물품마다 상세페이지 지정

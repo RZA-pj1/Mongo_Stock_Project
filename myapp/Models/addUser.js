@@ -35,7 +35,7 @@ var userSchema = new mongoose.Schema({
         type        : String,
         maxlength   : 50
     },
-    role: {
+    role: { // 관리자 권한 부여 0은 일반 유저, 1은 관리자
         type        : Number,
         default     : 0
     },
@@ -59,15 +59,15 @@ var userSchema = new mongoose.Schema({
     teamPosition:{
         type : String,
     },
-    editMan:{
+    editMan:{   // 편집권한
+        type        : Number,
+        default     : 0,
+    },  
+    rentalMan:{ // 대여권한
         type        : Number,
         default     : 0,
     },
-    rentalMan:{
-        type        : Number,
-        default     : 0,
-    },
-    registMan:{
+    registMan:{ // 등록권한
         type        :Number,
         default     : 0,
     },
