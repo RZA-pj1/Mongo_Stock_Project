@@ -53,104 +53,12 @@
   
         -->
         <section id="indexLeft" class="mainIndex">
-            <h3 id="stock_h3" class="hidden">메뉴</h3>
-            <form action="">
-            <table id="stock_big_group">
-              <!-- 
-              담당자 : 이승현
-              기능 설명 : 물품 이미지를 클릭했을 때 [smModal.ejs] 파일이 뜨도록 한다.
-              구현 방법 : * 아래에 js로 숫자 제외한 것을 타이핑했을 때 경고창이 뜨게 설정했다. (176 Line)
-             -->
-                <tr>
-                    <td class="title">오실로스코프</td>
-                    <td class="title">신호, 스펙트럼 및 변조 분석기</td>
-                    <td class="title">구성 요소 및 액세서리</td>
-                    <td class="title">신호 발생기</td>
-                </tr>
-                <tr>
-                    <td class="title">Keithley 장비 및 제품</td>
-                    <td class="title">Keithley 반도체 테스트 시스템</td>
-                    <td class="title">Keithley 스위칭 및 데이터 획득 시스템</td>
-                    <!-- <,> 버튼 클릭 시 초과된 카테고리를 보여준다! -->
-                    <td class="title"><button class="btn_left">&#60;</button>
-                      <button class="btn_right">&#62;</button></td>
-                </tr>
-            </table>
-            
-              <select name="group" id="small_group" class="small_group">
-                <option value="" class="small_group_option">소분류1</option>
-                <option value="">소분류2</option>
-              </select>
-            
-            <table id="pick_stock" class="sub container">
-                <tr>
-                  <!-- 제품명 다음 오는 [ex) 50MHz ~ 200MHz]은 대역폭을 의미한다. -->
-                    <td><img src="img/indexImg/오실로스코프TBS1000C-1.png" alt="TBS1000C 디지털 스토리지 오실로스코프"><br>
-                      TBS1000C 디지털 스토리지 오실로스코프<br>50MHz ~ 200MHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프tbs2000b-2.png" alt="TBS2000B 디지털 스토리지 오실로스코프"><br>
-                      TBS2000B 디지털 스토리지 오실로스코프<br>70MHz ~ 200MHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프mso2024b-3.png" alt="MSO/DPO2000B"><br>
-                      MSO/DPO2000B<br>70MHz ~ 200MHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프2-series-mso-4.png" alt="2 시리즈 MSO 혼합 신호 오실로스코프"><br>
-                      2 시리즈 MSO 혼합 신호 오실로스코프<br>70 MHz~500 MHz
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="img/indexImg/오실로스코프MDO34-5.png" alt="3 시리즈 MDO 혼합 도메인 오실로스코프"><br>
-                      3 시리즈 MDO 혼합 도메인 오실로스코프<br>100MHz - 1GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프MSO46-6.png" alt="4 시리즈 MSO 혼합 신호 오실로스코프"><br>
-                      4 시리즈 MSO 혼합 신호 오실로스코프<br>200MHz - 1.5GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프mso58b-7.png" alt="5 시리즈 B MSO 혼합 신호 오실로스코프"><br>
-                      5 시리즈 B MSO 혼합 신호 오실로스코프<br>350MHz ~ 2GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프mso58lp-8.png" alt="5 시리즈 MSO LP"><br>
-                      5 시리즈 MSO LP<br>1GHz
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="img/indexImg/오실로스코프MSO68B-v2-9.png" alt="6 시리즈 B MSO 혼합 신호 오실로스코프"><br>
-                      6 시리즈 B MSO 혼합 신호 오실로스코프<br>1GHz ~ 10GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프lpd64-10.png" alt="6 시리즈 LP(Low Profile) 디지타이저"><br>
-                      6 시리즈 LP(Low Profile) 디지타이저<br>1GHz ~ 8GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프mso72004c_01a_h-11.png" alt="MSO/DPO70000"><br>
-                      MSO/DPO70000<br>8GHz - 33GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프dpo77002sx-12.png" alt="DPO70000SX"><br>
-                      DPO70000SX<br>13GHz ~ 70GHz
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="img/indexImg/오실로스코프TPS2000_t-13.png" alt="8 시리즈 샘플링 오실로스코프"><br>
-                      8 시리즈 샘플링 오실로스코프<br>30GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프MDO3000-14.png" alt="a-LIST_캡슐커피(블랙그라운드)"><br>
-                      TPS2000<br>100MHz - 200MHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프mdo4000c-15.png" alt="a-LIST_콜드브루RTD원액"><br>
-                      MDO3000<br>100MHz - 1GHz
-                    </td>
-                    <td><img src="img/indexImg/오실로스코프mso5000-16.png" alt="a-LIST_스틱커피(디카페인)"><br>
-                      MDO4000C<br>200MHz - 1GHz
-                    </td>
-                </tr>
-            </table>
-          </form>
-            <!-- <td><button class="btn_left">&#60;</button>
-              <button class="btn_right">&#62;</button>
-            </td> -->
+          <%- include('stockManagement.ejs'); %>
         </section>
         <section id="indexRight" class="mainIndex">
           <%- include('rentalScreen.ejs'); %>
         </section>
-    </section>   
-  </div>
+      </div>
   <footer>
     <%- include('partials/footer.ejs'); %>
   </footer>

@@ -1,6 +1,7 @@
 <!-- 
 
     담당자 : 이승현
+    페이지 설명 : 회원가입 성공 화면
     기능 설명 :  1. 회원가입 완료 후 로그인 페이지 이동
 
  -->
@@ -17,25 +18,55 @@
    <link rel="stylesheet" href="/css/fontawesome-free-6.2.0-web/css/all.min.css">
    
    <!--=============== CSS ===============-->
-   <link rel="stylesheet" href="/public/css/add_user.css">
-   <title>회원가입 페이지</title>
+   <link rel="stylesheet" type="text/css" href='css/successAddUser.css'/>
+   <title>회원가입 성공 페이지</title>
  </head>
- <link rel="stylesheet" type="text/css" href='css/successAddUser.css'/>
+ 
  <body>
    <!--=============== HEADER ===============-->
    <header>
  
-     <%- include('partials/header.ejs'); %>
+        <%- include('partials/header.ejs'); %>
  
    </header>
-   <section id="successAddUser">
+   <section id="success_join" class="container">
     <h2>회원가입에 성공했습니다!</h2>
-    <img src="../public/img/음악듣는여자.png" alt="">
-    <input 
-                    id='go_login'    
-                    type='submit'
-                    onclick='loginPage()'
-                    value='로그인하러 가기' />
+    <p>R.Z.A에서 재고 관리를 보다 쉽게 처리하실 수 있습니다.</p>
+
+    <div class="successAddUser">
+      <img src="img/successAddUser.gif" class="successAddUser_box" alt="">
+      <!-- <a href="login.ejs" class="button loginBtn successAddUser_box"> -->
+          <input 
+          class="button loginBtn"
+            id='go_login'
+            type='submit'
+            onclick='loginPage()'
+            value='로그인하러 가기' />
+    </div>
+      <div id="infoWrap">
+        <h3 class="hidden">회원가입 정보</h3>
+        <table>
+          <tr>
+            <td class="info-title">사원번호:</td>
+            <td><input class="userId" name="userId" value="<%= userId %>"/> </td>
+          </tr>
+          <tr>
+            <td class="info-title">이름:</td>
+            <td><input class="userName" name="userName" value="<%= userName %>"/>  </td>
+          </tr>
+          <tr>
+            <td class="info-title">이메일:</td>
+            <td><input class="email" name="email" value="<%= email %>"/>  </td>
+          </tr>
+          <tr>
+            <td class="info-title">부서:</td>
+            <td><input class="teamList1" name="teamList1" value="<%= teamList1 %>"/>  </td>
+          </tr>   
+        </table>
+        
+      </div>
+    
+    
    </section>
    <!--=============== FOOTER ===============-->
    <footer>
@@ -52,8 +83,9 @@
      *              [로그인하러 가기] 버튼 클릭 시 login 화면으로 Redirect 하기
      *            
     *******************************************************************************/ 
+   
     function loginPage()  {
-            window.location.replace("http://localhost:3000");
+            window.location.replace("http://localhost:5000");
             // document.location.href = "/index";
         }
    </script>

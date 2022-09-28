@@ -1,0 +1,202 @@
+<!-- 
+
+          담당자 : 이승현
+          파일명 해석 : group Plus Modal => 분류 항목 추가하는 모달창
+          기능 설명 :  [stockRegistration] - 물품 등록 페이지에서, 대분류 소분류
+                      항목 추가하는 입력 기능을 합니다.
+
+      -->
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <title>분류 추가 상세 페이지</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <style>
+            /* ========= 배경을 위한 CSS Code ========= */
+            .background {
+              position: fixed;  /* 스크롤이 발생하더라도 화면에 고정 */
+              top: 0;
+              left: 0;
+              width: 100%;  /* width, height를 이용하여 화면을 가득 차게 만들기 */
+              height: 100vh;
+              background-color: rgba(0, 0, 0, 0.3);
+              z-index: 1000;  /* 화면의 맨 앞으로 모달을 배치 */
+      
+              /* 숨기기 */
+              z-index: -1;
+              opacity: 0;
+            }
+            /* ========= 창을 위한 CSS Code ========= */
+            .window {
+              position: relative; /* 팝업에 들어갈 공간을 제한해 주어야 함 */
+              width: 100%;
+              height: 100%;
+            }
+            /* ========= 팝업을 위한 CSS Code ========= */
+            .popup {
+              position: absolute;
+              top: 50%;
+              left: 50%;  
+              transform: translate(-50%, -50%); /* 창의 정 가운데에 배치 */
+              background-color: #ffffff;
+              box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+              
+              /* 임시 지정 */
+              width: 26rem;
+              height: 15rem;
+      
+            /* ========= 모달이 나타날 때 천천히 나타나는 효과 ========= */
+      
+              /* 1. 초기에 약간 아래에 배치 */
+              transform: translate(-50%, -40%);
+            }
+            
+            .show {
+              opacity: 1;
+              z-index: 1000; /* 투명도와 위치가 원래대로 나타나도록 하고 */
+              transition: all .5s;  /* 시간은 0.5초로 지정 */
+            }
+            /* 2. 그 다음에 나타났을 때에 -50% 위치로 되돌아가도록 설정 */
+            .show .popup {
+              transform: translate(-50%, -50%);
+              transition: all .5s;
+            }
+
+            .hidden {
+              position: absolute;
+              left: -9999px;
+            }
+
+            .gpTableSection {
+              width:100%;
+              height: 80%;
+              overflow:auto;
+              box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+              margin-top: .75rem;
+            }
+            .gpTableSection table {
+              white-space:nowrap;
+              border-collapse:collapse;
+            }
+            #groupPlus tbody tr td input {
+              width: 12rem;
+            }
+            .plusBtn {
+              width: 1rem;
+              height: 1rem;
+              box-shadow: 0 1px 4px hsla(var(--hue), 4%, 4%, .3);
+              display: inline-block;
+              background-color: var(--first-color);
+              border: 1px solid var(--first-color);
+              color:  var(--body-color);
+              border-radius: .5rem;
+              font-weight: var(--font-medium);
+              transition: .3s;
+            }
+          </style>
+          <body>
+            <button class="plusBtn" id="show">+</button>
+            <!-- 화면 전체를 어둡게 만들어주는 배경(background) -->
+            <div class="background">
+              <!-- 모달팝업을 감싸주는 창(window) -->
+              <div class="window">
+                <!-- 모달팝업의 내용을 나타내는 팝업(popup) -->
+                <div class="popup">
+                  <section class="registrationWrap">
+                    <section class="headerWrap">
+                      <h2 class="hidden">물품 관리 상세 페이지</h2>
+                    </section>
+                    <div class="gpTableSection">
+                    <section class="contentWrap">
+                      <h3 class="hidden">대분류, 소분류 추가</h3>
+                      <!-- <form action="" method="get"> -->
+                        <table id="groupPlus">
+                        <thead>
+                          <tr>
+                            <th><label for="bigGroup">대분류</label></th>
+                            <th><label for="smallGroup">소분류</label></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <td>
+                            <input type="text" id="bigGroup" name="bigGroup" placeholder="추가하실 대분류를 입력해 주세요.">
+                          </td>
+                          <td>
+                            <input type="text" id="smallGroup" name="smallGroup" placeholder="추가하실 소분류를 입력해 주세요.">
+                          </td>
+                      </tbody>
+                    </table>   
+                        
+                    </form>
+                  </div>
+                    
+                  <div class="btnWrap">
+                    <button class="btn rBtn" id="submitGroupPlus">추가하기</button>
+                    <button class="btn" id="close">확인</button>
+                  </div>
+                    </section>
+                  </section>
+                </div>
+              </div>
+            </div>
+          <script type="text/javascript">
+            /******************************************************************************
+             * 담당자      : 이승현
+             * Function명 : show(), close()
+             * 함수 설명   : .background >>>>> .background .show 로 className을 변환해 팝업 열기
+             *              .background .show >>>>> .background 로 다시 되돌려주면 팝업 닫기
+             * 기능 설명   : 팝업을 띄우고, 종료하는 함수
+             * Params     : 
+             * Return     : true or false
+             *            
+            *******************************************************************************/ 
+            // 팝업 열기
+            function show() {
+              document.querySelector(".background").className = "background show";
+            }
+      
+            // 팝업 닫기
+            function close() {
+              document.querySelector(".background").className = "background";
+            }
+      
+            document.querySelector("#show").addEventListener("click", show);
+            document.querySelector("#close").addEventListener("click", close);
+            /*********************************************
+            *담당자 : 김건희
+            *기능   : 추가하기 버튼을 눌렀을때 데이터값 저장
+            **********************************************/
+            //추가하기 버튼을 눌렀을때 이벤트
+            function addList(){
+              
+              //통신해줄 값 정의
+              var params = {
+                bigGroup     : $("#bigGroup").val()
+                ,smallGroup  : $("#samllGroup").val()
+              }
+              
+              // ajax 통신
+              $.ajax({
+                type : "POST",            // HTTP method type(GET, POST) 형식이다.
+                url : "/stockRegistration",      // 컨트롤러에서 대기중인 URL 주소이다.
+                data : params,            // Json 형식의 데이터이다.
+                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                // 응답코드 > 0000
+                  if(res.stockSaveSuccess == true){
+                    alert("물품 저장 성공");
+                  }
+                  else{
+                    alert("물품 저장 실패");
+                  }
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                  alert("통신 실패.")
+                }
+              });
+            }
+          
+          </script>  
+        </body>
+      </html>

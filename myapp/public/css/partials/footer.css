@@ -1,0 +1,18 @@
+@import url(../common.css);
+
+/*=============== FOOTER ===============*/
+.footer{
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--first-color);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  /* z-index: var(--z-fixed); */
+  transition: .4s; /*For animation >> dark mode로 바뀔 때*/
+}
+.footer .text-center {
+  text-align: center;
+  padding: 1rem;
+  color: var(--body-color);
+}
