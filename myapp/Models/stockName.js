@@ -38,7 +38,7 @@ var stockName = new mongoose.Schema({
         type        : String,
     },
     //대여 여부
-    rental: {
+    rentalAble: {
         type        : Number ,
         default     : 0
     },

@@ -12,7 +12,8 @@
  const { Stock } = require('../Models/stockName')
 
 
-router.post('/myRentalStatus', (req, res) => {
+router.post('/myRentalStatus',auth, (req, res) => {
+
   const user = new User({
     userId: req.user.userId,
     _id: req.user._id,
@@ -31,8 +32,8 @@ router.post('/myRentalStatus', (req, res) => {
     rentalMan: req.user.rentalMan,
     registMan: req.user.registMan
   })
-
-  const userNumber = req.body.userNumber;
+  const userNumber = req.user.userNumber;
+  //현재 로그인중인 유저의 사번을 찾아서 개인 페이지를 만들어 준다.
   User.findOne({ userNumber: userNumber }, (err, user) => {
     if (!user) return res.status(404).json({ message: "post not found" });
     console.log("Read Detail 완료");

@@ -12,13 +12,16 @@
 
 
 router.get('/', auth, (req, res) => {
-    var use = User({ userName: req.user.userName })
+ //로그인한 유저의 아이디를 검색해서 토큰을 지워준다
     User.findOneAndUpdate(
+      //로그인해 있는 유저의 아이디 찾기
         { _id: req.user._id },
+        //토큰 지우기
         { token: "" }
         , (err, user) => {
             if (err) return res.json({ logoutsuccess: false, err });
-            return res.render('login', { layout: './login', hellow: `${use.userName}님 환영합니다.`, content: '로그아웃' })
+            //로그아웃을 할 경우 로그인화면을 랜더 시키기
+            return res.render('login', { layout: './login',content: '로그아웃' })
         })
 })
 module.exports = router;

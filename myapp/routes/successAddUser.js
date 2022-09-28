@@ -21,8 +21,8 @@ router.get('/',auth,(req,res)=>{
       userName : user.userName,
       email : user.email,
       teamList1 : user.teamList1,
-      layout:'./successAddUser',
       hellow:"환영합니다."
     })
   })
+  
   module.exports = router;

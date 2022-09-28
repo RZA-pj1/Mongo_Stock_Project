@@ -168,8 +168,10 @@ function fn_pw_check() {
       return true;
     }
   }
-
-  // 회원가입 확인 버튼을 클릭했을 때 실행되는 함수                                 
+  /********************************************
+  //담당자 : 김건희 
+  //회원가입 확인 버튼을 클릭했을 때 실행되는 함수
+  *********************************************/
   function GoToEnroll(){
     var obEmail = document.getElementById("email");
     if (!obEmail.value) {
@@ -197,11 +199,11 @@ function fn_pw_check() {
          type : "POST",            // HTTP method type(GET, POST) 형식이다.
          url : "/addUser",         // 컨트롤러에서 대기중인 URL 주소이다.
          data : param,             // Json 형식의 데이터이다.
-         //dataType : JSON,          //Jason형식데이터로 받겠다.
+        //  dataType : JSON,          //Jason형식데이터로 받겠다.
          success : function(res){  // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
          console.log(res)  
          // 응답코드 > 0000
-           if(res.addUserSuccess!=false){
+           if(res.addUserSuccess==true){
               alert("가입성공")
              window.location.replace("/successAddUser");}  // 회원가입 성공 시 이동
            else{
@@ -216,7 +218,6 @@ function fn_pw_check() {
        });
       }
     }
-   
   }
 /******************************************************************************
  * 담당자      : 이승현

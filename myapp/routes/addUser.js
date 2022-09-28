@@ -18,11 +18,12 @@ router.post('/addUser', (req, res) => {
     user.save((err, userInfo) => {
         console.log(userInfo)
         if (!userInfo) {
-            return res.json({ addUserSuccess: false, err })
+            return res.json({ hellow:"" ,addUserSuccess: false, err })
         }
         else {
             return res.json(
-                {
+                { 
+                    hollow:"",
                     addUserSuccess: true,
                     message: "회원가입 성공",
                 })

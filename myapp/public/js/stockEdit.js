@@ -107,7 +107,6 @@ function setInputFilter(textbox, inputFilter) {
         alert('문자와 숫자만 입력해주세요.');
         $(this).val($(this).val().replace(/[^0-9a-zA-Zㄱ-ㅎ]/g,""));
       } else {
-        
         this.value = "";
       }
     });
