@@ -8,9 +8,11 @@ let auth = (req, res, next) => {
     // 토큰을 복호화 한후  유저를 찾는다.
     User.findByToken(token, (err, user) => {
         if (err) throw err;
+        //유저가 로그인 안헸을경우
         if (!user) {
             return res.render('successAddUser',
             {
+                hellow:"환영합니다.",
                 layout:"successAddUser",
                 isAuth: false,
                 error: true,

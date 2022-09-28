@@ -88,7 +88,7 @@ function fn_pw_check() {
                 return false;
             }
     }
-
+  
     if(!pattern1.test(pw)||!pattern2.test(pw)||pw.length<4||pw.length>50){
       alert("영문+숫자 4자리 이상으로 구성하여야 합니다.");
       return false;
@@ -197,19 +197,21 @@ function fn_pw_check() {
          type : "POST",            // HTTP method type(GET, POST) 형식이다.
          url : "/addUser",         // 컨트롤러에서 대기중인 URL 주소이다.
          data : param,             // Json 형식의 데이터이다.
-         // dataType : JSON,          //Jason형식데이터로 받겠다.
+         //dataType : JSON,          //Jason형식데이터로 받겠다.
          success : function(res){  // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
          console.log(res)  
          // 응답코드 > 0000
            if(res.addUserSuccess!=false){
-             alert("회원가입 성공");
+              alert("가입성공")
              window.location.replace("/successAddUser");}  // 회원가입 성공 시 이동
            else{
-             alert("회원가입 실패");}
+            console.log("가입실패")
+           }
        },
        error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
          console.log(XMLHttpRequest, textStatus, errorThrown) 
          alert("통신 실패.")
+         console.log("가입실패")
        }
        });
       }

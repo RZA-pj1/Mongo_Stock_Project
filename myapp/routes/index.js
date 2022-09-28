@@ -282,8 +282,8 @@ router.get('/', (req, res) => res.render('login', {content: '로그인'}))
 //app.get('/api/hello', (req, res) => res.send('Hello World!~~ '))
 router.get('/addUser',(req,res) =>
  res.render('addUser',{
-  content:'회원가입',
-  hellow:"회원가입을 진행해 주세요"})
+  content : '회원가입',
+  hellow  : "회원가입을 진행해 주세요"})
  )
 router.post('/addUser', (req, res) => {
   //회원 가입 할떄 필요한 정보들을  client에서 가져오면 
