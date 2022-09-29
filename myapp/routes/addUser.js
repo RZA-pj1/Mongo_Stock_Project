@@ -6,6 +6,8 @@
  *************************************************/
 var express = require('express');
 var router = express.Router();
+var bodyParser = require('body-parser')
+router.use(bodyParser.json())
 
 const { User } = require('../Models/addUser')
 
@@ -13,15 +15,14 @@ router.post('/addUser', (req, res) => {
     //회원 가입 할떄 필요한 정보들을  client에서 가져오면 
     //그것들을  데이터 베이스에 넣어준다.
     var user = new User(req.body)
-    console.log(req.body)
-    console.log(req.body.password)
+   console.log(req.body)
     user.save((err, userInfo) => {
         console.log(userInfo)
-        if (!userInfo) {
-            return res.json({ hellow:"" ,addUserSuccess: false, err })
+        if (err) {
+            return res.json({ message:"정보가 없습니다." ,hellow:"" ,addUserSuccess: false, err })
         }
         else {
-            return res.json(
+            return res.status(200).json(
                 { 
                     hollow:"",
                     addUserSuccess: true,

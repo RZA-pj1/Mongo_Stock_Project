@@ -46,47 +46,67 @@
        <h3 class="hidden">이용자 관리</h3>
        <div class="tableSection">
        <form action="" method="post">
-         <table id="userInfoList">
+         <table id="userInfoList" style="border-spacing: 10px;">
           <thead>
             <tr>
-              <th><label for="user_info_row">선택</label></th>
-              <th><label for="userName">이름</label></th>
-              <th><label for="team">부서</label></th>
+              <th><label for="user_info_row" style="margin-left: 5px;">선택</label></th>
+             
+              <th><label for="userName" style="width: 50px;">이름</label></th>
+             
+              <th><label for="team1">부서1</label></th>
+
+              <th><label gor="team2">부서2</label></th>
+              
               <th><label for="teamPosition">직책</label></th>
+              
               <th><label for="email">메일</label></th>
+             
               <th><label for="editPermission">편집 권한</label></th>
+              
               <th><label for="rentalPermission">대여 권한</label></th>
+              
               <th><label for="readPermission">열람 권한</label></th>
+              
               <th><label for="pwReset">비밀번호 초기화</label></th>
             </tr>
           </thead>
           <tbody>
-            
+            <%console.log(user);%>
                 <!-- <label for="userInfoListCheck"> -->
-
+                  <% for(var i=0; i<user.length; i++){%>
+                    
             <tr>
-              <td><input type="checkbox" name="user_info_row" id="user_info_row"></td>
+              <td style="margin-right: 1000px;"><input type="checkbox" name="user_info_row" id="user_info_row"></td>
               <td>
-                <input type="text" id="userName" name="userName" placeholder="이름을 가져오세요."/>
+                <p id="userName" name="userName" placeholder="이름을 가져오세요."><%= user[i].userName %></p>
+                <!-- <input type="text" id="userName" name="userName" placeholder="이름을 가져오세요." style="text-align:center;" value=""/> -->
+              </td>
+            
+              <td>
+                <p id="teamList1" name="team1" class="teamList1" placeholder="teamList1 정보 받아오기"><%= user[i].teamList1 %></p>
               </td>
               <td>
-                <input type="text" id="teamList1" name="team" class="teamList1" placeholder="teamList1 정보 받아오기">
-                <input type="text" id="teamList2" name="team" class="teamList2" placeholder="teamList2 정보 받아오기">
+                <p id="teamList2" name="team2" class="teamList2" placeholder="teamList2 정보 받아오기"><%= user[i].teamList2 %></p>
+                <!-- <input type="text" id="teamList1" name="team" class="teamList1" placeholder="teamList1 정보 받아오기">
+                <input type="text" id="teamList2" name="team" class="teamList2" placeholder="teamList2 정보 받아오기"> -->
               </td>
+             
               <td>
-                <input type="text" id="teamPosition" name="teamPosition" class="teamPosition" placeholder="직책 정보 받아오기">
+                <p id="teamPosition" name="teamPosition" class="teamPosition" placeholder="직책 정보 받아오기"><%= user[i].teamPosition%></p>
+                <!-- <input type="text" id="teamPosition" name="teamPosition" class="teamPosition" placeholder="직책 정보 받아오기"> -->
               </td>
               <td> 
-                <input type="text" name="email"  id="email" value="" size="20" placeholder="이메일 정보 받아오기"/> 
+                <p name="email"  id="email" value="" size="20" placeholder="이메일 정보 받아오기"><%= user[i].email %></p>
+                <!-- <input type="text" name="email"  id="email" value="" size="20" placeholder="이메일 정보 받아오기"/>  -->
               </td> 
               <td>
-                <input type="checkbox" name="editPermission" id="editPermission" value="편집 권한 부여">
+                <input type="checkbox" name="editPermission" id="editPermission" value="편집 권한 부여"><%= user[i].editMan %>
               </td>
               <td>
-                <input type="checkbox" name="rentalPermission" id="rentalPermission" value="대여 권한 부여">
+                <input type="checkbox" name="rentalPermission" id="rentalPermission" value="대여 권한 부여"><%= user[i].rentalMan %>
               </td>
               <td>
-                <input type="checkbox" name="readPermission" id="readPermission" value="열람 권한 부여">
+                <input type="checkbox" name="readPermission" id="readPermission" value="열람 권한 부여"><%= user[i].registMan %>
               </td>
               <!-- 담당자 : 이승현
                   함수 설명 : 
@@ -95,6 +115,7 @@
                 <input type="button" name="pwReset" id="pwReset" value="0405">
               </td>
             </tr>
+            <%}%>
             </label>
           </tbody>  
         </table>
@@ -119,14 +140,38 @@
 *            
 *******************************************************************************/ 
   var params = {
-  userName      : $("#userName"),
-  team          : $("#team"),
-  email         : $("#email"),
   editMan       : $("#editPermission").val(),
   rentalMan     : $("#rentalPermission").val(),
   registMan     : $("#readPermission").val()
 }
-        
+//ajax 통신
+$.ajax({
+    type : "POST",            // HTTP method type(GET, POST) 형식이다.
+    url : "/userManagement",      // 컨트롤러에서 대기중인 URL 주소이다.
+    data : params,            // Json 형식의 데이터이다.
+    success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+    // 응답코드 > 0000
+      if(res.loginSuccess!=false){
+          alert("연결성공");
+          $("input:radio[name=pwReset]").click(function(){
+            if($("input:radio[name=pwReset]:checked").val()=='select'){
+              $("#hostOption").attr("disabled",false);
+              $("#hostOption").removeClass("readonly");
+            }
+            else{
+              $("#hostOption").attr("disabled",true);
+              $("#hostOption").addClass("readonly");
+            }
+          });
+      }
+      else{
+          alert("연결실패");}
+      },
+      error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+        console.log(XMLHttpRequest, textStatus, errorThrown)
+        alert("통신 실패.")
+      }
+});
   //ajax 통신
 $.ajax({
     type : "GET",            // HTTP method type(GET, POST) 형식이다.

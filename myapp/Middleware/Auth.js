@@ -9,21 +9,20 @@ let auth = (req, res, next) => {
     User.findByToken(token, (err, user) => {
         if (err) throw err;
         if (!user) {
-            return res.render('successAddUser',
-            {
-                layout:"successAddUser",
-                isAuth: false,
-                error: true,
-                hellow:"",
-                message: "불러올 수 있는 값이 없습니다.",
-                userId : "undefined",
-                email : "undefined",
-                userName : "undefined",
-                teamList1 : "undefined",
-            })
-            
+            console.log(err)
+        //     return res.render('addUser',
+        //     {
+        //         layout:"successAddUser",
+        //         isAuth: false,
+        //         error: true,
+        //         hellow:"",
+        //         message: "불러올 수 있는 값이 없습니다.",
+        //         userId : "undefined",
+        //         email : "undefined",
+        //         userName : "undefined",
+        //         teamList1 : "undefined",
+        //     })
         }
-        
         req.token = token;
         if(req.user = user){
             //다음에 올 함수를 실행시키기 위해 next()써준다. 
@@ -32,7 +31,6 @@ let auth = (req, res, next) => {
         else{
             res.send('로그인이 안되어있습니다. 로그인해주세요')
         }
-
     })
 }
 

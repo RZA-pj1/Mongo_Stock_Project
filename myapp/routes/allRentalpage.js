@@ -13,6 +13,6 @@
 router.get('/',auth,(req,res)=>{
     var user=User({userName:req.user.userName})
     res.status(200).render('allRentalStatus',{
-      hellow:`${user.userName}님 환영합니다`,layout:"./allRentalStatus"
+      hellow:`${user.userName}님 환영합니다`
     })
   })

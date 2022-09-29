@@ -12,7 +12,7 @@ let auth = (req, res, next) => {
         if (!user) {
             return res.render('successAddUser',
             {
-                hellow:"환영합니다.",
+                hellow:"로그인이 안되어있습니다",
                 layout:"successAddUser",
                 isAuth: false,
                 error: true,
@@ -22,6 +22,8 @@ let auth = (req, res, next) => {
                 email : "undefined",
                 userName : "undefined",
                 teamList1 : "undefined",
+                teamList2 : "undefined",
+                teamPosition:"undefind"
             })
             
         }

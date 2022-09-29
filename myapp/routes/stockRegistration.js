@@ -9,7 +9,7 @@
  *******************************************************/
 var express = require('express');
 var router = express.Router();
-let multer = require ('multer')
+let multer = require('multer')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser')
 router.use(bodyParser.json())
@@ -20,9 +20,10 @@ const { Stock } = require('../Models/stockName')
 const { Category } = require('../Models/category')
 const { auth } = require('../Controller/Auth')
 
+
 router.get('/', auth, (req, res) => {
   const user = User({ userName: req.user.userName })
-  Category.find({}).then(category => {
+  User.find({}).then(category => {
     return res.status(200).render('stockRegistration', {
       category: { category },
       hellow: `${user.userName}님 환영합니다.`,
@@ -42,7 +43,8 @@ router.post('/stockRegistration', (req, res) => {
     stockImage: req.body.stockImage,  // 물품 이미지
     stockInfo: req.body.stockInfo, // 물품 정보
     category: {
-      category
+      bigGroup: req.body.bigGroup,
+      smallGroup: req.body.smallGroup
     },
     stockMount: req.body.stockMount,  // 총 수량
     stockCount: req.body.stockCount,  // 대여 중 수량
@@ -54,40 +56,24 @@ router.post('/stockRegistration', (req, res) => {
     mustReturn: req.body.mustReturn, // 반납 여부
     updated_at: req.body.updated_at // 등록일, 최종 수정일
   });
- 
-    //카테고리에 대분류 소분류에 적은 값을 저장
-    category.save((err, categori) => {
-      console.log(categori)
+
+  //카테고리에 대분류 소분류에 적은 값을 저장
+  category.save((err, categori) => {
+    console.log(categori)
+    stoke.save((err, stock) => {
       if (err) {
         return res.json({ stockSaveSuccess: false, err })
       }
       else {
         return res.json({
           //프론트에서 올때는 body에서 바로 오기때문에 다큐먼트에서 내올 필요 없음
-          bigGroup: req.body.bigGroup,
-          smallGroup: req.body.smallGroup,
-        })
-      }
-    })
-    //stock스키마에 대분류 소분류 및 다른 client가 적은값 저장
-    stoke.save((err, stock) => {
-      console.log("stock", stock)
-      if (err) {
-        console.log(err)
-        return res.status(401).json({ stockSaveSuccess: false, err })
-        
-      }
-      else {
-        return res.status(200).json({
-          //프론트에서 올때는 body에서 바로 오기때문에 다큐먼트에서 내올 필요 없음
           stockNumber: req.body.stockNumber,
-          category: {
-           category
-          },
+          category:category,
           stockSaveSuccess: true,
           rental: req.body.rental
         })
       }
     })
+  })
 })
-module.exports = router;
+  module.exports = router;
