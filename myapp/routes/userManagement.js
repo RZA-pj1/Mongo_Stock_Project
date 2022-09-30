@@ -21,6 +21,7 @@ router.get('/', auth, (req, res) => {
   })
   //관리자인지 아닌지 확인
   if (users.role == 1) {
+    //데이터베이스에 들어있는 모든 유저정보 가져오기
     User.find({}).then(user => {
       console.log("Read Detail 완료");
       console.log(user)

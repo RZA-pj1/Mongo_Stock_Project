@@ -159,3 +159,35 @@ $("input:radio[name='mustReturn']").prop('checked', false);
 function goCancle() {
 window.history.back();
 }
+('#edit').click(function(){
+  // var params = {
+  //   stockNumber : $("#productCode").val()
+  //   , stockName : $("#productName").val()
+  //   , bigGroup  : $("#bigGroup").val()
+  //   , smallGroup: $("#smallGroup").val()
+  //   , rentalAble: $(".rentable").val()
+  //   , return    : $(".mustReturn").val()
+  // }
+
+  // // ajax 통신
+  // $.ajax({
+  //   type: "POST",            // HTTP method type(GET, POST) 형식이다.
+  //   url: "/edit",      // 컨트롤러에서 대기중인 URL 주소이다.
+  //   data: params,            // Json 형식의 데이터이다.
+  //   success: function (res) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+  //     // 응답코드 > 0000
+  //     if (res.stockSaveSuccess != false) {
+  //       alert("됬을려나");
+  //       window.history.back();
+  //     }
+  //     else {
+  //       alert("실망하지마");
+  //     }
+  //   },
+  //   error: function (XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+  //     console.log(XMLHttpRequest, textStatus, errorThrown)
+  //     alert("왜 여기로 빠짐?")
+  //   }
+  // });
+  window.history.back();
+})
